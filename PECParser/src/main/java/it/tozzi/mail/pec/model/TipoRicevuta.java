@@ -1,5 +1,7 @@
 package it.tozzi.mail.pec.model;
 
+import java.util.stream.Stream;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -16,11 +18,6 @@ public enum TipoRicevuta {
 	private final String descrizione;
 	
 	public static TipoRicevuta from(String descrizione) {
-		for (TipoRicevuta tr : TipoRicevuta.values()) {
-			if (tr.getDescrizione().equals(descrizione))
-				return tr;
-		}
-		
-		return null;
+		return Stream.of(TipoRicevuta.values()).filter(t -> t.getDescrizione().equals(descrizione)).findAny().orElse(null);			
 	}
 }

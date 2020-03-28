@@ -16,5 +16,8 @@ public class Allegato {
 	
 	private String nome;
 	private DataSource dataSource;
+	private String attachmentContentId;
+	private String xAttachmentId;
+	private boolean embedded;
 	
 }

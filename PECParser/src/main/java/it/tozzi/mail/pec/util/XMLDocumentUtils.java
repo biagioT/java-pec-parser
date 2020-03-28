@@ -22,28 +22,32 @@ import it.tozzi.mail.pec.exception.PECParserException;
  * @author biagio.tozzi
  *
  */
-public class DocumentUtils {
-	
-	private static final Logger logger = LoggerFactory.getLogger(DocumentUtils.class);
-	
-	public static String getAttribute(Document doc, String path, String attributeName, boolean nullable) throws PECParserException {
+public class XMLDocumentUtils {
+
+	private static final Logger logger = LoggerFactory.getLogger(XMLDocumentUtils.class);
+
+	public static String getAttribute(Document doc, String path, String attributeName, boolean nullable)
+			throws PECParserException {
 		NodeList nodes = getNodes(doc, path);
 		if (nodes != null && nodes.getLength() == 1 && nodes.item(0) != null) {
 			NamedNodeMap attributes = nodes.item(0).getAttributes();
 			for (int i = 0; i < attributes.getLength(); i++) {
-				if (attributes.item(i).getNodeName().equalsIgnoreCase(attributeName)) {
+				if (attributes.item(i).getNodeName() != null
+						&& attributes.item(i).getNodeName().equalsIgnoreCase(attributeName)) {
 					return attributes.item(i).getNodeValue();
 				}
 			}
 		}
 
 		if (!nullable)
-			throw new IllegalArgumentException("L'attributo " + attributeName + " del nodo " + path + " non può essere nullo");
+			throw new IllegalArgumentException(
+					"L'attributo " + attributeName + " del nodo " + path + " non può essere nullo");
 
 		return null;
 	}
 
-	public static Map<String, String> getTextAndAttribute(Document document, String path, String attribute, boolean nullable) throws PECParserException {
+	public static Map<String, String> getTextAndAttribute(Document document, String path, String attribute,
+			boolean nullable) throws PECParserException {
 		Map<String, String> res = new HashMap<>();
 		NodeList nodes = getNodes(document, path);
 
@@ -67,7 +71,7 @@ public class DocumentUtils {
 
 		return res;
 	}
-	
+
 	public static String getTextContent(Document document, String path, boolean nullable) throws PECParserException {
 		NodeList nodes = getNodes(document, path);
 
@@ -82,7 +86,7 @@ public class DocumentUtils {
 	}
 
 	private static NodeList getNodes(Document doc, String path) throws PECParserException {
-		
+
 		try {
 			XPathFactory xpathfactory = XPathFactory.newInstance();
 			XPath xpath = xpathfactory.newXPath();
@@ -90,11 +94,11 @@ public class DocumentUtils {
 			Object result = expr.evaluate(doc, XPathConstants.NODESET);
 			NodeList nodes = (NodeList) result;
 			return nodes;
-			
+
 		} catch (XPathExpressionException e) {
 			logger.error("Errore durante la lettura del nodo {}", path, e);
 			throw new PECParserException("Errore durante la lettura del nodo " + path, e);
 		}
 	}
-	
+
 }

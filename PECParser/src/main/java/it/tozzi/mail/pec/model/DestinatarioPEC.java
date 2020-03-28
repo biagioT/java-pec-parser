@@ -1,5 +1,7 @@
 package it.tozzi.mail.pec.model;
 
+import java.util.stream.Stream;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -24,12 +26,7 @@ public class DestinatarioPEC {
 		private final String descrizione;
 		
 		public static TipoDestinatario from(String descrizione) {
-			for (TipoDestinatario td : TipoDestinatario.values()) {
-				if (td.getDescrizione().equals(descrizione))
-					return td;
-			}
-			
-			return null;
+			return Stream.of(TipoDestinatario.values()).filter(t -> t.getDescrizione().equals(descrizione)).findAny().orElse(null);			
 		}
 	}
 }

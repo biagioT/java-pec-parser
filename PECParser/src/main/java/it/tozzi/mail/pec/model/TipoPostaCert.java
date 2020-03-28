@@ -1,5 +1,7 @@
 package it.tozzi.mail.pec.model;
 
+import java.util.stream.Stream;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -17,11 +19,6 @@ public enum TipoPostaCert {
 	private final String descrizione;
 	
 	public static TipoPostaCert from(String descrizione) {
-		for (TipoPostaCert tpc : TipoPostaCert.values()) {
-			if (tpc.getDescrizione().equals(descrizione))
-				return tpc;
-		}
-		
-		return null;
+		return Stream.of(TipoPostaCert.values()).filter(t -> t.getDescrizione().equals(descrizione)).findAny().orElse(null);			
 	}
 }

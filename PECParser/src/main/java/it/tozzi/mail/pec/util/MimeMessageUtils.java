@@ -3,6 +3,9 @@ package it.tozzi.mail.pec.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.activation.DataHandler;
 import javax.mail.BodyPart;
@@ -11,6 +14,7 @@ import javax.mail.Multipart;
 import javax.mail.Part;
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimePart;
 import javax.mail.internet.MimeUtility;
 
 import org.slf4j.Logger;
@@ -24,21 +28,21 @@ import it.tozzi.mail.pec.exception.PECParserException;
  *
  */
 public class MimeMessageUtils {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(MimeMessageUtils.class);
 	private static final String BODYSTRUCTURE_LOADING_ERROR = "Unable to load BODYSTRUCTURE";
-	
+
 	public static MimeMessage createMimeMessage(InputStream inputStream) throws PECParserException {
-		
+
 		try {
 			return new MimeMessage(Session.getDefaultInstance(System.getProperties()), inputStream);
-			
+
 		} catch (MessagingException e) {
 			logger.error("Errore durante la creazione del MimeMessage", e);
 			throw new PECParserException("Errore durante la creazione del MimeMessage", e);
 		}
 	}
-	
+
 	public static boolean isMimeType(Part part, String mimeType) throws PECParserException {
 
 		try {
@@ -83,18 +87,18 @@ public class MimeMessageUtils {
 			throw new PECParserException("Errore durante la decodifica del testo: " + text, e);
 		}
 	}
-	
+
 	public static int getCount(Multipart multiPart) throws PECParserException {
-		
+
 		try {
 			return multiPart.getCount();
-			
+
 		} catch (MessagingException e) {
 			logger.error("Errore durante la lettura del parametro count", e);
 			throw new PECParserException("Errore durante la lettura del parametro count", e);
 		}
 	}
-	
+
 	public static String getFileName(Part part) throws PECParserException {
 		try {
 			return part.getFileName();
@@ -104,43 +108,88 @@ public class MimeMessageUtils {
 			throw new PECParserException("Errore durante la lettura del nome del file di: " + getDescription(part), e);
 		}
 	}
-	
+
 	public static BodyPart getBodyPart(Multipart multiPart, int index) throws PECParserException {
-		
+
 		try {
 			return multiPart.getBodyPart(index);
-			
+
 		} catch (MessagingException e) {
 			logger.error("Errore durante la lettura della parte numero {}", index, e);
 			throw new PECParserException("Errore durante la lettura della parte numero: " + index, e);
 		}
-		
+
 	}
-	
+
+	public static String getXAttachmentID(MimePart part) {
+		List<String> values;
+
+		try {
+			values = MimeMessageUtils.getHeaderValues(PECConstants.X_ATTACHMENT_ID, part);
+		} catch (PECParserException e) {
+			return null;
+		}
+
+		return values.isEmpty() ? null : values.get(0);
+	}
+
+	public static String getHeaderValue(String headerKey, Part part) throws PECParserException {
+
+		List<String> values;
+
+		try {
+			values = MimeMessageUtils.getHeaderValues(headerKey, part);
+		} catch (PECParserException e) {
+			return null;
+		}
+
+		return values.isEmpty() ? null : values.get(0);
+
+	}
+
+	public static List<String> getHeaderValues(String headerKey, Part part) throws PECParserException {
+
+		try {
+			String[] res = part.getHeader(headerKey);
+			if (res != null) {
+				return Stream.of(res).collect(Collectors.toList());
+			}
+
+			return List.of();
+
+		} catch (MessagingException e) {
+			logger.error("Errore durante l'estrazione dell'header: {} per di {}", headerKey, getDescription(part), e);
+			throw new PECParserException("Errore durante l'estrazione del'header " + headerKey + " data handler per: "
+					+ getDescription(part), e);
+		}
+
+	}
+
 	public static DataHandler getDataHandler(Part part) throws PECParserException {
-		
+
 		try {
 			return part.getDataHandler();
-			
+
 		} catch (MessagingException e) {
 			logger.error("Errore durante l'estrazione del data handler per: {}", getDescription(part), e);
-			throw new PECParserException("Errore durante l'estrazione del data handler per: " + getDescription(part), e);
+			throw new PECParserException("Errore durante l'estrazione del data handler per: " + getDescription(part),
+					e);
 		}
-		
+
 	}
-	
+
 	public static String getContentType(Part part) throws PECParserException {
-		
+
 		try {
 			return part.getContentType();
-			
+
 		} catch (MessagingException e) {
 			logger.error("Errore durante l'estrazione del content type: {}", getDescription(part), e);
 			throw new PECParserException("Errore durante l'estrazione del content type: " + getDescription(part), e);
 		}
-		
+
 	}
-	
+
 	public static Object getContent(Part part) throws PECParserException {
 		Object content;
 
@@ -148,15 +197,16 @@ public class MimeMessageUtils {
 			content = part.getContent();
 
 		} catch (IOException | MessagingException e) {
-			
+
 			if (part instanceof MimeMessage && BODYSTRUCTURE_LOADING_ERROR.equalsIgnoreCase(e.getMessage())) {
-				
+
 				try {
 					content = new MimeMessage((MimeMessage) part).getContent();
-					
+
 				} catch (IOException | MessagingException e1) {
 					logger.error("Errore durante la lettura del contenuto di: {}", getDescription(part), e);
-					throw new PECParserException("Errore durante la lettura del contenuto di: " + getDescription(part), e);
+					throw new PECParserException("Errore durante la lettura del contenuto di: " + getDescription(part),
+							e);
 				}
 
 			} else {

@@ -40,11 +40,11 @@ import it.tozzi.mail.pec.model.PEC;
 import it.tozzi.mail.pec.model.RicevutaPEC;
 import it.tozzi.mail.pec.model.TipoPostaCert;
 import it.tozzi.mail.pec.model.TipoRicevuta;
-import it.tozzi.mail.pec.util.DocumentUtils;
 import it.tozzi.mail.pec.util.IOUtils;
 import it.tozzi.mail.pec.util.MimeMessageUtils;
 import it.tozzi.mail.pec.util.PECConstants;
 import it.tozzi.mail.pec.util.Tupla;
+import it.tozzi.mail.pec.util.XMLDocumentUtils;
 import it.tozzi.mail.uudecoder.UUDecoder;
 import it.tozzi.mail.uudecoder.UUDecoder.UUDecodedAttachment;
 import it.tozzi.mail.uudecoder.exception.UUDecoderException;
@@ -202,36 +202,36 @@ public class PECMessageParser {
 
 		DatiCertificazione datiCertificazione = new DatiCertificazione();
 		datiCertificazione
-				.setMittente(DocumentUtils.getTextContent(datiCertDocument, "/postacert/intestazione/mittente", false));
-		Map<String, String> destinatari = DocumentUtils.getTextAndAttribute(datiCertDocument,
-				"/postacert/intestazione/destinatari", "tipo", false);
+				.setMittente(XMLDocumentUtils.getTextContent(datiCertDocument, PECConstants.DATICERT_MITTENTE_PATH, false));
+		Map<String, String> destinatari = XMLDocumentUtils.getTextAndAttribute(datiCertDocument,
+				PECConstants.DATICERT_DESTINATARI_PATH, PECConstants.DATICERT_DESTINATARI_TIPO_ATTRIBUTE, false);
 		destinatari.entrySet().stream().forEach(d -> datiCertificazione.getDestinatari()
 				.add(new DestinatarioPEC(d.getKey(), TipoDestinatario.from(d.getValue()))));
 		datiCertificazione
-				.setRisposte(DocumentUtils.getTextContent(datiCertDocument, "/postacert/intestazione/risposte", false));
+				.setRisposte(XMLDocumentUtils.getTextContent(datiCertDocument, PECConstants.DATICERT_RISPOSTE_PATH, false));
 		datiCertificazione
-				.setOggetto(DocumentUtils.getTextContent(datiCertDocument, "/postacert/intestazione/oggetto", true));
+				.setOggetto(XMLDocumentUtils.getTextContent(datiCertDocument, PECConstants.DATICERT_OGGETTO_PATH, true));
 		datiCertificazione.setGestoreEmittente(
-				DocumentUtils.getTextContent(datiCertDocument, "/postacert/dati/gestore-emittente", false));
+				XMLDocumentUtils.getTextContent(datiCertDocument, PECConstants.DATICERT_GESTORE_EMITTENTE_PATH, false));
 		datiCertificazione.setData(
-				new DataPEC(DocumentUtils.getAttribute(datiCertDocument, "/postacert/dati/data", "zona", false),
-						DocumentUtils.getTextContent(datiCertDocument, "/postacert/dati/data/giorno", false),
-						DocumentUtils.getTextContent(datiCertDocument, "/postacert/dati/data/ora", false)));
+				new DataPEC(XMLDocumentUtils.getAttribute(datiCertDocument, PECConstants.DATICERT_DATA_PATH, PECConstants.DATICERT_DATA_ZONA_ATTRIBUTE, false),
+						XMLDocumentUtils.getTextContent(datiCertDocument, PECConstants.DATICERT_DATA_GIORNO_PATH, false),
+						XMLDocumentUtils.getTextContent(datiCertDocument, PECConstants.DATICERT_DATA_ORA_PATH, false)));
 		datiCertificazione.setTipoRicevuta(TipoRicevuta
-				.from(DocumentUtils.getAttribute(datiCertDocument, "/postacert/dati/ricevuta", "tipo", true)));
+				.from(XMLDocumentUtils.getAttribute(datiCertDocument, PECConstants.DATICERT_RICEVUTA_PATH, PECConstants.DATICERT_RICEVUTA_TIPO_ATTRIBUTE, true)));
 		datiCertificazione
-				.setErrore(ErrorePEC.from(DocumentUtils.getAttribute(datiCertDocument, "/postacert", "errore", false)));
+				.setErrore(ErrorePEC.from(XMLDocumentUtils.getAttribute(datiCertDocument, PECConstants.DATICERT_POSTACERT_PATH, PECConstants.DATICERT_POSTACERT_ERRORE_ATTRIBUTE, false)));
 		datiCertificazione
-				.setErroreEsteso(DocumentUtils.getTextContent(datiCertDocument, "/postacert/dati/errore-esteso", true));
+				.setErroreEsteso(XMLDocumentUtils.getTextContent(datiCertDocument, PECConstants.DATICERT_ERRORE_ESTESO_PATH, true));
 		datiCertificazione
-				.setConsegna(DocumentUtils.getTextContent(datiCertDocument, "/postacert/dati/consegna", true));
+				.setConsegna(XMLDocumentUtils.getTextContent(datiCertDocument, PECConstants.DATICERT_CONSEGNA_PATH, true));
 		datiCertificazione
-				.setRicezione(DocumentUtils.getTextContent(datiCertDocument, "/postacert/dati/ricezione", true));
-		datiCertificazione.setMessageID(DocumentUtils.getTextContent(datiCertDocument, "/postacert/dati/msgid", true));
+				.setRicezione(XMLDocumentUtils.getTextContent(datiCertDocument, PECConstants.DATICERT_RICEZIONE_PATH, true));
+		datiCertificazione.setMessageID(XMLDocumentUtils.getTextContent(datiCertDocument, PECConstants.DATICERT_MESSAGE_ID_PATH, true));
 		datiCertificazione.setIdentificativo(
-				DocumentUtils.getTextContent(datiCertDocument, "/postacert/dati/identificativo", true));
+				XMLDocumentUtils.getTextContent(datiCertDocument, PECConstants.DATICERT_IDENTIFICATIVO_PATH, true));
 		datiCertificazione
-				.setTipo(TipoPostaCert.from(DocumentUtils.getAttribute(datiCertDocument, "/postacert", "tipo", false)));
+				.setTipo(TipoPostaCert.from(XMLDocumentUtils.getAttribute(datiCertDocument, PECConstants.DATICERT_POSTACERT_PATH, PECConstants.DATICERT_IDENTIFICATIVO_TIPO_ATTRIBUTE, false)));
 		return datiCertificazione;
 	}
 
@@ -380,7 +380,7 @@ public class PECMessageParser {
 					}
 					
 					for (UUDecodedAttachment uda : decodedAttachments) {
-						mail.getAllegati().add(new Allegato(uda.getFileName(), uda.getDataSource()));
+						mail.getAllegati().add(new Allegato(uda.getFileName(), uda.getDataSource(), null, null, false));
 					}
 				}
 
@@ -466,8 +466,9 @@ public class PECMessageParser {
 							logger.error("Errore durante l'estrazione dell'allegato {}", MimeMessageUtils.getFileName(part), e);
 							throw new PECParserException("Errore durante l'estrazione dell'allegato " + MimeMessageUtils.getFileName(part), e);
 						}
-						
-						mail.getAllegati().add(new Allegato(dataSource.getName(), dataSource));
+												
+						mail.getAllegati().add(new Allegato(dataSource.getName(), dataSource, MimeMessageUtils.getHeaderValue(PECConstants.CONTENT_ID, part), 
+								MimeMessageUtils.getHeaderValue(PECConstants.X_ATTACHMENT_ID, part), Part.INLINE.equals(MimeMessageUtils.getDisposition(part))));
 					}
 				}
 			}

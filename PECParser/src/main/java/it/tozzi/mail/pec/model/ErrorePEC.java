@@ -1,5 +1,7 @@
 package it.tozzi.mail.pec.model;
 
+import java.util.stream.Stream;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -16,11 +18,6 @@ public enum ErrorePEC {
 	private final String descrizione;
 	
 	public static ErrorePEC from(String descrizione) {
-		for (ErrorePEC ep : ErrorePEC.values()) {
-			if (ep.getDescrizione().equals(descrizione))
-				return ep;
-		}
-		
-		return null;
+		return Stream.of(ErrorePEC.values()).filter(t -> t.getDescrizione().equals(descrizione)).findAny().orElse(null);			
 	}
 }
