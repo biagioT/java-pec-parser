@@ -42,6 +42,7 @@ import it.tozzi.mail.pec.model.TipoPostaCert;
 import it.tozzi.mail.pec.model.TipoRicevuta;
 import it.tozzi.mail.pec.util.IOUtils;
 import it.tozzi.mail.pec.util.MimeMessageUtils;
+import it.tozzi.mail.pec.util.MimeTypesUtil;
 import it.tozzi.mail.pec.util.PECConstants;
 import it.tozzi.mail.pec.util.Tupla;
 import it.tozzi.mail.pec.util.XMLDocumentUtils;
@@ -359,7 +360,7 @@ public class PECMessageParser {
 
 		Object content = MimeMessageUtils.getContent(part);
 
-		if (MimeMessageUtils.isMimeType(part, IOUtils.CONTENT_TYPE_TEXT_PLAIN)
+		if (MimeMessageUtils.isMimeType(part, MimeTypesUtil.CONTENT_TYPE_TEXT_PLAIN)
 				&& !Part.ATTACHMENT.equalsIgnoreCase(MimeMessageUtils.getDisposition(part))
 				&& mail.getCorpoTesto() == null) {
 
@@ -393,7 +394,7 @@ public class PECMessageParser {
 
 		} else {
 
-			if (MimeMessageUtils.isMimeType(part, IOUtils.CONTENT_TYPE_TEXT_HTML)
+			if (MimeMessageUtils.isMimeType(part, MimeTypesUtil.CONTENT_TYPE_TEXT_HTML)
 					&& !Part.ATTACHMENT.equalsIgnoreCase(MimeMessageUtils.getDisposition(part))) {
 
 				if (mail.getCorpoHTML() == null) {
@@ -405,7 +406,7 @@ public class PECMessageParser {
 
 			} else {
 
-				if (MimeMessageUtils.isMimeType(part, IOUtils.CONTENT_TYPE_MULTIPART)) {
+				if (MimeMessageUtils.isMimeType(part, MimeTypesUtil.CONTENT_TYPE_MULTIPART)) {
 					Multipart multipart = (Multipart) content;
 
 					for (int i = 0; i < MimeMessageUtils.getCount(multipart); i++) {
@@ -425,7 +426,7 @@ public class PECMessageParser {
 									.equalsIgnoreCase(MimeMessageUtils.decodeText(MimeMessageUtils.getFileName(part)))
 									|| PECConstants.POSTACERT_EML_NAME.equals(MimeMessageUtils.getFileName(part)))
 
-									&& MimeMessageUtils.isMimeType(part, IOUtils.CONTENT_TYPE_MESSAGE_RFC822)) {
+									&& MimeMessageUtils.isMimeType(part, MimeTypesUtil.CONTENT_TYPE_MESSAGE_RFC822)) {
 
 								pec = true;
 								
@@ -441,7 +442,7 @@ public class PECMessageParser {
 									&& (PECConstants.DATICERT_XML_NAME
 											.equalsIgnoreCase(MimeMessageUtils.decodeText(MimeMessageUtils.getFileName(part)))
 											|| PECConstants.DATICERT_XML_NAME.equals(MimeMessageUtils.getFileName(part)))
-									&& MimeMessageUtils.isMimeType(part, IOUtils.CONTENT_TYPE_APPLICATION_XML)) {
+									&& MimeMessageUtils.isMimeType(part, MimeTypesUtil.CONTENT_TYPE_APPLICATION_XML)) {
 
 								pec = true;
 								
