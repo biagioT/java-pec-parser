@@ -6,7 +6,7 @@
 
 	<groupId>it.tozzi.mail.pec</groupId>
 	<artifactId>pec-parser</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.3</version>
 	<name>PEC Parser</name>
 	<description>Utility per la lettura di un messaggio di Posta Elettronica Certificata</description>
 
@@ -19,6 +19,7 @@
 	</developers>
 
 	<properties>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<sources.encoding>UTF-8</sources.encoding>
 		<java.version>11</java.version>
@@ -28,6 +29,9 @@
 		<slf4j.version>1.7.30</slf4j.version>
 		<lombok.version>1.18.12</lombok.version>
 		<uudecoder.version>0.0.2</uudecoder.version>
+		<emoji4j.version>6.0</emoji4j.version>
+		<jsoup.version>1.13.1</jsoup.version>
+		<commons.text.version>1.8</commons.text.version>
 	</properties>
 
 	<dependencies>
@@ -56,7 +60,25 @@
 			<artifactId>uudecoder</artifactId>
 			<version>${uudecoder.version}</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>com.kcthota</groupId>
+			<artifactId>emoji4j</artifactId>
+			<version>${emoji4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>${jsoup.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-text</artifactId>
+			<version>${commons.text.version}</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -65,7 +87,9 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
-					<release>${java.version}</release>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<encoding>${sources.encoding}</encoding>
 				</configuration>
 			</plugin>
 		</plugins>
