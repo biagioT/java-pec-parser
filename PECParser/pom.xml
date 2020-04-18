@@ -28,7 +28,7 @@
 		<javax.mail.version>1.6.2</javax.mail.version>
 		<slf4j.version>1.7.30</slf4j.version>
 		<lombok.version>1.18.12</lombok.version>
-		<uudecoder.version>0.0.2</uudecoder.version>
+		<uudecoder.version>0.0.3</uudecoder.version>
 		<emoji4j.version>6.0</emoji4j.version>
 		<jsoup.version>1.13.1</jsoup.version>
 		<commons.text.version>1.8</commons.text.version>
