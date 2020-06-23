@@ -17,11 +17,13 @@ import lombok.Data;
 @AllArgsConstructor
 public class DataPEC {
 	
+	private static final String DATA_PEC_PATTERN = "dd/MM/yyyy HH:mm:ss";
+
 	private String zona;
 	private String giorno;
 	private String ora;
 	
 	public Date getDate() {
-		return Date.from(ZonedDateTime.parse(this.giorno + " " + this.ora, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").withZone(ZoneOffset.of(this.zona))).toInstant());
+		return Date.from(ZonedDateTime.parse(this.giorno + " " + this.ora, DateTimeFormatter.ofPattern(DATA_PEC_PATTERN).withZone(ZoneOffset.of(this.zona))).toInstant());
 	}
 }

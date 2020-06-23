@@ -1,9 +1,13 @@
 package it.tozzi.mail.pec.util;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -32,15 +36,19 @@ public class MimeMessageUtils {
 	private static final Logger logger = LoggerFactory.getLogger(MimeMessageUtils.class);
 	private static final String BODYSTRUCTURE_LOADING_ERROR = "Unable to load BODYSTRUCTURE";
 
-	public static MimeMessage createMimeMessage(InputStream inputStream) throws PECParserException {
+	public static MimeMessage createMimeMessage(InputStream inputStream, Properties properties) throws PECParserException {
 
 		try {
-			return new MimeMessage(Session.getDefaultInstance(System.getProperties()), inputStream);
+			return new MimeMessage(Session.getDefaultInstance(properties != null ? properties : System.getProperties()), inputStream);
 
 		} catch (MessagingException e) {
 			logger.error("Errore durante la creazione del MimeMessage", e);
 			throw new PECParserException("Errore durante la creazione del MimeMessage", e);
 		}
+	}
+	
+	public static MimeMessage createMimeMessage(InputStream inputStream) throws PECParserException {
+		return createMimeMessage(inputStream, null);
 	}
 
 	public static boolean isMimeType(Part part, String mimeType) throws PECParserException {
@@ -155,7 +163,7 @@ public class MimeMessageUtils {
 				return Stream.of(res).collect(Collectors.toList());
 			}
 
-			return List.of();
+			return new ArrayList<>();
 
 		} catch (MessagingException e) {
 			logger.error("Errore durante l'estrazione dell'header: {} per di {}", headerKey, getDescription(part), e);
@@ -209,6 +217,16 @@ public class MimeMessageUtils {
 							e);
 				}
 
+			} else if (isMimeType(part, MimeTypesUtil.CONTENT_TYPE_TEXT)) {
+			
+				try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+					IOUtils.fastCopy(part.getInputStream(), os);
+					content = new String(os.toByteArray(), StandardCharsets.US_ASCII);
+					
+				} catch (IOException | MessagingException e1) {
+					throw new PECParserException("Errore durante la lettura del contenuto di: " + getDescription(part), e);
+				}
+				
 			} else {
 				logger.error("Errore durante la lettura del contenuto di: {}", getDescription(part), e);
 				throw new PECParserException("Errore durante la lettura del contenuto di: " + getDescription(part), e);

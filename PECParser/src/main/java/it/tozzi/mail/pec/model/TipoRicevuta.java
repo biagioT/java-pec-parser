@@ -13,7 +13,9 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum TipoRicevuta {
-	COMPLETA("completa"), BREVE("breve"), SINTETICA("sintetica");
+	COMPLETA("completa"), //
+	BREVE("breve"), //
+	SINTETICA("sintetica"); //
 
 	private final String descrizione;
 	

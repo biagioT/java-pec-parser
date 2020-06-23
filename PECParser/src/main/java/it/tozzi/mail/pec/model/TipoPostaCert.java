@@ -13,8 +13,14 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum TipoPostaCert {
-	ACCETTAZIONE("accettazione"), NON_ACCETTAZIONE("non-accettazione"), PRESA_IN_CARICO("presa-in-carico"), AVVENUTA_CONSEGNA("avvenuta-consegna"), 
-	POSTA_CERTIFICATA("posta-certificata"), ERRORE_CONSEGNA("errore-consegna"), PREAVVISO_ERRORE_CONSEGNA("preavviso-errore-consegna"), RILEVAZIONE_VIRUS("rilevazione-virus");
+	ACCETTAZIONE("accettazione"), //
+	NON_ACCETTAZIONE("non-accettazione"), //
+	PRESA_IN_CARICO("presa-in-carico"), //
+	AVVENUTA_CONSEGNA("avvenuta-consegna"), //
+	POSTA_CERTIFICATA("posta-certificata"), //
+	ERRORE_CONSEGNA("errore-consegna"), //
+	PREAVVISO_ERRORE_CONSEGNA("preavviso-errore-consegna"), //
+	RILEVAZIONE_VIRUS("rilevazione-virus"); //
 	
 	private final String descrizione;
 	

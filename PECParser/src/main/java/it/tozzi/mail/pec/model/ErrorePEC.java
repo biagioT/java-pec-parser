@@ -13,7 +13,11 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum ErrorePEC {
-	NESSUNO("nessuno"), NO_DEST("no-dest"), NO_DOMINIO("no-dominio"), VIRUS("virus"), ALTRO("altro");
+	NESSUNO("nessuno"), //
+	NO_DEST("no-dest"), //
+	NO_DOMINIO("no-dominio"), //
+	VIRUS("virus"), //
+	ALTRO("altro"); //
 	
 	private final String descrizione;
 	

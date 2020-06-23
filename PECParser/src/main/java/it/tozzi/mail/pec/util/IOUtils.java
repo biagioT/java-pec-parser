@@ -33,7 +33,7 @@ public class IOUtils {
 		DataHandler dataHandler = MimeMessageUtils.getDataHandler(part);		
 		DataSource dataSource = dataHandler.getDataSource();
 		String fileName = MimeMessageUtils.getFileName(part);
-		fileName = fileName != null && !fileName.isBlank() ? MimeMessageUtils.decodeText(fileName) : getName(part);
+		fileName = fileName != null && !fileName.trim().isEmpty() ? MimeMessageUtils.decodeText(fileName) : getName(part);
 		String contentType = getBaseMimeType(dataSource, fileName);
 		byte[] content = getContent(dataSource.getInputStream());
 		ByteArrayDataSource result = new ByteArrayDataSource(content, contentType);
@@ -44,7 +44,7 @@ public class IOUtils {
 	private static String getBaseMimeType(DataSource dataSource, String fileName) {
 		String fullMimeType = dataSource.getContentType();
 
-		if (fullMimeType == null || fullMimeType.isBlank()) {
+		if (fullMimeType == null || fullMimeType.trim().isEmpty()) {
 			return getFileMimeType(fileName);
 		}
 
@@ -70,7 +70,7 @@ public class IOUtils {
 				result = MimeTypesUtil.CONTENT_TYPE_OCETSTREAM;
 				
 			} else {
-				result = MimeTypesUtil.getMimeType(fileExt);
+				result = MimeTypesUtil.guessMimeType(fileExt);
 			}
 		}
 		
@@ -85,11 +85,11 @@ public class IOUtils {
 
 		String fileName = MimeMessageUtils.getFileName(part);
 
-		if (fileName != null && !fileName.isBlank())
+		if (fileName != null && !fileName.trim().isEmpty())
 			return MimeMessageUtils.decodeText(fileName);
 
 		String extension = getExtension(part);
-		extension = extension != null && !extension.isBlank() ? ("." + extension) : "";
+		extension = extension != null && !extension.trim().isEmpty() ? ("." + extension) : "";
 		
 		if (Part.INLINE.equals(MimeMessageUtils.getDisposition(part))) {
 			return UNNAMED_EMBEDDED_FILE_NAME + extension;
@@ -106,7 +106,7 @@ public class IOUtils {
 		return result;
 	}
 
-	private static void fastCopy(final InputStream src, final OutputStream dest) throws IOException {
+	public static void fastCopy(final InputStream src, final OutputStream dest) throws IOException {
 		final ReadableByteChannel inputChannel = Channels.newChannel(src);
 		final WritableByteChannel outputChannel = Channels.newChannel(dest);
 		fastCopy(inputChannel, outputChannel);
@@ -141,8 +141,8 @@ public class IOUtils {
 			return null;
 		}
 		
-		if (fullMimeType != null && !fullMimeType.isBlank()) {
-			return MimeTypesUtil.getExtension(fullMimeType);
+		if (fullMimeType != null && !fullMimeType.trim().isEmpty()) {
+			return MimeTypesUtil.guessExtension(fullMimeType);
 		}
 
 		return null;

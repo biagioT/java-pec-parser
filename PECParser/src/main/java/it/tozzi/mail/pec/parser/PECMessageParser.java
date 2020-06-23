@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.activation.DataSource;
 import javax.mail.Address;
@@ -59,15 +60,36 @@ public class PECMessageParser {
 
 	private static final Logger logger = LoggerFactory.getLogger(PECMessageParser.class);
 	private DocumentBuilder documentBuilder;
-
+	private Properties properties;
+	
+	/**
+	 * Istanza di PECMessageParser <br>
+	 * L'elaborazione degli oggetti {@link MimeMessage} viene eseguita con le properties di sistema (System.getProperties())
+	 * 
+	 * @return PECMessageParser
+	 * @throws PECParserException
+	 */
 	public static PECMessageParser getInstance() throws PECParserException {
-		return new PECMessageParser();
+		return new PECMessageParser(null);
 	}
 
-	private PECMessageParser() throws PECParserException {
+	/**
+	 * Istanza di PECMessageParser <br>
+	 * L'elaborazione degli oggetti {@link MimeMessage} viene eseguita con le properties passate come parametro
+	 * 
+	 * @param properties
+	 * @return PECMessageParser
+	 * @throws PECParserException
+	 */
+	public static PECMessageParser getInstance(Properties properties) throws PECParserException {
+		return new PECMessageParser(properties);
+	}
+	
+	private PECMessageParser(Properties properties) throws PECParserException {
 
 		try {
-			documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			this.properties = properties;
+			this.documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
 		} catch (ParserConfigurationException e) {
 			logger.error("Errore durante l'inizializzazione del Document Builder", e);
@@ -170,7 +192,7 @@ public class PECMessageParser {
 		ricevutaPEC.setDatiCertificazione(estraiDatiCertificazione(busta.getDatiCert().getInputStream()));
 
 		if (busta.getPostaCert() != null) {
-			PEC pec = estraiPEC(MimeMessageUtils.createMimeMessage(busta.getPostaCert().getInputStream()));
+			PEC pec = estraiPEC(MimeMessageUtils.createMimeMessage(busta.getPostaCert().getInputStream(), this.properties));
 			ricevutaPEC.setMessaggioOriginale(pec);
 		}
 
@@ -178,7 +200,7 @@ public class PECMessageParser {
 	}
 
 	private PEC estraiPEC(Busta busta, String xTrasporto) throws PECParserException, IOException {
-		MimeMessage postaCertMimeMessage = MimeMessageUtils.createMimeMessage(busta.getPostaCert().getInputStream());
+		MimeMessage postaCertMimeMessage = MimeMessageUtils.createMimeMessage(busta.getPostaCert().getInputStream(), this.properties);
 		PEC pec = estraiPEC(postaCertMimeMessage);
 		if (TipoPostaCert.POSTA_CERTIFICATA.getDescrizione().equals(xTrasporto))
 			pec.setDatiCertificazione(estraiDatiCertificazione(busta.getDatiCert().getInputStream()));
@@ -197,8 +219,8 @@ public class PECMessageParser {
 			datiCertDocument = documentBuilder.parse(inputStream);
 
 		} catch (SAXException | IOException e) {
-			logger.error("Errore durante il parsing del datiCert.xml", e);
-			throw new PECParserException("Errore durante il parsing del datiCert.xml", e);
+			logger.error("Errore durante il parsing del daticert.xml", e);
+			throw new PECParserException("Errore durante il parsing del daticert.xml", e);
 		}
 
 		DatiCertificazione datiCertificazione = new DatiCertificazione();

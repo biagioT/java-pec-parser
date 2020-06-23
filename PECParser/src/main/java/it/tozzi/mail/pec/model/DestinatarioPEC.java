@@ -21,7 +21,8 @@ public class DestinatarioPEC {
 	@AllArgsConstructor
 	@Getter
 	public static enum TipoDestinatario {
-		ESTERNO("esterno"), CERTIFICATO("certificato");
+		ESTERNO("esterno"), //
+		CERTIFICATO("certificato"); //
 		
 		private final String descrizione;
 		
