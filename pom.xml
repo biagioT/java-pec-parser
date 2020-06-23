@@ -6,7 +6,7 @@
 
 	<groupId>it.tozzi.mail.pec</groupId>
 	<artifactId>pec-parser</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<name>PEC Parser</name>
 	<description>Utility per la lettura di un messaggio di Posta Elettronica Certificata</description>
 
@@ -28,7 +28,7 @@
 		<javax.mail.version>1.6.2</javax.mail.version>
 		<slf4j.version>1.7.30</slf4j.version>
 		<lombok.version>1.18.12</lombok.version>
-		<uudecoder.version>1.0.0</uudecoder.version>
+		<uudecoder.version>1.0.1</uudecoder.version>
 		<commons.text.version>1.8</commons.text.version>
 	</properties>
 
