@@ -1,0 +1,93 @@
+# This repository adheres to the publiccode.yml standard by including this 
+# metadata file that makes public software easily discoverable.
+# More info at https://github.com/italia/publiccode.yml
+
+publiccodeYmlVersion: '0.2'
+categories:
+  - communications
+description:
+  it:
+    features:
+      - Elaborazione di messaggi di posta elettronica certificata (PEC)
+    genericName: PEC/Mail Parser
+    longDescription: >
+      Libreria JAVA per l'elaborazione di messaggi di Posta Elettronica
+      Certificata (e messaggi di posta ordinaria).
+
+
+      **Specifiche**:
+
+
+      Regole tecniche del servizio di trasmissione di documenti informatici
+      mediante posta el ettronica certificata:
+      [pec\_regole\_tecniche\_dm\_2-nov-2005.pdf](https://www.agid.gov.it/sites/default/files/repository_files/leggi_decreti_direttive/pec_regole_tecniche_dm_2-nov-2005.pdf)
+
+
+      **Esempio di utilizzo**:
+
+       > `MimeMessage mimeMessage = ...;
+      Messaggio messaggio = PECMessageParser.getInstance().parse(mimeMessage);`
+
+
+      Tramite l'utilizzo della libreria è possibile estrarre, a partire da un
+      oggetto MimeMessage, rappresentante un messaggio PEC:
+
+
+      - Busta di trasporto (`Busta`)
+
+      - Eventuale messaggio di Posta Elettronica Certificata (`PEC`)
+
+      - Eventuale ricevuta (`RicevutaPEC`)
+
+
+      l messaggio viene elaborato anche se non PEC:
+
+
+      - Messaggio ricevuto su una casella di Posta Elettronica Certificata:
+      l'oggetto `PEC` conterrà le informazioni del messaggio normale in quanto
+      comunque incapsulato in una busta
+
+      - Messaggio ricevuto su una casella di posta ordinaria: in questo caso la
+      Busta rappresenta il messaggio normale
+
+
+      ​
+    shortDescription: >-
+      Libreria per l'elaborazione di messaggi di Posta Elettronica Certificata
+      (e messaggi di posta ordinaria)
+developmentStatus: stable
+it:
+  conforme:
+    gdpr: false
+    lineeGuidaDesign: false
+    misureMinimeSicurezza: false
+    modelloInteroperabilita: false
+  countryExtensionVersion: '0.2'
+  piattaforme:
+    anpr: false
+    cie: false
+    pagopa: false
+    spid: false
+legal:
+  license: Apache-2.0
+localisation:
+  availableLanguages:
+    - it
+  localisationReady: false
+maintenance:
+  contacts:
+    - email: biagio.tozzi@gmail.com
+      name: Biagio Placido Tozzi
+  type: internal
+name: PEC Parser
+platforms:
+  - web
+  - windows
+  - mac
+  - linux
+  - ios
+  - android
+releaseDate: '2020-06-23'
+softwareType: configurationFiles
+softwareVersion: 1.0.1
+url: 'https://github.com/biagioT/java-pec-parser'
