@@ -1,3 +1,5 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/dbe9e634249f4850a22d9d8dcabee03e)](https://www.codacy.com/manual/biagioT/java-pec-parser?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=biagioT/java-pec-parser&amp;utm_campaign=Badge_Grade)
+
 # java-pec-parser
 Utility per l'elaborazione di messaggi di Posta Elettronica Certificata (e messaggi di posta ordinaria)
 
