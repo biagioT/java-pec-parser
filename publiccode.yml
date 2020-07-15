@@ -5,6 +5,7 @@
 publiccodeYmlVersion: '0.2'
 categories:
   - communications
+  - email-management
 description:
   it:
     features:
@@ -25,9 +26,7 @@ description:
 
       **Esempio di utilizzo**:
 
-       > `MimeMessage mimeMessage = ...;
-      Messaggio messaggio = PECMessageParser.getInstance().parse(mimeMessage);`
-
+       > `MimeMessage mimeMessage = ...; Messaggio messaggio = PECMessageParser.getInstance().parse(mimeMessage);`
 
       Tramite l'utilizzo della libreria è possibile estrarre, a partire da un
       oggetto MimeMessage, rappresentante un messaggio PEC:
@@ -40,7 +39,7 @@ description:
       - Eventuale ricevuta (`RicevutaPEC`)
 
 
-      l messaggio viene elaborato anche se non PEC:
+      Il messaggio viene elaborato anche se non PEC:
 
 
       - Messaggio ricevuto su una casella di Posta Elettronica Certificata:
@@ -91,3 +90,10 @@ releaseDate: '2020-06-23'
 softwareType: configurationFiles
 softwareVersion: 1.0.1
 url: 'https://github.com/biagioT/java-pec-parser'
+dependsOn:
+  open:
+    - name: Java
+      optional: false
+      version: '8'
+      versionMax: '14'
+      versionMin: '8'
