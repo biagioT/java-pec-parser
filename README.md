@@ -10,3 +10,13 @@ Regole tecniche del servizio di trasmissione di documenti informatici mediante p
 ## Esempio di utilizzo
     MimeMessage mimeMessage = ...;
     Messaggio messaggio = PECMessageParser.getInstance().parse(mimeMessage);
+
+
+Tramite l'utilizzo della libreria è possibile estrarre, a partire da un oggetto javax.mail.internet.MimeMessage, rappresentante un messaggio PEC:
+- Busta di trasporto (Busta)
+- Eventuale messaggio di Posta Elettronica Certificata (PEC)
+- Eventuale ricevuta (RicevutaPEC)
+
+Il messaggio viene elaborato anche se non PEC:
+- Messaggio ricevuto su una casella di Posta Elettronica Certificata: l'oggetto PEC conterrà le informazioni del messaggio normale in quanto comunque incapsulato in una busta
+- Messaggio ricevuto su una casella di posta ordinaria: in questo caso la Busta rappresenta il messaggio normale
