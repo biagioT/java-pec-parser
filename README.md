@@ -22,4 +22,4 @@ Il messaggio viene elaborato anche se non PEC:
 - Messaggio ricevuto su una casella di posta ordinaria: in questo caso la Busta rappresenta il messaggio normale
 
 ## Requisiti
-Java 8 (o versioni superiori)
+Java 8 (o versioni successive)
