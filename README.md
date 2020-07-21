@@ -4,13 +4,20 @@
 Utility per l'elaborazione di messaggi di Posta Elettronica Certificata (e messaggi di posta ordinaria)
 
 ## Specifiche
-Regole tecniche del servizio di trasmissione di documenti informatici mediante posta el ettronica certificata: 
+Regole tecniche del servizio di trasmissione di documenti informatici mediante posta elettronica certificata: 
 [pec_regole_tecniche_dm_2-nov-2005.pdf](https://www.agid.gov.it/sites/default/files/repository_files/leggi_decreti_direttive/pec_regole_tecniche_dm_2-nov-2005.pdf)
 
 ## Esempio di utilizzo
+Standard:
+
     MimeMessage mimeMessage = ...;
     Messaggio messaggio = PECMessageParser.getInstance().parse(mimeMessage);
 
+Con proprietà custom per l'elaborazione del MimeMessage (nella modalità standard vengono utilizzate le properties di sistema: <i>System.getProperties()</i>):
+
+    MimeMessage mimeMessage = ...;
+    Properties properties = ...;
+    Messaggio messaggio = PECMessageParser.getInstance(properties).parse(mimeMessage);
 
 Tramite l'utilizzo della libreria è possibile estrarre, a partire da un oggetto javax.mail.internet.MimeMessage, rappresentante un messaggio PEC:
 - Busta di trasporto ([Busta](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/model/Busta.java))
@@ -23,3 +30,6 @@ Il messaggio viene elaborato anche se non PEC:
 
 ## Requisiti
 Java 8 (o versioni successive)
+
+## Altro
+- La libreria supporta l'elaborazione di messaggi di posta ordinaria con codifica [UUencode](https://en.wikipedia.org/wiki/Uuencoding)
