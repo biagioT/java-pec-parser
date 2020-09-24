@@ -86,9 +86,9 @@ platforms:
   - linux
   - ios
   - android
-releaseDate: '2020-06-23'
+releaseDate: '2020-09-24'
 softwareType: configurationFiles
-softwareVersion: 1.0.1
+softwareVersion: 1.0.2
 url: 'https://github.com/biagioT/java-pec-parser'
 dependsOn:
   open:
