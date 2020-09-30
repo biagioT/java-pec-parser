@@ -19,7 +19,7 @@ Con proprietà custom per l'elaborazione del MimeMessage (nella modalità standa
     Properties properties = ...;
     Messaggio messaggio = PECMessageParser.getInstance(properties).parse(mimeMessage);
 
-Tramite l'utilizzo della libreria è possibile estrarre, a partire da un oggetto javax.mail.internet.MimeMessage, rappresentante un messaggio PEC:
+Tramite l'utilizzo della libreria è possibile estrarre, a partire da un oggetto <i>javax.mail.internet.MimeMessage</i>, rappresentante un messaggio PEC:
 - Busta di trasporto ([Busta](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/model/Busta.java))
 - Eventuale messaggio di Posta Elettronica Certificata ([PEC](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/model/PEC.java))
 - Eventuale ricevuta ([RicevutaPEC](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/model/RicevutaPEC.java))
