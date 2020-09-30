@@ -24,7 +24,12 @@ Tramite l'utilizzo della libreria è possibile estrarre, a partire da un oggetto
 - Eventuale messaggio di Posta Elettronica Certificata ([PEC](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/model/PEC.java))
 - Eventuale ricevuta ([RicevutaPEC](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/model/RicevutaPEC.java))
 
-Il messaggio viene elaborato anche se non PEC:
+Attraverso i metodi di utility offerti dalla classe [MessageUtils](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/util/MessageUtils.java) è possibile risalire al tipo di messaggio:
+- PEC (MessageUtils.isPec(...))
+- Ricevuta PEC (MessageUtils.isRicevutaPEC(...))
+- Posta Ordinaria (MessageUtils.isEmailNormale(...))
+
+Il messaggio infatti viene elaborato anche se non PEC:
 - Messaggio ricevuto su una casella di Posta Elettronica Certificata: l'oggetto PEC conterrà le informazioni del messaggio normale in quanto comunque incapsulato in una busta
 - Messaggio ricevuto su una casella di posta ordinaria: in questo caso la Busta rappresenta il messaggio normale
 
