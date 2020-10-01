@@ -17,6 +17,7 @@ description:
   it:
     features:
       - Elaborazione di messaggi di posta elettronica certificata (PEC)
+      - Elaborazione di messaggi di posta elettronica ordinaria
     genericName: PEC/Mail Parser
     longDescription: >
       Libreria JAVA per l'elaborazione di messaggi di Posta Elettronica
