@@ -6,6 +6,13 @@ publiccodeYmlVersion: '0.2'
 categories:
   - communications
   - email-management
+dependsOn:
+  open:
+    - name: Java
+      optional: false
+      version: '8'
+      versionMax: '14'
+      versionMin: '8'
 description:
   it:
     features:
@@ -16,34 +23,72 @@ description:
       Certificata (e messaggi di posta ordinaria).
 
 
+      ​
+
+
       **Specifiche**:
 
 
-      Regole tecniche del servizio di trasmissione di documenti informatici
-      mediante posta el ettronica certificata:
-      [pec\_regole\_tecniche\_dm\_2-nov-2005.pdf](https://www.agid.gov.it/sites/default/files/repository_files/leggi_decreti_direttive/pec_regole_tecniche_dm_2-nov-2005.pdf)
+      [Regole tecniche del servizio di trasmissione di documenti informatici
+      mediante posta elettronica
+      certificata](https://www.agid.gov.it/sites/default/files/repository_files/leggi_decreti_direttive/pec_regole_tecniche_dm_2-nov-2005.pdf).
+
+
+      ​
 
 
       **Esempio di utilizzo**:
 
-       > `MimeMessage mimeMessage = ...; Messaggio messaggio = PECMessageParser.getInstance().parse(mimeMessage);`
+
+      Standard:
+
+          MimeMessage mimeMessage = ...;
+      Messaggio messaggio = PECMessageParser.getInstance().parse(mimeMessage);
+
+
+      Con proprietà custom per l'elaborazione del MimeMessage (nella modalità
+      standard vengono utilizzate le properties di sistema:
+      _System.getProperties()_):
+
+          MimeMessage mimeMessage = ... ;
+      Properties properties = ... ;
+
+      Messaggio messaggio =
+      PECMessageParser.getInstance(properties).parse(mimeMessage);
+
 
       Tramite l'utilizzo della libreria è possibile estrarre, a partire da un
-      oggetto MimeMessage, rappresentante un messaggio PEC:
+      oggetto _javax.mail.internet.MimeMessage_, rappresentante un messaggio
+      PEC:
 
 
-      - Busta di trasporto (`Busta`)
+      - Busta di trasporto
+      ([Busta](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/model/Busta.java))
 
-      - Eventuale messaggio di Posta Elettronica Certificata (`PEC`)
+      - Eventuale messaggio di Posta Elettronica Certificata
+      ([PEC](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/model/PEC.java))
 
-      - Eventuale ricevuta (`RicevutaPEC`)
+      - Eventuale ricevuta
+      ([RicevutaPEC](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/model/RicevutaPEC.java))
 
 
-      Il messaggio viene elaborato anche se non PEC:
+      Attraverso i metodi di utility offerti dalla classe
+      [MessageUtils](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/util/MessageUtils.java)
+      è possibile risalire al tipo di messaggio:
+
+
+      - PEC (_MessageUtils.isPec(...)_)
+
+      - Ricevuta PEC (_MessageUtils.isRicevutaPEC(...)_)
+
+      - Posta Ordinaria (_MessageUtils.isEmailNormale(...)_)
+
+
+      Il messaggio infatti viene elaborato anche se non PEC:
 
 
       - Messaggio ricevuto su una casella di Posta Elettronica Certificata:
-      l'oggetto `PEC` conterrà le informazioni del messaggio normale in quanto
+      l'oggetto PEC conterrà le informazioni del messaggio normale in quanto
       comunque incapsulato in una busta
 
       - Messaggio ricevuto su una casella di posta ordinaria: in questo caso la
@@ -51,6 +96,13 @@ description:
 
 
       ​
+
+
+      **Altro**
+
+
+      La libreria supporta l'elaborazione di messaggi di posta ordinaria con
+      codifica [UUEncode](https://en.wikipedia.org/wiki/Uuencoding).
     shortDescription: >-
       Libreria per l'elaborazione di messaggi di Posta Elettronica Certificata
       (e messaggi di posta ordinaria)
@@ -69,6 +121,8 @@ it:
     spid: false
 legal:
   license: Apache-2.0
+  mainCopyrightOwner: Biagio Placido Tozzi
+  repoOwner: Biagio Placido Tozzi
 localisation:
   availableLanguages:
     - it
@@ -87,13 +141,9 @@ platforms:
   - ios
   - android
 releaseDate: '2020-09-24'
-softwareType: configurationFiles
+softwareType: library
 softwareVersion: 1.0.2
 url: 'https://github.com/biagioT/java-pec-parser'
-dependsOn:
-  open:
-    - name: Java
-      optional: false
-      version: '8'
-      versionMax: '14'
-      versionMin: '8'
+intendedAudience:
+  countries:
+    - it
