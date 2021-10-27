@@ -11,15 +11,18 @@ dependsOn:
     - name: Java
       optional: false
       version: '8'
-      versionMax: '14'
+      versionMax: '17'
       versionMin: '8'
 description:
   it:
     features:
-      - Elaborazione di messaggi di posta elettronica certificata (PEC)
+      - |-
+        Elaborazione di messaggi di posta elettronica certificata (PEC) e
+        ricevute
       - Elaborazione di messaggi di posta elettronica ordinaria
-    genericName: PEC/Mail Parser
-    longDescription: >
+    genericName: Mail/PEC Parser
+    localisedName: PEC Parser
+    longDescription: |
       Libreria JAVA per l'elaborazione di messaggi di Posta Elettronica
       Certificata (e messaggi di posta ordinaria).
 
@@ -43,24 +46,20 @@ description:
 
       Standard:
 
-          MimeMessage mimeMessage = ...;
-      Messaggio messaggio = PECMessageParser.getInstance().parse(mimeMessage);
+          Messaggio messaggio = PECMessageParser.getInstance().parse(mimeMessage);
 
+      Con proprietà custom per l'elaborazione del `MimeMessage` (nella modalità
+      default vengono utilizzate le proprietà di sistema:
+      `System.getProperties()`):
 
-      Con proprietà custom per l'elaborazione del MimeMessage (nella modalità
-      standard vengono utilizzate le properties di sistema:
-      _System.getProperties()_):
+          Properties properties = ... ;
 
-          MimeMessage mimeMessage = ... ;
-      Properties properties = ... ;
-
-      Messaggio messaggio =
-      PECMessageParser.getInstance(properties).parse(mimeMessage);
-
+          Messaggio messaggio = PECMessageParser.getInstance(properties).parse(mimeMessage);
 
       Tramite l'utilizzo della libreria è possibile estrarre, a partire da un
-      oggetto _javax.mail.internet.MimeMessage_, rappresentante un messaggio
-      PEC:
+      oggetto
+      [`javax.mail.internet.MimeMessage`](https://javaee.github.io/javamail/docs/api/javax/mail/internet/class-use/MimeMessage.html),
+      rappresentante un messaggio PEC:
 
 
       - Busta di trasporto
@@ -78,11 +77,11 @@ description:
       è possibile risalire al tipo di messaggio:
 
 
-      - PEC (_MessageUtils.isPec(...)_)
+      - PEC (`MessageUtils.isPec(...)`)
 
-      - Ricevuta PEC (_MessageUtils.isRicevutaPEC(...)_)
+      - Ricevuta PEC (`MessageUtils.isRicevutaPEC(...)`)
 
-      - Posta Ordinaria (_MessageUtils.isEmailNormale(...)_)
+      - Posta Ordinaria (`MessageUtils.isEmailNormale(...)`)
 
 
       Il messaggio infatti viene elaborato anche se non PEC:
@@ -104,10 +103,13 @@ description:
 
       La libreria supporta l'elaborazione di messaggi di posta ordinaria con
       codifica [UUEncode](https://en.wikipedia.org/wiki/Uuencoding).
-    shortDescription: >-
+    shortDescription: |-
       Libreria per l'elaborazione di messaggi di Posta Elettronica Certificata
       (e messaggi di posta ordinaria)
 developmentStatus: stable
+intendedAudience:
+  countries:
+    - it
 it:
   conforme:
     gdpr: false
@@ -141,10 +143,7 @@ platforms:
   - linux
   - ios
   - android
-releaseDate: '2020-09-24'
+releaseDate: '2021-10-27'
 softwareType: library
-softwareVersion: 1.0.2
+softwareVersion: 1.0.3
 url: 'https://github.com/biagioT/java-pec-parser'
-intendedAudience:
-  countries:
-    - it
