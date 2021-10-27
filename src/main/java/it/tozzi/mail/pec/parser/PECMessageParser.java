@@ -18,7 +18,6 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimePart;
 import javax.mail.internet.MimeUtility;
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -59,7 +58,7 @@ import it.tozzi.mail.uudecoder.exception.UUDecoderException;
 public class PECMessageParser {
 
 	private static final Logger logger = LoggerFactory.getLogger(PECMessageParser.class);
-	private DocumentBuilder documentBuilder;
+	private final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 	private Properties properties;
 	
 	/**
@@ -86,15 +85,7 @@ public class PECMessageParser {
 	}
 	
 	private PECMessageParser(Properties properties) throws PECParserException {
-
-		try {
-			this.properties = properties;
-			this.documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-
-		} catch (ParserConfigurationException e) {
-			logger.error("Errore durante l'inizializzazione del Document Builder", e);
-			throw new PECParserException("Errore durante l'inizializzazione", e);
-		}
+		this.properties = properties;
 	}
 
 	/**
@@ -216,11 +207,15 @@ public class PECMessageParser {
 	private DatiCertificazione estraiDatiCertificazione(InputStream inputStream) throws PECParserException {
 		Document datiCertDocument;
 		try {
-			datiCertDocument = documentBuilder.parse(inputStream);
+			datiCertDocument = documentBuilderFactory.newDocumentBuilder().parse(inputStream);
 
 		} catch (SAXException | IOException e) {
 			logger.error("Errore durante il parsing del daticert.xml", e);
 			throw new PECParserException("Errore durante il parsing del daticert.xml", e);
+			
+		} catch (ParserConfigurationException e) {
+			logger.error("Errore durante l'inizializzazione del DocumentBuilder XML", e);
+			throw new PECParserException("Errore durante l'inizializzazione del DocumentBuilder XML", e);
 		}
 
 		DatiCertificazione datiCertificazione = new DatiCertificazione();
