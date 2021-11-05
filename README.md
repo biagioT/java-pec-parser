@@ -36,6 +36,6 @@ Il messaggio infatti viene elaborato anche se non PEC:
 ## Requisiti
 - Java 8 (o versioni successive)
 - Libreria https://github.com/biagioT/java-uudecoder
-- 
+
 ## Altro
 - La libreria supporta l'elaborazione di messaggi di posta ordinaria con codifica [UUencode](https://en.wikipedia.org/wiki/Uuencoding)
