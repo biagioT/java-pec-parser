@@ -34,7 +34,8 @@ Il messaggio infatti viene elaborato anche se non PEC:
 - Messaggio ricevuto su una casella di posta ordinaria: in questo caso la Busta rappresenta il messaggio normale
 
 ## Requisiti
-Java 8 (o versioni successive)
-
+- Java 8 (o versioni successive)
+- Libreria https://github.com/biagioT/java-uudecoder
+- 
 ## Altro
 - La libreria supporta l'elaborazione di messaggi di posta ordinaria con codifica [UUencode](https://en.wikipedia.org/wiki/Uuencoding)
