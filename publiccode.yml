@@ -6,6 +6,7 @@ publiccodeYmlVersion: '0.2'
 categories:
   - communications
   - email-management
+  - instant-messaging
 dependsOn:
   open:
     - name: Java
@@ -15,9 +16,11 @@ dependsOn:
       versionMin: '8'
 description:
   it:
+    documentation: 'https://github.com/biagioT/java-pec-parser'
     features:
       - |-
         Elaborazione di messaggi di posta elettronica certificata (PEC) e
+
         ricevute
       - Elaborazione di messaggi di posta elettronica ordinaria
     genericName: Mail/PEC Parser
@@ -30,36 +33,45 @@ description:
       ​
 
 
-      **Specifiche**:
+      **Utilizzo**:
 
 
-      [Regole tecniche del servizio di trasmissione di documenti informatici
-      mediante posta elettronica
-      certificata](https://www.agid.gov.it/sites/default/files/repository_files/leggi_decreti_direttive/pec_regole_tecniche_dm_2-nov-2005.pdf).
+      ++Parsing++:
 
 
-      ​
+      La libreria offre tre metodi per il parsing di mail/PEC:
 
 
-      **Esempio di utilizzo**:
+      1. `Messaggio parse(MimeMessage mimeMessage)`  - elaborazione a partire da
+      un oggetto
+      [javax.mail.internet.MimeMessage](https://javaee.github.io/javamail/docs/api/javax/mail/internet/class-use/MimeMessage.html)
+
+      2. `Messaggio parse(File emlFile)` - elaborazione a partire dal _File_ EML
+
+      3. `Messaggio parse(InputStream emlInputStream) `- elaborazione a partire
+      dall'_InputStream_ rappresentante l'EML
 
 
-      Standard:
+      ++Istanza PECParser++:
 
-          Messaggio messaggio = PECMessageParser.getInstance().parse(mimeMessage);
 
-      Con proprietà custom per l'elaborazione del `MimeMessage` (nella modalità
-      default vengono utilizzate le proprietà di sistema:
-      `System.getProperties()`):
+      E' possibile creare una istanza di PECParser in due modi:
 
-          Properties properties = ... ;
 
-          Messaggio messaggio = PECMessageParser.getInstance(properties).parse(mimeMessage);
+      1. `PECMessageParser getInstance(Properties properties)` - con delle
+      proprietà personalizzate che concorreranno alla creazione e alla
+      elaborazione del _MimeMessage_
 
-      Tramite l'utilizzo della libreria è possibile estrarre, a partire da un
-      oggetto
-      [`javax.mail.internet.MimeMessage`](https://javaee.github.io/javamail/docs/api/javax/mail/internet/class-use/MimeMessage.html),
-      rappresentante un messaggio PEC:
+      2. `PECMessageParser getInstance()` - modalità default, vengono utilizzate
+      le proprietà di sistema (`System.getProperties()`)
+
+
+      ++Messaggio++:
+
+
+      L'oggetto
+      [Messaggio](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/model/Messaggio.java),
+      risultato dell'elaborazione, conterrà:
 
 
       - Busta di trasporto
@@ -77,14 +89,14 @@ description:
       è possibile risalire al tipo di messaggio:
 
 
-      - PEC (`MessageUtils.isPec(...)`)
+      - PEC (`MessageUtils.isPec(Messaggio messaggio)`)
 
-      - Ricevuta PEC (`MessageUtils.isRicevutaPEC(...)`)
+      - Ricevuta PEC (`MessageUtils.isRicevutaPEC(Messaggio messaggio)`)
 
-      - Posta Ordinaria (`MessageUtils.isEmailNormale(...)`)
+      - Posta Ordinaria (`MessageUtils.isEmailNormale(Messaggio messaggio)`)
 
 
-      Il messaggio infatti viene elaborato anche se non PEC:
+      Il messaggio infatti viene elaborato anche se non PEC. In questo caso:
 
 
       - Messaggio ricevuto su una casella di Posta Elettronica Certificata:
@@ -101,11 +113,34 @@ description:
       **Altro**
 
 
-      La libreria supporta l'elaborazione di messaggi di posta ordinaria con
+      - La libreria supporta l'elaborazione di messaggi di posta ordinaria con
       codifica [UUEncode](https://en.wikipedia.org/wiki/Uuencoding).
+
+
+      ​
+
+
+      **Requisiti**
+
+
+      - Java 8 (o versioni successive)
+
+      - Libreria OSS
+      [java-uudecoder](https://github.com/biagioT/java-uudecoder) 
+
+
+      ​
+
+
+      **Specifiche AGID**
+
+
+      - [Regole tecniche del servizio di trasmissione di documenti informatici
+      mediante posta elettronica
+      certificata](https://www.agid.gov.it/sites/default/files/repository_files/leggi_decreti_direttive/pec_regole_tecniche_dm_2-nov-2005.pdf).
     shortDescription: |-
-      Libreria per l'elaborazione di messaggi di Posta Elettronica Certificata
-      (e messaggi di posta ordinaria)
+      Libreria per l'elaborazione di messaggi di Posta Elettronica Certificata(e
+      messaggi di posta ordinaria)
 developmentStatus: stable
 intendedAudience:
   countries:
@@ -143,7 +178,9 @@ platforms:
   - linux
   - ios
   - android
-releaseDate: '2021-10-27'
+releaseDate: '2021-12-17'
 softwareType: library
-softwareVersion: 1.0.3
+softwareVersion: 1.1.0
 url: 'https://github.com/biagioT/java-pec-parser'
+logo: |-
+  https://raw.githubusercontent.com/biagioT/java-pec-parser/master/src/main/resources/logo.png
