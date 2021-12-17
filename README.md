@@ -3,23 +3,20 @@
 # PEC/Mail Parser
 Utility per l'elaborazione di messaggi di Posta Elettronica Certificata (e messaggi di posta ordinaria)
 
-## Specifiche
-Regole tecniche del servizio di trasmissione di documenti informatici mediante posta elettronica certificata: 
-[pec_regole_tecniche_dm_2-nov-2005.pdf](https://www.agid.gov.it/sites/default/files/repository_files/leggi_decreti_direttive/pec_regole_tecniche_dm_2-nov-2005.pdf)
+### Utilizzo
+##### Parsing
+La libreria offre tre metodi per il parsing di mail/PEC:
+1. `Messaggio parse(MimeMessage mimeMessage)`  - elaborazione a partire da un oggetto *javax.mail.internet.MimeMessage*
+2. `Messaggio parse(File emlFile)` - elaborazione a partire dal *File* EML
+3. `Messaggio parse(InputStream emlInputStream)` - elaborazione a partire dall'*InputStream* rappresentante l'EML
 
-## Esempio di utilizzo
-Standard:
+##### Istanza PECParser
+E' possibile creare una istanza di PECParser in due modi:
+1. `PECMessageParser getInstance(Properties properties)` - con delle proprietà personalizzate che concorreranno alla creazione e alla elaborazione del *MimeMessage*
+2. `PECMessageParser getInstance()` - modalità default, vengono utilizzate le proprietà di sistema (*System.getProperties()*)
 
-    MimeMessage mimeMessage = ...;
-    Messaggio messaggio = PECMessageParser.getInstance().parse(mimeMessage);
-
-Con proprietà custom per l'elaborazione del MimeMessage (nella modalità standard vengono utilizzate le properties di sistema: <i>System.getProperties()</i>):
-
-    MimeMessage mimeMessage = ...;
-    Properties properties = ...;
-    Messaggio messaggio = PECMessageParser.getInstance(properties).parse(mimeMessage);
-
-Tramite l'utilizzo della libreria è possibile estrarre, a partire da un oggetto <i>javax.mail.internet.MimeMessage</i>, rappresentante un messaggio PEC:
+##### Messaggio
+L'oggetto `Messaggio` ([Messaggio](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/model/Messaggio.java)), risultato dell'elaborazione, conterrà:
 - Busta di trasporto ([Busta](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/model/Busta.java))
 - Eventuale messaggio di Posta Elettronica Certificata ([PEC](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/model/PEC.java))
 - Eventuale ricevuta ([RicevutaPEC](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/model/RicevutaPEC.java))
@@ -33,9 +30,13 @@ Il messaggio infatti viene elaborato anche se non PEC:
 - Messaggio ricevuto su una casella di Posta Elettronica Certificata: l'oggetto PEC conterrà le informazioni del messaggio normale in quanto comunque incapsulato in una busta
 - Messaggio ricevuto su una casella di posta ordinaria: in questo caso la Busta rappresenta il messaggio normale
 
-## Requisiti
+### Requisiti
 - Java 8 (o versioni successive)
-- Libreria https://github.com/biagioT/java-uudecoder
+- Libreria OSS java-decoder - https://github.com/biagioT/java-uudecoder
 
-## Altro
+### Altro
 - La libreria supporta l'elaborazione di messaggi di posta ordinaria con codifica [UUencode](https://en.wikipedia.org/wiki/Uuencoding)
+
+### Specifiche
+- Regole tecniche del servizio di trasmissione di documenti informatici mediante posta elettronica certificata: 
+[pec_regole_tecniche_dm_2-nov-2005.pdf](https://www.agid.gov.it/sites/default/files/repository_files/leggi_decreti_direttive/pec_regole_tecniche_dm_2-nov-2005.pdf)
