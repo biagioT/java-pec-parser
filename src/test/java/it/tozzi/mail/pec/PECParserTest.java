@@ -19,9 +19,9 @@ public class PECParserTest {
 	
 	// @Test
 	public void test() throws PECParserException, IOException {
-		
+				
 		try (InputStream emlInputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("message.eml")) {
-			MimeMessage mimeMessage = MimeMessageUtils.createMimeMessage(emlInputStream);
+			MimeMessage mimeMessage = MimeMessageUtils.createMimeMessage(emlInputStream, null);
 			Messaggio messaggio = PECMessageParser.getInstance().parse(mimeMessage);
 			System.out.println(messaggio);
 			// Test...

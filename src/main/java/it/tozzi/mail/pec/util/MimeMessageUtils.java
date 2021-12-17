@@ -5,18 +5,25 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.activation.DataHandler;
+import javax.mail.Address;
 import javax.mail.BodyPart;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Part;
 import javax.mail.Session;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimePart;
 import javax.mail.internet.MimeUtility;
@@ -33,22 +40,22 @@ import it.tozzi.mail.pec.exception.PECParserException;
  */
 public class MimeMessageUtils {
 
+	private static final String FORMATO_DATA = "dd-MM-yyyy HH:mm";
+	
 	private static final Logger logger = LoggerFactory.getLogger(MimeMessageUtils.class);
 	private static final String BODYSTRUCTURE_LOADING_ERROR = "Unable to load BODYSTRUCTURE";
 
-	public static MimeMessage createMimeMessage(InputStream inputStream, Properties properties) throws PECParserException {
+	public static MimeMessage createMimeMessage(InputStream inputStream, Properties properties)
+			throws PECParserException {
 
 		try {
-			return new MimeMessage(Session.getDefaultInstance(properties != null ? properties : System.getProperties()), inputStream);
+			return new MimeMessage(Session.getDefaultInstance(properties != null ? properties : System.getProperties()),
+					inputStream);
 
 		} catch (MessagingException e) {
 			logger.error("Errore durante la creazione del MimeMessage", e);
 			throw new PECParserException("Errore durante la creazione del MimeMessage", e);
 		}
-	}
-	
-	public static MimeMessage createMimeMessage(InputStream inputStream) throws PECParserException {
-		return createMimeMessage(inputStream, null);
 	}
 
 	public static boolean isMimeType(Part part, String mimeType) throws PECParserException {
@@ -218,15 +225,16 @@ public class MimeMessageUtils {
 				}
 
 			} else if (isMimeType(part, MimeTypesUtil.CONTENT_TYPE_TEXT)) {
-			
+
 				try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
 					IOUtils.fastCopy(part.getInputStream(), os);
 					content = new String(os.toByteArray(), StandardCharsets.US_ASCII);
-					
+
 				} catch (IOException | MessagingException e1) {
-					throw new PECParserException("Errore durante la lettura del contenuto di: " + getDescription(part), e);
+					throw new PECParserException("Errore durante la lettura del contenuto di: " + getDescription(part),
+							e);
 				}
-				
+
 			} else {
 				logger.error("Errore durante la lettura del contenuto di: {}", getDescription(part), e);
 				throw new PECParserException("Errore durante la lettura del contenuto di: " + getDescription(part), e);
@@ -236,4 +244,71 @@ public class MimeMessageUtils {
 		return content;
 	}
 
+	public static String getUniqueMessageID(MimeMessage mimeMessage) throws PECParserException {
+		
+		DateFormat df = new SimpleDateFormat(FORMATO_DATA);
+		StringBuilder res = new StringBuilder();
+		
+		//
+		try {
+			if (mimeMessage.getSender() != null && mimeMessage.getSender() instanceof InternetAddress) {
+				InternetAddress ia = (InternetAddress) mimeMessage.getSender();
+				res.append(ia.getAddress()).append("_");
+			}
+			
+		} catch (MessagingException e) {
+		}
+		
+		//
+		List<String> destinatari = new ArrayList<>();
+		try {
+			if (mimeMessage.getAllRecipients() != null) {
+				for (Address address : mimeMessage.getAllRecipients()) {
+
+					if (address instanceof InternetAddress) {
+						InternetAddress ia = (InternetAddress) address;
+						destinatari.add(ia.getAddress());
+					}
+				}
+			}
+
+		} catch (MessagingException e) {
+		}
+		if (!destinatari.isEmpty()) {
+			destinatari = destinatari.stream().sorted(Comparator.comparing(String::toString))
+					.collect(Collectors.toList());
+			destinatari.forEach(d -> {
+				res.append(d).append("_");
+			});
+		}
+		
+		//
+		try {
+			if (mimeMessage.getSentDate() != null) {
+				res.append(df.format(mimeMessage.getSentDate())).append("_");
+			}
+			
+		} catch (MessagingException e) {
+		}
+		
+		//
+		try {
+			if (mimeMessage.getReceivedDate() != null) {
+				res.append(df.format(mimeMessage.getReceivedDate())).append("_");
+			}
+			
+		} catch (MessagingException e) {
+		}
+		
+		if (res.isEmpty()) {
+			throw new PECParserException("Errore in fase di elaborazione del messageID", null);
+		}
+		
+		try {
+			return new String(MessageDigest.getInstance("SHA-256").digest(res.toString().getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
+			
+		} catch (NoSuchAlgorithmException e) {
+			throw new PECParserException("Errore in fase di elaborazione del messageID", e);
+		}
+	}
 }
