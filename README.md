@@ -16,15 +16,15 @@ E' possibile creare una istanza di PECParser in due modi:
 2. `PECMessageParser getInstance()` - modalità default, vengono utilizzate le proprietà di sistema (*System.getProperties()*)
 
 ##### Messaggio
-L'oggetto `Messaggio` ([Messaggio](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/model/Messaggio.java)), risultato dell'elaborazione, conterrà:
+L'oggetto [Messaggio](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/model/Messaggio.java), risultato dell'elaborazione, conterrà:
 - Busta di trasporto ([Busta](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/model/Busta.java))
 - Eventuale messaggio di Posta Elettronica Certificata ([PEC](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/model/PEC.java))
 - Eventuale ricevuta ([RicevutaPEC](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/model/RicevutaPEC.java))
 
 Attraverso i metodi di utility offerti dalla classe [MessageUtils](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/util/MessageUtils.java) è possibile risalire al tipo di messaggio:
-- PEC (MessageUtils.isPec(...))
-- Ricevuta PEC (MessageUtils.isRicevutaPEC(...))
-- Posta Ordinaria (MessageUtils.isEmailNormale(...))
+- PEC (`MessageUtils.isPec(Messaggio messaggio)`)
+- Ricevuta PEC (`MessageUtils.isRicevutaPEC(Messaggio messaggio)`)
+- Posta Ordinaria (`MessageUtils.isEmailNormale(Messaggio messaggio)`)
 
 Il messaggio infatti viene elaborato anche se non PEC:
 - Messaggio ricevuto su una casella di Posta Elettronica Certificata: l'oggetto PEC conterrà le informazioni del messaggio normale in quanto comunque incapsulato in una busta
@@ -32,7 +32,7 @@ Il messaggio infatti viene elaborato anche se non PEC:
 
 ### Requisiti
 - Java 8 (o versioni successive)
-- Libreria OSS java-decoder - https://github.com/biagioT/java-uudecoder
+- Libreria OSS java-uudecoder - https://github.com/biagioT/java-uudecoder
 
 ### Altro
 - La libreria supporta l'elaborazione di messaggi di posta ordinaria con codifica [UUencode](https://en.wikipedia.org/wiki/Uuencoding)
