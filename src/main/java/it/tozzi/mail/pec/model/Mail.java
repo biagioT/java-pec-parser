@@ -19,7 +19,6 @@ public abstract class Mail {
 	private List<String> destinatari = new ArrayList<>();
 	private List<String> destinatariCopiaConoscenza = new ArrayList<>();
 	private List<String> destinatariCopiaConoscenzaNascosta = new ArrayList<>();
-	private List<String> replyTo = new ArrayList<>();
 	private Date dataInvio;
 	private Date dataRicezione;
 	private String messageID;
@@ -27,5 +26,8 @@ public abstract class Mail {
 	private String corpoTesto;
 	private String corpoHTML;
 	private List<Allegato> allegati = new ArrayList<>();
+	
+	private String replyToMessageID;
+	private List<String> replyToHistoryMessagesID = new ArrayList<>();
 
 }

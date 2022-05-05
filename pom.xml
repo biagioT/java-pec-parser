@@ -1,12 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>it.tozzi.mail.pec</groupId>
 	<artifactId>pec-parser</artifactId>
-	<version>1.1.0</version>
+	<version>2.0.0</version>
 	<name>PEC Parser</name>
 	<description>Utility per la lettura di un messaggio di Posta Elettronica Certificata</description>
 
@@ -24,20 +22,27 @@
 		<sources.encoding>UTF-8</sources.encoding>
 		<java.version>1.8</java.version>
 
-		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-		<javax.mail.version>1.6.2</javax.mail.version>
-		<slf4j.version>1.7.32</slf4j.version>
-		<lombok.version>1.18.22</lombok.version>
-		<uudecoder.version>1.0.2</uudecoder.version>
-		<commons.text.version>1.9</commons.text.version>
+		<maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
+		<jakarta.mail.api.version>1.6.7</jakarta.mail.api.version>
+		<jakarta.mail.version>1.6.7</jakarta.mail.version>
+		<slf4j.version>1.7.36</slf4j.version>
+		<lombok.version>1.18.24</lombok.version>
+		<uudecoder.version>2.0.0</uudecoder.version>
+		<junit.version>5.8.2</junit.version>
 	</properties>
 
 	<dependencies>
 
 		<dependency>
 			<groupId>com.sun.mail</groupId>
-			<artifactId>javax.mail</artifactId>
-			<version>${javax.mail.version}</version>
+			<artifactId>jakarta.mail</artifactId>
+			<version>${jakarta.mail.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>jakarta.mail</groupId>
+			<artifactId>jakarta.mail-api</artifactId>
+			<version>${jakarta.mail.api.version}</version>
 		</dependency>
 
 		<dependency>
@@ -60,16 +65,31 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-text</artifactId>
-			<version>${commons.text.version}</version>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven-compiler-plugin.version}</version>
 				<configuration>

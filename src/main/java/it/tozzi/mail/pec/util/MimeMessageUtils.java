@@ -7,17 +7,19 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.activation.DataHandler;
-import javax.mail.Address;
 import javax.mail.BodyPart;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -28,32 +30,61 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimePart;
 import javax.mail.internet.MimeUtility;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import it.tozzi.mail.pec.exception.PECParserException;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 
  * @author biagio.tozzi
  *
  */
+@Slf4j
 public class MimeMessageUtils {
-
-	private static final String FORMATO_DATA = "dd-MM-yyyy HH:mm";
 	
-	private static final Logger logger = LoggerFactory.getLogger(MimeMessageUtils.class);
+	private static final String FORMATO_DATA = "dd-MM-yyyy HH:mm";
+	private static final ZoneId ZI = ZoneId.of("Europe/Rome");
 	private static final String BODYSTRUCTURE_LOADING_ERROR = "Unable to load BODYSTRUCTURE";
 
+	public static boolean isRicevuta(MimeMessage mimeMessage) throws PECParserException {
+		try {
+			return mimeMessage.getHeader(PECConstants.X_RICEVUTA) != null;
+			
+		} catch (MessagingException e) {
+			log.error("Errore durante l'elaborazione dell'header", e);
+			throw new PECParserException("Errore durante l'elaborazione dell'header", e);
+		}
+	}
+	
+	public static boolean isEmailOrdinaria(MimeMessage mimeMessage) throws PECParserException {
+		
+		try {
+			return mimeMessage.getHeader(PECConstants.X_TRASPORTO, ",") == null && mimeMessage.getHeader(PECConstants.X_RICEVUTA, ",") == null;
+			
+		} catch (MessagingException e) {
+			log.error("Errore durante l'elaborazione dell'header", e);
+			throw new PECParserException("Errore durante l'elaborazione dell'header", e);
+		}
+	}
+	
+	public static boolean isPEC(MimeMessage mimeMessage) throws PECParserException {
+		try {
+			return mimeMessage.getHeader(PECConstants.X_TRASPORTO, ",") != null;
+			
+		} catch (MessagingException e) {
+			log.error("Errore durante l'elaborazione dell'header", e);
+			throw new PECParserException("Errore durante l'elaborazione dell'header", e);
+		}
+	}
+	
 	public static MimeMessage createMimeMessage(InputStream inputStream, Properties properties)
 			throws PECParserException {
 
 		try {
 			return new MimeMessage(Session.getDefaultInstance(properties != null ? properties : System.getProperties()),
 					inputStream);
-
+			
 		} catch (MessagingException e) {
-			logger.error("Errore durante la creazione del MimeMessage", e);
+			log.error("Errore durante la creazione del MimeMessage", e);
 			throw new PECParserException("Errore durante la creazione del MimeMessage", e);
 		}
 	}
@@ -64,7 +95,7 @@ public class MimeMessageUtils {
 			return part.isMimeType(mimeType);
 
 		} catch (MessagingException e) {
-			logger.error("Errore durante la verifica del mime type {} per: {}", mimeType, getDescription(part));
+			log.error("Errore durante la verifica del mime type {} per: {}", mimeType, getDescription(part));
 			throw new PECParserException(
 					"Errore durante la verifica del mime type " + mimeType + " per: " + getDescription(part), e);
 		}
@@ -76,7 +107,7 @@ public class MimeMessageUtils {
 			return part.getDescription();
 
 		} catch (MessagingException e) {
-			logger.error("Errore durante l'elaborazione della descrizione", e);
+			log.error("Errore durante l'elaborazione della descrizione", e);
 			return "[NON_DISPONIBILE]";
 		}
 	}
@@ -87,7 +118,7 @@ public class MimeMessageUtils {
 			return part.getDisposition();
 
 		} catch (MessagingException e) {
-			logger.error("Errore durante la lettura della disposition per: {}", getDescription(part), e);
+			log.error("Errore durante la lettura della disposition per: {}", getDescription(part), e);
 			throw new PECParserException("Errore durante la lettura della disposition per: " + getDescription(part), e);
 		}
 	}
@@ -98,7 +129,7 @@ public class MimeMessageUtils {
 			return MimeUtility.decodeText(text);
 
 		} catch (UnsupportedEncodingException e) {
-			logger.error("Errore durante la decodifica del testo: {}", text, e);
+			log.error("Errore durante la decodifica del testo: {}", text, e);
 			throw new PECParserException("Errore durante la decodifica del testo: " + text, e);
 		}
 	}
@@ -109,7 +140,7 @@ public class MimeMessageUtils {
 			return multiPart.getCount();
 
 		} catch (MessagingException e) {
-			logger.error("Errore durante la lettura del parametro count", e);
+			log.error("Errore durante la lettura del parametro count", e);
 			throw new PECParserException("Errore durante la lettura del parametro count", e);
 		}
 	}
@@ -119,7 +150,7 @@ public class MimeMessageUtils {
 			return part.getFileName();
 
 		} catch (MessagingException e) {
-			logger.error("Errore durante la lettura del nome del file di: {}", getDescription(part), e);
+			log.error("Errore durante la lettura del nome del file di: {}", getDescription(part), e);
 			throw new PECParserException("Errore durante la lettura del nome del file di: " + getDescription(part), e);
 		}
 	}
@@ -130,7 +161,7 @@ public class MimeMessageUtils {
 			return multiPart.getBodyPart(index);
 
 		} catch (MessagingException e) {
-			logger.error("Errore durante la lettura della parte numero {}", index, e);
+			log.error("Errore durante la lettura della parte numero {}", index, e);
 			throw new PECParserException("Errore durante la lettura della parte numero: " + index, e);
 		}
 
@@ -173,7 +204,7 @@ public class MimeMessageUtils {
 			return new ArrayList<>();
 
 		} catch (MessagingException e) {
-			logger.error("Errore durante l'estrazione dell'header: {} per di {}", headerKey, getDescription(part), e);
+			log.error("Errore durante l'estrazione dell'header: {} per di {}", headerKey, getDescription(part), e);
 			throw new PECParserException("Errore durante l'estrazione del'header " + headerKey + " data handler per: "
 					+ getDescription(part), e);
 		}
@@ -186,7 +217,7 @@ public class MimeMessageUtils {
 			return part.getDataHandler();
 
 		} catch (MessagingException e) {
-			logger.error("Errore durante l'estrazione del data handler per: {}", getDescription(part), e);
+			log.error("Errore durante l'estrazione del data handler per: {}", getDescription(part), e);
 			throw new PECParserException("Errore durante l'estrazione del data handler per: " + getDescription(part),
 					e);
 		}
@@ -199,7 +230,7 @@ public class MimeMessageUtils {
 			return part.getContentType();
 
 		} catch (MessagingException e) {
-			logger.error("Errore durante l'estrazione del content type: {}", getDescription(part), e);
+			log.error("Errore durante l'estrazione del content type: {}", getDescription(part), e);
 			throw new PECParserException("Errore durante l'estrazione del content type: " + getDescription(part), e);
 		}
 
@@ -219,7 +250,7 @@ public class MimeMessageUtils {
 					content = new MimeMessage((MimeMessage) part).getContent();
 
 				} catch (IOException | MessagingException e1) {
-					logger.error("Errore durante la lettura del contenuto di: {}", getDescription(part), e);
+					log.error("Errore durante la lettura del contenuto di: {}", getDescription(part), e);
 					throw new PECParserException("Errore durante la lettura del contenuto di: " + getDescription(part),
 							e);
 				}
@@ -236,7 +267,7 @@ public class MimeMessageUtils {
 				}
 
 			} else {
-				logger.error("Errore durante la lettura del contenuto di: {}", getDescription(part), e);
+				log.error("Errore durante la lettura del contenuto di: {}", getDescription(part), e);
 				throw new PECParserException("Errore durante la lettura del contenuto di: " + getDescription(part), e);
 			}
 		}
@@ -260,32 +291,25 @@ public class MimeMessageUtils {
 		}
 		
 		//
-		List<String> destinatari = new ArrayList<>();
 		try {
 			if (mimeMessage.getAllRecipients() != null) {
-				for (Address address : mimeMessage.getAllRecipients()) {
-
-					if (address instanceof InternetAddress) {
-						InternetAddress ia = (InternetAddress) address;
-						destinatari.add(ia.getAddress());
-					}
+				List<String> destinatari = Stream.of(mimeMessage.getAllRecipients()).filter(r -> r != null && r instanceof InternetAddress).map(r -> ((InternetAddress)r).getAddress()).collect(Collectors.toList());
+				if (!destinatari.isEmpty()) {
+					res.append(String.join("_", destinatari));
 				}
 			}
 
 		} catch (MessagingException e) {
 		}
-		if (!destinatari.isEmpty()) {
-			destinatari = destinatari.stream().sorted(Comparator.comparing(String::toString))
-					.collect(Collectors.toList());
-			destinatari.forEach(d -> {
-				res.append(d).append("_");
-			});
-		}
+		
+		boolean sd = false;
+		boolean rd = false;
 		
 		//
 		try {
 			if (mimeMessage.getSentDate() != null) {
 				res.append(df.format(mimeMessage.getSentDate())).append("_");
+				sd = true;
 			}
 			
 		} catch (MessagingException e) {
@@ -295,13 +319,14 @@ public class MimeMessageUtils {
 		try {
 			if (mimeMessage.getReceivedDate() != null) {
 				res.append(df.format(mimeMessage.getReceivedDate())).append("_");
+				rd = true;
 			}
 			
 		} catch (MessagingException e) {
 		}
 		
-		if (res.isEmpty()) {
-			throw new PECParserException("Errore in fase di elaborazione del messageID", null);
+		if (res.isEmpty() || (!rd && !sd)) {
+			return Timestamp.from(ZonedDateTime.now(ZI).toInstant()).hashCode() + UUID.randomUUID().toString();
 		}
 		
 		try {

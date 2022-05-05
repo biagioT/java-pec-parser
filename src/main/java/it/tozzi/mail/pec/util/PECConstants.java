@@ -19,6 +19,9 @@ public class PECConstants {
 	public static final String X_ATTACHMENT_ID = "X-Attachment-Id";
 	public static final String CONTENT_ID = "Content-ID";
 	
+	public static final String IN_REPLY_TO = "In-Reply-To";
+	public static final String REFERENCES = "References";
+	
 	public static final String DATICERT_MITTENTE_PATH = "/postacert/intestazione/mittente";
 	public static final String DATICERT_DESTINATARI_PATH = "/postacert/intestazione/destinatari";
 	public static final String DATICERT_DESTINATARI_TIPO_ATTRIBUTE = "tipo";

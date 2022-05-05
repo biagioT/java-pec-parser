@@ -18,6 +18,7 @@ public enum TipoPostaCert {
 	PRESA_IN_CARICO("presa-in-carico"), //
 	AVVENUTA_CONSEGNA("avvenuta-consegna"), //
 	POSTA_CERTIFICATA("posta-certificata"), //
+	ERRORE("errore"), //
 	ERRORE_CONSEGNA("errore-consegna"), //
 	PREAVVISO_ERRORE_CONSEGNA("preavviso-errore-consegna"), //
 	RILEVAZIONE_VIRUS("rilevazione-virus"); //

@@ -8,23 +8,23 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.activation.DataSource;
 import javax.mail.Address;
-import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Part;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMessage.RecipientType;
 import javax.mail.internet.MimePart;
 import javax.mail.internet.MimeUtility;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -51,15 +51,15 @@ import it.tozzi.mail.pec.util.XMLDocumentUtils;
 import it.tozzi.mail.uudecoder.UUDecoder;
 import it.tozzi.mail.uudecoder.UUDecoder.UUDecodedAttachment;
 import it.tozzi.mail.uudecoder.exception.UUDecoderException;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 
  * @author biagio.tozzi
  *
  */
+@Slf4j
 public class PECMessageParser {
-
-	private static final Logger logger = LoggerFactory.getLogger(PECMessageParser.class);
 	
 	private final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 	private Properties properties;
@@ -125,7 +125,7 @@ public class PECMessageParser {
 			return parse(is);
 
 		} catch (IOException e) {
-			logger.error("Errore IO: {}", e.getLocalizedMessage(), e);
+			log.error("Errore IO: {}", e.getLocalizedMessage(), e);
 			throw new PECParserException(null, e);
 		}
 
@@ -202,7 +202,7 @@ public class PECMessageParser {
 			xVerificaSicurezza = mimeMessage.getHeader(PECConstants.X_VERIFICA_SICUREZZA, ",");
 
 		} catch (MessagingException e) {
-			logger.error("Errore durante la lettura degli header di trasporto", e);
+			log.error("Errore durante la lettura degli header di trasporto", e);
 			throw new PECParserException("Errore durante la lettura degli header di trasporto", e);
 		}
 
@@ -215,7 +215,7 @@ public class PECMessageParser {
 			busta.setXVerificaSicurezza(xVerificaSicurezza);
 
 		} catch (PECParserException e) {
-			logger.error("Errore durante l'elaborazione della busta");
+			log.error("Errore durante l'elaborazione della busta");
 			throw e;
 		}
 
@@ -227,7 +227,7 @@ public class PECMessageParser {
 				messaggio.setPec(estraiPEC(busta, xTrasporto));
 
 			} catch (PECParserException e) {
-				logger.error("Errore durante l'elaborazione della PEC");
+				log.error("Errore durante l'elaborazione della PEC");
 				throw e;
 			}
 
@@ -237,7 +237,7 @@ public class PECMessageParser {
 				messaggio.setRicevuta(estraiRicevuta(busta));
 
 			} catch (PECParserException e) {
-				logger.error("Errore durante l'elaborazione della ricevuta");
+				log.error("Errore durante l'elaborazione della ricevuta");
 				throw e;
 			}
 		}
@@ -261,8 +261,7 @@ public class PECMessageParser {
 			ricevutaPEC.setDatiCertificazione(estraiDatiCertificazione(busta.getDatiCert().getInputStream()));
 
 			if (busta.getPostaCert() != null) {
-				PEC pec = estraiPEC(
-						MimeMessageUtils.createMimeMessage(busta.getPostaCert().getInputStream(), this.properties));
+				PEC pec = estraiPEC(MimeMessageUtils.createMimeMessage(busta.getPostaCert().getInputStream(), this.properties));
 				ricevutaPEC.setMessaggioOriginale(pec);
 			}
 
@@ -277,11 +276,13 @@ public class PECMessageParser {
 	private PEC estraiPEC(Busta busta, String xTrasporto) throws PECParserException {
 
 		try {
-			MimeMessage postaCertMimeMessage = MimeMessageUtils.createMimeMessage(busta.getPostaCert().getInputStream(),
-					this.properties);
+			MimeMessage postaCertMimeMessage = MimeMessageUtils.createMimeMessage(busta.getPostaCert().getInputStream(), this.properties);
 			PEC pec = estraiPEC(postaCertMimeMessage);
-			if (TipoPostaCert.POSTA_CERTIFICATA.getDescrizione().equals(xTrasporto))
+			
+			if (TipoPostaCert.POSTA_CERTIFICATA.getDescrizione().equals(xTrasporto) || TipoPostaCert.ERRORE.getDescrizione().equals(xTrasporto)) {
 				pec.setDatiCertificazione(estraiDatiCertificazione(busta.getDatiCert().getInputStream()));
+			}
+			
 			return pec;
 
 		} catch (Exception e) {
@@ -302,11 +303,11 @@ public class PECMessageParser {
 			datiCertDocument = documentBuilderFactory.newDocumentBuilder().parse(inputStream);
 
 		} catch (SAXException | IOException e) {
-			logger.error("Errore durante il parsing del daticert.xml", e);
+			log.error("Errore durante il parsing del daticert.xml", e);
 			throw new PECParserException("Errore durante il parsing del daticert.xml", e);
 
 		} catch (ParserConfigurationException e) {
-			logger.error("Errore durante l'inizializzazione del DocumentBuilder XML", e);
+			log.error("Errore durante l'inizializzazione del DocumentBuilder XML", e);
 			throw new PECParserException("Errore durante l'inizializzazione del DocumentBuilder XML", e);
 		}
 
@@ -353,45 +354,33 @@ public class PECMessageParser {
 		try {
 			Address[] mittenti = mimeMessage.getFrom();
 			if (mittenti != null) {
-				for (int i = 0; i < mittenti.length; i++) {
-					if (mittenti[i] instanceof InternetAddress) {
-						mail.getMittenti().add(((InternetAddress) mittenti[i]).getAddress());
-					}
-				}
+				mail.getMittenti().addAll(Stream.of(mittenti).filter(m -> m != null && m instanceof InternetAddress).map(m -> ((InternetAddress) m).getAddress()).distinct().collect(Collectors.toList()));
 			}
 
 		} catch (MessagingException e) {
-			logger.error("Errore durante l'elaborazione dei mittenti della mail", e);
+			log.error("Errore durante l'elaborazione dei mittenti della mail", e);
 			throw new PECParserException("Errore durante l'elaborazione dei mittenti della mail", e);
 		}
 
 		try {
-			Address[] destinatari = mimeMessage.getRecipients(RecipientType.TO);
+			Address[] destinatari = mimeMessage.getRecipients(RecipientType.TO);			
 			if (destinatari != null) {
-				for (int i = 0; i < destinatari.length; i++) {
-					if (destinatari[i] instanceof InternetAddress) {
-						mail.getDestinatari().add(((InternetAddress) destinatari[i]).getAddress());
-					}
-				}
+				mail.getDestinatari().addAll(Stream.of(destinatari).filter(m -> m != null && m instanceof InternetAddress).map(m -> ((InternetAddress) m).getAddress()).distinct().collect(Collectors.toList()));
 			}
 
 		} catch (MessagingException e) {
-			logger.error("Errore durante l'elaborazione dei destinatari della mail", e);
+			log.error("Errore durante l'elaborazione dei destinatari della mail", e);
 			throw new PECParserException("Errore durante l'elaborazione dei destinatari della mail", e);
 		}
 
 		try {
 			Address[] destinatari = mimeMessage.getRecipients(RecipientType.CC);
 			if (destinatari != null) {
-				for (int i = 0; i < destinatari.length; i++) {
-					if (destinatari[i] instanceof InternetAddress) {
-						mail.getDestinatariCopiaConoscenza().add(((InternetAddress) destinatari[i]).getAddress());
-					}
-				}
+				mail.getDestinatariCopiaConoscenza().addAll(Stream.of(destinatari).filter(m -> m != null && m instanceof InternetAddress).map(m -> ((InternetAddress) m).getAddress()).distinct().collect(Collectors.toList()));
 			}
 
 		} catch (MessagingException e) {
-			logger.error("Errore durante l'elaborazione dei destinatari in copia conoscenza della mail", e);
+			log.error("Errore durante l'elaborazione dei destinatari in copia conoscenza della mail", e);
 			throw new PECParserException("Errore durante l'elaborazione dei destinatari in copia conoscenza della mail",
 					e);
 		}
@@ -399,16 +388,11 @@ public class PECMessageParser {
 		try {
 			Address[] destinatari = mimeMessage.getRecipients(RecipientType.BCC);
 			if (destinatari != null) {
-				for (int i = 0; i < destinatari.length; i++) {
-					if (destinatari[i] instanceof InternetAddress) {
-						mail.getDestinatariCopiaConoscenzaNascosta()
-								.add(((InternetAddress) destinatari[i]).getAddress());
-					}
-				}
+				mail.getDestinatariCopiaConoscenzaNascosta().addAll(Stream.of(destinatari).filter(m -> m != null && m instanceof InternetAddress).map(m -> ((InternetAddress) m).getAddress()).distinct().collect(Collectors.toList()));
 			}
 
 		} catch (MessagingException e) {
-			logger.error("Errore durante l'elaborazione dei destinatari in copia conoscenza nascosta della mail", e);
+			log.error("Errore durante l'elaborazione dei destinatari in copia conoscenza nascosta della mail", e);
 			throw new PECParserException(
 					"Errore durante l'elaborazione dei destinatari in copia conoscenza nascosta della mail", e);
 		}
@@ -417,7 +401,7 @@ public class PECMessageParser {
 			mail.setDataInvio(mimeMessage.getSentDate());
 
 		} catch (MessagingException e) {
-			logger.error("Errore durante l'elaborazione della data di invio della mail", e);
+			log.error("Errore durante l'elaborazione della data di invio della mail", e);
 			throw new PECParserException("Errore durante l'elaborazione della data di invio della mail", e);
 		}
 
@@ -425,42 +409,27 @@ public class PECMessageParser {
 			mail.setDataRicezione(mimeMessage.getReceivedDate());
 
 		} catch (MessagingException e) {
-			logger.error("Errore durante l'elaborazione della data di ricezione della mail", e);
+			log.error("Errore durante l'elaborazione della data di ricezione della mail", e);
 			throw new PECParserException("Errore durante l'elaborazione della data di ricezione della mail", e);
 		}
 
 		try {
 			String oggetto = mimeMessage.getSubject();
 
-			if (oggetto != null)
+			if (oggetto != null) {
 				mail.setOggetto(MimeUtility.decodeText(oggetto));
-
-		} catch (MessagingException | UnsupportedEncodingException e) {
-			logger.error("Errore durante l'elaborazione dell'oggetto della mail", e);
-			throw new PECParserException("Errore durante l'elaborazione dell'oggetto della mail", e);
-		}
-
-		try {
-			Address[] destinatari = mimeMessage.getReplyTo();
-			if (destinatari != null) {
-				for (int i = 0; i < destinatari.length; i++) {
-					if (destinatari[i] instanceof InternetAddress) {
-						mail.getReplyTo().add(((InternetAddress) destinatari[i]).getAddress());
-					}
-				}
 			}
 
-		} catch (MessagingException e) {
-			logger.error("Errore durante l'elaborazione dei destinatari replyTo della mail", e);
-			throw new PECParserException("Errore durante l'elaborazione dei destinatari della mail", e);
+		} catch (MessagingException | UnsupportedEncodingException e) {
+			log.error("Errore durante l'elaborazione dell'oggetto della mail", e);
+			throw new PECParserException("Errore durante l'elaborazione dell'oggetto della mail", e);
 		}
 
 		try {
 			String messageID = null;
 			
 			if ((messageID = mimeMessage.getMessageID()) != null) {
-				messageID = messageID.replaceAll("<", "");
-				messageID = messageID.replaceAll(">", "");
+				messageID = messageID.replaceAll("<", "").replaceAll(">", "");
 			}
 			
 			if (messageID == null || messageID.isEmpty()) {
@@ -471,14 +440,36 @@ public class PECMessageParser {
 			mail.setMessageID(messageID);
 
 		} catch (PECParserException e) {
-			logger.error("Errore durante l'elaborazione del messageID", e);
+			log.error("Errore durante l'elaborazione del messageID", e);
 			throw e;
 			
 		} catch (MessagingException e) {
-			logger.error("Errore durante l'elaborazione del messageID", e);
+			log.error("Errore durante l'elaborazione del messageID", e);
 			throw new PECParserException("Errore durante l'elaborazione del messageID della mail", e);
 		}
 
+		try {
+			String[] inReplyTO = mimeMessage.getHeader(PECConstants.IN_REPLY_TO);
+			if (inReplyTO != null) {
+				mail.setReplyToMessageID(Stream.of(inReplyTO).collect(Collectors.toList()).get(0).replaceAll("<", "").replaceAll(">", ""));
+			}
+			
+		} catch (MessagingException e) {
+			log.error("Errore durante l'elaborazione del reply to", e);
+			throw new PECParserException("Errore durante l'elaborazione del reply to della mail", e);
+		}
+		
+		try {
+			String[] referencesHeader = mimeMessage.getHeader(PECConstants.REFERENCES);
+			if (referencesHeader != null) {
+				mail.getReplyToHistoryMessagesID().addAll(Stream.of(Stream.of(referencesHeader).collect(Collectors.toList()).get(0).split(" ")).map(r -> r.replaceAll("<", "").replaceAll(">", "")).collect(Collectors.toList()));
+			}
+			
+		} catch (MessagingException e) {
+			log.error("Errore durante l'elaborazione del reply to", e);
+			throw new PECParserException("Errore durante l'elaborazione del reply to della mail", e);
+		}
+		
 		parseContent(mimeMessage, mail, tupla, elaboraPEC);
 	}
 
@@ -503,7 +494,7 @@ public class PECMessageParser {
 						decodedAttachments = UUDecoder.getUUDecodedAttachments(content.toString());
 
 					} catch (UUDecoderException e) {
-						logger.error("Errore durante l'estrazione degli allegati codificati in uuencoding", e);
+						log.error("Errore durante l'estrazione degli allegati codificati in uuencoding", e);
 						throw new PECParserException(
 								"Errore durante l'estrazione degli allegati codificati in uuencoding", e);
 					}
@@ -514,7 +505,7 @@ public class PECMessageParser {
 				}
 
 			} catch (UUDecoderException e) {
-				logger.error("Errore durante la verifica di allegati codificati in uuencoding", e);
+				log.error("Errore durante la verifica di allegati codificati in uuencoding", e);
 				throw new PECParserException("Errore durante la verifica di allegati codificati in uuencoding", e);
 			}
 
@@ -562,7 +553,7 @@ public class PECMessageParser {
 									tupla.setElementA(IOUtils.createDataSource(part));
 
 								} catch (PECParserException | IOException e) {
-									logger.error("Errore durante l'estrazione del file {}",
+									log.error("Errore durante l'estrazione del file {}",
 											PECConstants.POSTACERT_EML_NAME, e);
 									throw new PECParserException(
 											"Errore durante l'estrazione del file " + PECConstants.POSTACERT_EML_NAME,
@@ -580,7 +571,7 @@ public class PECMessageParser {
 									tupla.setElementB(IOUtils.createDataSource(part));
 
 								} catch (PECParserException | IOException e) {
-									logger.error("Errore durante l'estrazione del file {}",
+									log.error("Errore durante l'estrazione del file {}",
 											PECConstants.DATICERT_XML_NAME, e);
 									throw new PECParserException(
 											"Errore durante l'estrazione del file " + PECConstants.DATICERT_XML_NAME,
@@ -597,7 +588,7 @@ public class PECMessageParser {
 							dataSource = IOUtils.createDataSource(part);
 
 						} catch (PECParserException | IOException e) {
-							logger.error("Errore durante l'estrazione dell'allegato {}",
+							log.error("Errore durante l'estrazione dell'allegato {}",
 									MimeMessageUtils.getFileName(part), e);
 							throw new PECParserException(
 									"Errore durante l'estrazione dell'allegato " + MimeMessageUtils.getFileName(part),

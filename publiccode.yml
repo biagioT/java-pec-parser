@@ -21,6 +21,7 @@ description:
       - |-
         Elaborazione di messaggi di posta elettronica certificata (PEC) e
 
+
         ricevute
       - Elaborazione di messaggi di posta elettronica ordinaria
     genericName: Mail/PEC Parser
@@ -42,13 +43,13 @@ description:
       La libreria offre tre metodi per il parsing di mail/PEC:
 
 
-      1. `Messaggio parse(MimeMessage mimeMessage)`  - elaborazione a partire da
+      1. `Messaggio parse(MimeMessage mimeMessage)` - elaborazione a partire da
       un oggetto
       [javax.mail.internet.MimeMessage](https://javaee.github.io/javamail/docs/api/javax/mail/internet/class-use/MimeMessage.html)
 
       2. `Messaggio parse(File emlFile)` - elaborazione a partire dal _File_ EML
 
-      3. `Messaggio parse(InputStream emlInputStream) `- elaborazione a partire
+      3. `Messaggio parse(InputStream emlInputStream)`- elaborazione a partire
       dall'_InputStream_ rappresentante l'EML
 
 
@@ -114,7 +115,8 @@ description:
 
 
       - La libreria supporta l'elaborazione di messaggi di posta ordinaria con
-      codifica [UUEncode](https://en.wikipedia.org/wiki/Uuencoding).
+      codifica [UUEncode](https://en.wikipedia.org/wiki/Uuencoding) (vedi
+      Requisiti).
 
 
       ​
@@ -125,8 +127,7 @@ description:
 
       - Java 8 (o versioni successive)
 
-      - Libreria OSS
-      [java-uudecoder](https://github.com/biagioT/java-uudecoder) 
+      - Libreria OSS [java-uudecoder](https://github.com/biagioT/java-uudecoder)
 
 
       ​
@@ -139,8 +140,8 @@ description:
       mediante posta elettronica
       certificata](https://www.agid.gov.it/sites/default/files/repository_files/leggi_decreti_direttive/pec_regole_tecniche_dm_2-nov-2005.pdf).
     shortDescription: |-
-      Libreria per l'elaborazione di messaggi di Posta Elettronica Certificata(e
-      messaggi di posta ordinaria)
+      Libreria per l'elaborazione di messaggi di Posta Elettronica Certificata
+      (e messaggi di posta ordinaria)
 developmentStatus: stable
 intendedAudience:
   countries:
@@ -165,6 +166,8 @@ localisation:
   availableLanguages:
     - it
   localisationReady: false
+logo: |-
+  https://raw.githubusercontent.com/biagioT/java-pec-parser/master/src/main/resources/logo.png
 maintenance:
   contacts:
     - email: biagio.tozzi@gmail.com
@@ -178,9 +181,7 @@ platforms:
   - linux
   - ios
   - android
-releaseDate: '2021-12-17'
+releaseDate: '2022-05-05'
 softwareType: library
-softwareVersion: 1.1.0
+softwareVersion: 2.0.0
 url: 'https://github.com/biagioT/java-pec-parser'
-logo: |-
-  https://raw.githubusercontent.com/biagioT/java-pec-parser/master/src/main/resources/logo.png

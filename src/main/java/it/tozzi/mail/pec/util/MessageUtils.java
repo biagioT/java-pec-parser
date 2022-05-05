@@ -31,4 +31,19 @@ public class MessageUtils {
 				: false;
 	}
 
+	public static String getMessageID(Messaggio messaggio) {
+
+		if (isPEC(messaggio)) {
+			return messaggio.getPec().getMessageID();
+
+		} else if (isRicevutaPEC(messaggio)) {
+			return messaggio.getRicevuta().getDatiCertificazione().getMessageID();
+
+		} else if (isEmailNormale(messaggio)) {
+			return messaggio.getBusta().getMessageID();
+		}
+		
+		throw new IllegalArgumentException("Tipo email non valida");
+	}
+
 }

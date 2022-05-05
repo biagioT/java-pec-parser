@@ -9,25 +9,24 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
 import it.tozzi.mail.pec.exception.PECParserException;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 
  * @author biagio.tozzi
  *
  */
+@Slf4j
 public class XMLDocumentUtils {
-
-	private static final Logger logger = LoggerFactory.getLogger(XMLDocumentUtils.class);
 
 	public static String getAttribute(Document doc, String path, String attributeName, boolean nullable)
 			throws PECParserException {
+
 		NodeList nodes = getNodes(doc, path);
 		if (nodes != null && nodes.getLength() == 1 && nodes.item(0) != null) {
 			NamedNodeMap attributes = nodes.item(0).getAttributes();
@@ -96,7 +95,7 @@ public class XMLDocumentUtils {
 			return nodes;
 
 		} catch (XPathExpressionException e) {
-			logger.error("Errore durante la lettura del nodo {}", path, e);
+			log.error("Errore durante la lettura del nodo {}", path, e);
 			throw new PECParserException("Errore durante la lettura del nodo " + path, e);
 		}
 	}
