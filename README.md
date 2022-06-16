@@ -11,7 +11,7 @@ Utility per l'elaborazione di messaggi di Posta Elettronica Certificata (e messa
 <dependency>
 	<groupId>app.tozzi.mail</groupId>
 	<artifactId>pec-parser</artifactId>
-	<version>3.0</version>
+	<version>3.0.0</version>
 </dependency>
 ```
 
