@@ -325,7 +325,7 @@ public class MimeMessageUtils {
 		} catch (MessagingException e) {
 		}
 		
-		if (res.isEmpty() || (!rd && !sd)) {
+		if (res.length() == 0 || (!rd && !sd)) {
 			return Timestamp.from(ZonedDateTime.now(ZI).toInstant()).hashCode() + UUID.randomUUID().toString();
 		}
 		
