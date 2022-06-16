@@ -22,6 +22,7 @@ description:
         Elaborazione di messaggi di posta elettronica certificata (PEC) e
 
 
+
         ricevute
       - Elaborazione di messaggi di posta elettronica ordinaria
     genericName: Mail/PEC Parser
@@ -35,6 +36,16 @@ description:
 
 
       **Utilizzo**:
+
+
+      ++Dipendenza Maven++:
+
+
+      `<dependency>
+          <groupId>app.tozzi.mail</groupId>
+          <artifactId>pec-parser</artifactId>
+          <version>3.0</version>
+      </dependency>`
 
 
       ++Parsing++:
@@ -127,8 +138,6 @@ description:
 
       - Java 8 (o versioni successive)
 
-      - Libreria OSS [java-uudecoder](https://github.com/biagioT/java-uudecoder)
-
 
       ​
 
@@ -141,6 +150,7 @@ description:
       certificata](https://www.agid.gov.it/sites/default/files/repository_files/leggi_decreti_direttive/pec_regole_tecniche_dm_2-nov-2005.pdf).
     shortDescription: |-
       Libreria per l'elaborazione di messaggi di Posta Elettronica Certificata
+
       (e messaggi di posta ordinaria)
 developmentStatus: stable
 intendedAudience:
@@ -183,5 +193,5 @@ platforms:
   - android
 releaseDate: '2022-05-05'
 softwareType: library
-softwareVersion: 2.0.0
+softwareVersion: 3.0.0
 url: 'https://github.com/biagioT/java-pec-parser'
