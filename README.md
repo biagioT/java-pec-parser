@@ -32,13 +32,13 @@ E' possibile creare una istanza di PECParser in due modi:
 
 ##### Messaggio
 
-L'oggetto  [Messaggio](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/model/Messaggio.java), risultato dell'elaborazione, conterrà:
+L'oggetto  [Messaggio](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/app/tozzi/mail/pec/model/Messaggio.java), risultato dell'elaborazione, conterrà:
 
--   Busta di trasporto ([Busta](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/model/Busta.java))
--   Eventuale messaggio di Posta Elettronica Certificata ([PEC](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/model/PEC.java))
--   Eventuale ricevuta ([RicevutaPEC](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/model/RicevutaPEC.java))
+-   Busta di trasporto ([Busta](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/app/tozzi/mail/pec/model/Busta.java))
+-   Eventuale messaggio di Posta Elettronica Certificata ([PEC](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/app/tozzi/mail/pec/model/PEC.java))
+-   Eventuale ricevuta ([RicevutaPEC](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/app/tozzi/mail/pec/model/RicevutaPEC.java))
 
-Attraverso i metodi di utility offerti dalla classe  [MessageUtils](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/it/tozzi/mail/pec/util/MessageUtils.java)  è possibile risalire al tipo di messaggio:
+Attraverso i metodi di utility offerti dalla classe  [MessageUtils](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/app/tozzi/mail/pec/util/MessageUtils.java)  è possibile risalire al tipo di messaggio:
 
 -   PEC (`MessageUtils.isPec(Messaggio messaggio)`)
 -   Ricevuta PEC (`MessageUtils.isRicevutaPEC(Messaggio messaggio)`)
