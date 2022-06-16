@@ -97,7 +97,7 @@ public class PECMessageParser {
 	 * <li>Eventuale ricevuta: {@link RicevutaPEC}</li>
 	 * </ul>
 	 * 
-	 * <i>* Il messaggio viene elaborato anche se non PEC:
+	 * * Il messaggio viene elaborato anche se non PEC:
 	 * <ul>
 	 * <li>Messaggio ricevuto su una casella di Posta Elettronica Certificata:
 	 * l'oggetto {@link PEC} conterrà le informazioni del messaggio normale in
@@ -105,9 +105,8 @@ public class PECMessageParser {
 	 * <li>Messaggio ricevuto su una casella di posta ordinaria: in questo caso la
 	 * {@link Busta} rappresenta il messaggio normale</li>
 	 * </ul>
-	 * </i>
 	 * 
-	 * @param mimeMessage
+	 * @param eml
 	 * @return
 	 * @throws PECParserException
 	 */
@@ -143,7 +142,7 @@ public class PECMessageParser {
 	 * <li>Eventuale ricevuta: {@link RicevutaPEC}</li>
 	 * </ul>
 	 * 
-	 * <i>* Il messaggio viene elaborato anche se non PEC:
+	 * * Il messaggio viene elaborato anche se non PEC:
 	 * <ul>
 	 * <li>Messaggio ricevuto su una casella di Posta Elettronica Certificata:
 	 * l'oggetto {@link PEC} conterrà le informazioni del messaggio normale in
@@ -151,9 +150,8 @@ public class PECMessageParser {
 	 * <li>Messaggio ricevuto su una casella di posta ordinaria: in questo caso la
 	 * {@link Busta} rappresenta il messaggio normale</li>
 	 * </ul>
-	 * </i>
 	 * 
-	 * @param mimeMessage
+	 * @param eml
 	 * @return
 	 * @throws PECParserException
 	 */
@@ -170,7 +168,7 @@ public class PECMessageParser {
 	 * <li>Eventuale ricevuta: {@link RicevutaPEC}</li>
 	 * </ul>
 	 * 
-	 * <i>* Il messaggio viene elaborato anche se non PEC:
+	 * * Il messaggio viene elaborato anche se non PEC:
 	 * <ul>
 	 * <li>Messaggio ricevuto su una casella di Posta Elettronica Certificata:
 	 * l'oggetto {@link PEC} conterrà le informazioni del messaggio normale in
@@ -178,7 +176,6 @@ public class PECMessageParser {
 	 * <li>Messaggio ricevuto su una casella di posta ordinaria: in questo caso la
 	 * {@link Busta} rappresenta il messaggio normale</li>
 	 * </ul>
-	 * </i>
 	 * 
 	 * @param mimeMessage
 	 * @return
