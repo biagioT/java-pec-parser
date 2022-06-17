@@ -191,7 +191,7 @@ platforms:
   - linux
   - ios
   - android
-releaseDate: '2022-05-05'
+releaseDate: '2022-06-16'
 softwareType: library
 softwareVersion: 3.0.0
 url: 'https://github.com/biagioT/java-pec-parser'
