@@ -21,6 +21,7 @@ public class MimeTypesUtil {
 	public static final String CONTENT_TYPE_MESSAGE_RFC822 = "message/rfc822";
 	public static final String CONTENT_TYPE_MULTIPART = "multipart/*";
 	public static final String CONTENT_TYPE_TEXT = "text/*";
+	public static final String CONTENT_TYPE_DELIVERY_STATUS = "message/delivery-status";
 
 	private static Map<String, List<String>> mimeTypesMap = new LinkedHashMap<>();
 

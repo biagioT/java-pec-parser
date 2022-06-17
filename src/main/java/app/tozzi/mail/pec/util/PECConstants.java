@@ -22,6 +22,14 @@ public class PECConstants {
 	public static final String IN_REPLY_TO = "In-Reply-To";
 	public static final String REFERENCES = "References";
 	
+	public static final String DELIVERY_ACTION = "action";
+	public static final String DELIVERY_STATUS = "status";
+	public static final String DELIVERY_DIAGNOSTIC_CODE = "Diagnostic-Code";
+	public static final String DELIVERY_REMOTE_MTA = "Remote-MTA";
+	public static final String DELIVERY_REPORTING_MTA = "Reporting-MTA";
+	public static final String DELIVERY_RECEIVED_FROM_MTA = "Received-From-MTA";
+	public static final String DELIVERY_FINAL_RECIPIENT = "Final-Recipient";
+	
 	public static final String DATICERT_MITTENTE_PATH = "/postacert/intestazione/mittente";
 	public static final String DATICERT_DESTINATARI_PATH = "/postacert/intestazione/destinatari";
 	public static final String DATICERT_DESTINATARI_TIPO_ATTRIBUTE = "tipo";

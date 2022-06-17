@@ -1,9 +1,11 @@
 package app.tozzi.mail.pec.parser;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
@@ -34,14 +36,18 @@ import app.tozzi.mail.pec.model.Busta;
 import app.tozzi.mail.pec.model.DataPEC;
 import app.tozzi.mail.pec.model.DatiCertificazione;
 import app.tozzi.mail.pec.model.DestinatarioPEC;
+import app.tozzi.mail.pec.model.DestinatarioPEC.TipoDestinatario;
 import app.tozzi.mail.pec.model.ErrorePEC;
 import app.tozzi.mail.pec.model.Mail;
+import app.tozzi.mail.pec.model.Mail.DeliveryStatus;
+import app.tozzi.mail.pec.model.Mail.DeliveryStatus.Action;
+import app.tozzi.mail.pec.model.Mail.DeliveryStatus.DiagnosticCode;
+import app.tozzi.mail.pec.model.Mail.DeliveryStatus.TipoStato;
 import app.tozzi.mail.pec.model.Messaggio;
 import app.tozzi.mail.pec.model.PEC;
 import app.tozzi.mail.pec.model.RicevutaPEC;
 import app.tozzi.mail.pec.model.TipoPostaCert;
 import app.tozzi.mail.pec.model.TipoRicevuta;
-import app.tozzi.mail.pec.model.DestinatarioPEC.TipoDestinatario;
 import app.tozzi.mail.pec.util.IOUtils;
 import app.tozzi.mail.pec.util.MimeMessageUtils;
 import app.tozzi.mail.pec.util.MimeTypesUtil;
@@ -276,7 +282,7 @@ public class PECMessageParser {
 			MimeMessage postaCertMimeMessage = MimeMessageUtils.createMimeMessage(busta.getPostaCert().getInputStream(), this.properties);
 			PEC pec = estraiPEC(postaCertMimeMessage);
 			
-			if (TipoPostaCert.POSTA_CERTIFICATA.getDescrizione().equals(xTrasporto) || TipoPostaCert.ERRORE.getDescrizione().equals(xTrasporto)) {
+			if (busta.getDatiCert() != null && (TipoPostaCert.POSTA_CERTIFICATA.getDescrizione().equals(xTrasporto) || TipoPostaCert.ERRORE.getDescrizione().equals(xTrasporto))) {
 				pec.setDatiCertificazione(estraiDatiCertificazione(busta.getDatiCert().getInputStream()));
 			}
 			
@@ -530,6 +536,75 @@ public class PECMessageParser {
 								elaboraPEC);
 					}
 
+				} else if (MimeMessageUtils.isMimeType(part, MimeTypesUtil.CONTENT_TYPE_DELIVERY_STATUS)) {
+					
+					mail.setDeliveryStatus(true);
+					DeliveryStatus deliveryStatus = new DeliveryStatus();
+
+					try(BufferedReader br = new BufferedReader(new InputStreamReader(part.getInputStream()))) {
+						
+						String line = br.readLine();
+						
+						while (line != null) {
+							
+							if (line.toLowerCase().startsWith(PECConstants.DELIVERY_ACTION.toLowerCase() + ":")) {
+								String action = line.substring(PECConstants.DELIVERY_ACTION.length() + 1).trim();
+								deliveryStatus.setAction(Action.from(action));
+
+							} else if (line.toLowerCase().startsWith(PECConstants.DELIVERY_STATUS.toLowerCase() + ":")) {
+								String status = line.substring(PECConstants.DELIVERY_STATUS.length() + 1).trim();
+								deliveryStatus.setStatus(status);
+
+								if (status != null && !status.isEmpty()) {
+									char first = status.charAt(0);
+									int prefix = Character.getNumericValue(first);
+									
+									if (prefix > 0) {
+										deliveryStatus.setTipoStato(TipoStato.from(prefix));
+									}
+								}
+								
+							} else if (line.toLowerCase().startsWith(PECConstants.DELIVERY_DIAGNOSTIC_CODE.toLowerCase() + ":")) {
+								String diagnosticCode = line.substring(PECConstants.DELIVERY_DIAGNOSTIC_CODE.length() + 1).trim();
+								
+								DiagnosticCode dc = new DiagnosticCode();
+								if (diagnosticCode.contains(";")) {
+									dc.setType(diagnosticCode.substring(0, diagnosticCode.indexOf(";")));
+									dc.setDescription(diagnosticCode.substring(diagnosticCode.indexOf(";") + 1));
+									
+								} else {
+									dc.setDescription(diagnosticCode);
+								}
+								
+								deliveryStatus.setDiagnosticCode(dc);
+								
+							} else if (line.toLowerCase().startsWith(PECConstants.DELIVERY_REMOTE_MTA.toLowerCase() + ":")) {
+								String remoteMta = line.substring(PECConstants.DELIVERY_REMOTE_MTA.length() + 1).trim();
+								deliveryStatus.setRemoteMTA(remoteMta);
+								
+							} else if (line.toLowerCase().startsWith(PECConstants.DELIVERY_REPORTING_MTA.toLowerCase() + ":")) {
+								String reportingMTA = line.substring(PECConstants.DELIVERY_REPORTING_MTA.length() + 1).trim();
+								deliveryStatus.setReportingMTA(reportingMTA);
+								
+							} else if (line.toLowerCase().startsWith(PECConstants.DELIVERY_RECEIVED_FROM_MTA.toLowerCase() + ":")) {
+								String recivedFromMTA = line.substring(PECConstants.DELIVERY_RECEIVED_FROM_MTA.length() + 1).trim();
+								deliveryStatus.setReceivedFromMTA(recivedFromMTA);
+								
+							} else if (line.toLowerCase().startsWith(PECConstants.DELIVERY_FINAL_RECIPIENT.toLowerCase() + ":")) {
+								String finalRecipient = line.substring(PECConstants.DELIVERY_FINAL_RECIPIENT.length() + 1).trim();
+								deliveryStatus.setFinalRecipient(finalRecipient);
+							}
+							
+							line = br.readLine();
+						}
+						
+						
+					} catch (Exception e) {
+						log.error("Errore durante il parsing degli header di delivery status", e);
+					}
+					
+					mail.setDeliveryStatusInfo(deliveryStatus);
+					
 				} else {
 
 					boolean pec = false;

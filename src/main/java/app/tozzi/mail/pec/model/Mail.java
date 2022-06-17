@@ -3,8 +3,11 @@ package app.tozzi.mail.pec.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 
 /**
  * 
@@ -29,5 +32,63 @@ public abstract class Mail {
 	
 	private String replyToMessageID;
 	private List<String> replyToHistoryMessagesID = new ArrayList<>();
+	
+	private boolean deliveryStatus = false;
+	private DeliveryStatus deliveryStatusInfo;
+	
+	public static void main(String[] args) {
+		String text = "Diagnostic-Code: smtp;550 5.1.1 <biagi.tozzi@eng.it>: Recipient address rejected: User unknown in local recipient table";
+	
+		System.out.println(text.substring(0, text.indexOf(";")));
+		System.out.println(text.substring(text.indexOf(";") + 1));
+		
+	}
+	
+	@Data
+	public static class DeliveryStatus {
+		
+		private String status;
+		private DiagnosticCode diagnosticCode;
+		private Action action;
+		private String reportingMTA;
+		private String receivedFromMTA;
+		private String remoteMTA;
+		private String finalRecipient;
+		
+		private TipoStato tipoStato;
+
+		
+		@Data
+		public static class DiagnosticCode {
+			private String type;
+			private String description;
+		}
+		
+		@AllArgsConstructor
+		public static enum TipoStato {
+			INFORMAZIONE(2), FALLIMENTO_TEMPORANEO(4), FALLIMENTO_PERMANENTE(5);
+			
+			@Getter
+			private int prefissoStato;
+			
+			public static TipoStato from(int prefissoStato) {
+				return Stream.of(TipoStato.values()).filter(t -> t.getPrefissoStato() == prefissoStato).findAny().orElse(null);			
+			}
+		}
+		
+		@AllArgsConstructor
+		public static enum Action {
+			FAILED("failed"), FAILURE("failure"), DELAYED("delayed"), DELIVERED("delivered"), RELAYED("relayed"), EXPANDED("expanded"), UNKNOWN("unknown");
+			
+			@Getter
+			private String action;
+			
+			public static Action from(String action) {
+				return Stream.of(Action.values()).filter(t -> t.getAction().equals(action)).findAny().orElse(null);			
+			}
+		}
+		
+		
+	}
 
 }
