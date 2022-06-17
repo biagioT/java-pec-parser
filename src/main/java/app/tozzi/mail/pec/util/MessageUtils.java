@@ -1,6 +1,5 @@
 package app.tozzi.mail.pec.util;
 
-import app.tozzi.mail.pec.model.Mail;
 import app.tozzi.mail.pec.model.Messaggio;
 import app.tozzi.mail.pec.model.TipoPostaCert;
 
@@ -30,16 +29,6 @@ public class MessageUtils {
 						&& messaggio.getBusta().getXTipoRicevuta() == null
 						&& messaggio.getBusta().getXVerificaSicurezza() == null
 				: false;
-	}
-
-	public static Mail getEmailNormale(Messaggio messaggio) {
-		
-		if (!isEmailNormale(messaggio)) {
-			throw new IllegalArgumentException("Il messaggio non è di tipo posta ordinaria");
-		}
-		
-		return messaggio.getBusta();
-		
 	}
 	
 	public static String getMessageID(Messaggio messaggio) {
