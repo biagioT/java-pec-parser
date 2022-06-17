@@ -1,6 +1,6 @@
 
 
-[![codebeat badge](https://codebeat.co/badges/b5b1b940-a242-4f95-ad63-75283d2ca778)](https://codebeat.co/projects/github-com-biagiot-java-pec-parser-master)
+[![codebeat badge](https://codebeat.co/badges/b5b1b940-a242-4f95-ad63-75283d2ca778)](https://codebeat.co/projects/github-com-biagiot-java-pec-parser-master) [![CodeFactor](https://www.codefactor.io/repository/github/biagiot/java-pec-parser/badge)](https://www.codefactor.io/repository/github/biagiot/java-pec-parser)
 
 # PEC/Mail Parser
 
