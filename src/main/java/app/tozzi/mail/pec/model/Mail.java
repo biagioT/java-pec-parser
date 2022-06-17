@@ -36,14 +36,6 @@ public abstract class Mail {
 	private boolean deliveryStatus = false;
 	private DeliveryStatus deliveryStatusInfo;
 	
-	public static void main(String[] args) {
-		String text = "Diagnostic-Code: smtp;550 5.1.1 <biagi.tozzi@eng.it>: Recipient address rejected: User unknown in local recipient table";
-	
-		System.out.println(text.substring(0, text.indexOf(";")));
-		System.out.println(text.substring(text.indexOf(";") + 1));
-		
-	}
-	
 	@Data
 	public static class DeliveryStatus {
 		
