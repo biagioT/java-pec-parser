@@ -1,4 +1,5 @@
 
+
 [![codebeat badge](https://codebeat.co/badges/b5b1b940-a242-4f95-ad63-75283d2ca778)](https://codebeat.co/projects/github-com-biagiot-java-pec-parser-master) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/dbe9e634249f4850a22d9d8dcabee03e)](https://www.codacy.com/manual/biagioT/java-pec-parser?utm_source=github.com&utm_medium=referral&utm_content=biagioT/java-pec-parser&utm_campaign=Badge_Grade)
 
 # PEC/Mail Parser
@@ -9,7 +10,7 @@ Utility per l'elaborazione di messaggi di Posta Elettronica Certificata (e messa
 ##### Dipendenza Maven
 ```
 <dependency>
-	<groupId>app.tozzi.mail</groupId>
+    <groupId>app.tozzi.mail</groupId>
 	<artifactId>pec-parser</artifactId>
 	<version>3.0.0</version>
 </dependency>
@@ -17,15 +18,15 @@ Utility per l'elaborazione di messaggi di Posta Elettronica Certificata (e messa
 
 ##### Parsing
 
-La libreria offre tre metodi per il parsing di mail/PEC:
+La libreria offre tre metodi della classe [PECMessageParser](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/app/tozzi/mail/pec/parser/PECMessageParser.java) per il parsing di mail/PEC:
 
-1.  `Messaggio parse(MimeMessage mimeMessage)`  - elaborazione a partire da un oggetto  _javax.mail.internet.MimeMessage_
-2.  `Messaggio parse(File emlFile)`  - elaborazione a partire dal  _File_  EML
-3.  `Messaggio parse(InputStream emlInputStream)`  - elaborazione a partire dall'_InputStream_  rappresentante l'EML
+1.  `Messaggio parse(MimeMessage mimeMessage)`  - elaborazione a partire da un oggetto  _javax.mail.internet.MimeMessage_ 
+2.  `Messaggio parse(File emlFile)`  - elaborazione a partire da un oggetto  _java.io.File_  , ovvero il file EML
+3.  `Messaggio parse(InputStream emlInputStream)`  - elaborazione a partire dall'oggetto_java.io.InputStream_  rappresentante lo stream EML
 
 ##### Istanza PECParser
 
-E' possibile creare una istanza di PECParser in due modi:
+E' possibile creare una istanza di PECMessageParser in due modi:
 
 1.  `PECMessageParser getInstance(Properties properties)`  - con delle proprietà personalizzate che concorreranno alla creazione e alla elaborazione del  _MimeMessage_
 2.  `PECMessageParser getInstance()`  - modalità default, vengono utilizzate le proprietà di sistema (_System.getProperties()_)
@@ -46,8 +47,8 @@ Attraverso i metodi di utility offerti dalla classe  [MessageUtils](https://gith
 
 Il messaggio infatti viene elaborato anche se non PEC:
 
--   Messaggio ricevuto su una casella di Posta Elettronica Certificata: l'oggetto PEC conterrà le informazioni del messaggio normale in quanto comunque incapsulato in una busta
--   Messaggio ricevuto su una casella di posta ordinaria: in questo caso la Busta rappresenta il messaggio normale
+-   Se la mail viene ricevuta su una casella di Posta Elettronica Certificata: l'oggetto `PEC` conterrà le informazioni del messaggio normale in quanto comunque incapsulato in una busta.
+-   Se la mail viene ricevuta su una casella di posta ordinaria: in questo caso l'oggetto `Busta` rappresenta il messaggio normale
 
 ### Requisiti
  - [ ] Java 8 (o versioni successive)
