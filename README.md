@@ -1,6 +1,6 @@
 
 
-[![codebeat badge](https://codebeat.co/badges/b5b1b940-a242-4f95-ad63-75283d2ca778)](https://codebeat.co/projects/github-com-biagiot-java-pec-parser-master) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/dbe9e634249f4850a22d9d8dcabee03e)](https://www.codacy.com/manual/biagioT/java-pec-parser?utm_source=github.com&utm_medium=referral&utm_content=biagioT/java-pec-parser&utm_campaign=Badge_Grade)
+[![codebeat badge](https://codebeat.co/badges/b5b1b940-a242-4f95-ad63-75283d2ca778)](https://codebeat.co/projects/github-com-biagiot-java-pec-parser-master)
 
 # PEC/Mail Parser
 
