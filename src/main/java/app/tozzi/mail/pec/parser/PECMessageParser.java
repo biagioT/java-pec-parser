@@ -22,6 +22,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
+import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimePart;
 import javax.mail.internet.MimeUtility;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -483,7 +484,7 @@ public class PECMessageParser {
 
 		if (MimeMessageUtils.isMimeType(part, MimeTypesUtil.CONTENT_TYPE_TEXT_PLAIN)
 				&& !Part.ATTACHMENT.equalsIgnoreCase(MimeMessageUtils.getDisposition(part))
-				&& mail.getCorpoTesto() == null) {
+				&& mail.getCorpoTesto() == null && !(content instanceof MimeMultipart)) {
 
 			String corpo = content.toString();
 
@@ -528,7 +529,7 @@ public class PECMessageParser {
 
 			} else {
 
-				if (MimeMessageUtils.isMimeType(part, MimeTypesUtil.CONTENT_TYPE_MULTIPART)) {
+				if (MimeMessageUtils.isMimeType(part, MimeTypesUtil.CONTENT_TYPE_MULTIPART) || content instanceof MimeMultipart) {
 					Multipart multipart = (Multipart) content;
 
 					for (int i = 0; i < MimeMessageUtils.getCount(multipart); i++) {
