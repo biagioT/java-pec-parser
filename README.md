@@ -10,9 +10,9 @@ Utility per l'elaborazione di messaggi di Posta Elettronica Certificata (e messa
 ##### Dipendenza Maven
 ```
 <dependency>
-    <groupId>app.tozzi.mail</groupId>
+	<groupId>app.tozzi.mail</groupId>
 	<artifactId>pec-parser</artifactId>
-	<version>3.0.1</version>
+	<version>3.0.2</version>
 </dependency>
 ```
 
