@@ -4,9 +4,9 @@
 
 	<groupId>app.tozzi.mail</groupId>
 	<artifactId>pec-parser</artifactId>
-	<version>3.0.1</version>
+	<version>3.0.2</version>
 	<name>PEC Parser</name>
-	<description>Utility per la lettura di messaggii di Posta Elettronica Certificata (e posta elettronica ordinaria)</description>
+	<description>Utility per la lettura di messaggi di Posta Elettronica Certificata (e posta elettronica ordinaria)</description>
 	<url>https://www.tozzi.app</url>
 	<packaging>jar</packaging>
 
