@@ -5,83 +5,37 @@
 publiccodeYmlVersion: '0.2'
 categories:
   - communications
-  - email-management
-  - instant-messaging
-dependsOn:
-  open:
-    - name: Java
-      optional: false
-      version: '8'
-      versionMax: '21'
-      versionMin: '8'
+  - contact-management
 description:
   it:
     documentation: 'https://github.com/biagioT/java-pec-parser'
     features:
       - |-
-        Elaborazione di messaggi di posta elettronica certificata (PEC) e
-
-        ricevute
-      - Elaborazione di messaggi di posta elettronica ordinaria
-    genericName: Mail/PEC Parser
+        Elaborazione di messaggi di posta elettronica certificata PEC, ricevute
+        PEC e posta ordinaria.
+    genericName: PEC/Mail Parser
     localisedName: PEC Parser
     longDescription: |
-      Libreria JAVA per l'elaborazione di messaggi di Posta Elettronica
-      Certificata (e messaggi di posta ordinaria).
+      ### Utilizzo
 
 
-      **Utilizzo**:
-# This repository adheres to the publiccode.yml standard by including this
-# metadata file that makes public software easily discoverable.
-# More info at https://github.com/italia/publiccode.yml
+      ##### Dipendenza Maven
 
-publiccodeYmlVersion: '0.2'
-categories:
-  - communications
-  - email-management
-  - instant-messaging
-dependsOn:
-  open:
-    - name: Java
-      optional: false
-      version: '8'
-      versionMax: '17'
-      versionMin: '8'
-description:
-  it:
-    documentation: 'https://github.com/biagioT/java-pec-parser'
-    features:
-      - |-
-        Elaborazione di messaggi di posta elettronica certificata (PEC) e
-        ricevute
-      - Elaborazione di messaggi di posta elettronica ordinaria
-    genericName: Mail/PEC Parser
-    localisedName: PEC Parser
-    longDescription: |
-      Libreria JAVA per l'elaborazione di messaggi di Posta Elettronica
-      Certificata (e messaggi di posta ordinaria).
+        <dependency>
+      	<groupId>app.tozzi.mail</groupId>
 
+      	<artifactId>pec-parser</artifactId>
 
-      ​
+      	<version>3.0.2</version>
 
-
-      **Utilizzo**:
-
-
-      ++Dipendenza Maven++:
-
-          <dependency>
-         <groupId>app.tozzi.mail</groupId>
-         <artifactId>pec-parser</artifactId>
-         <version>3.0.1</version>
       </dependency>
 
 
-      ++Parsing++:
+      ##### Parsing
 
 
       La libreria offre tre metodi della classe
-      [PECMessageParser](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/app/tozzi/mail/pec/parser/PECMessageParser.java)
+      [++PECMessageParser++](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/app/tozzi/mail/pec/parser/PECMessageParser.java)
       per il parsing di mail/PEC:
 
 
@@ -91,14 +45,14 @@ description:
       2. `Messaggio parse(File emlFile)` - elaborazione a partire da un oggetto
       _java.io.File_ , ovvero il file EML
 
-      3. `Messaggio parse(InputStream emlInputStream)`- elaborazione a partire
-      dall'oggetto _java.io.InputStream_ rappresentante lo stream EML
+      3. `Messaggio parse(InputStream emlInputStream)` - elaborazione a partire
+      dall'oggetto\_java.io.InputStream\_ rappresentante lo stream EML
 
 
-      ++Istanza PECParser++:
+      ##### Istanza PECParser
 
 
-      E' possibile creare una istanza di PECParser in due modi:
+      E' possibile creare una istanza di PECMessageParser in due modi:
 
 
       1. `PECMessageParser getInstance(Properties properties)` - con delle
@@ -106,29 +60,29 @@ description:
       elaborazione del _MimeMessage_
 
       2. `PECMessageParser getInstance()` - modalità default, vengono utilizzate
-      le proprietà di sistema (`System.getProperties()`)
+      le proprietà di sistema (_System.getProperties()_)
 
 
-      ++Messaggio++:
+      ##### Messaggio
 
 
       L'oggetto
-      [Messaggio](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/app/tozzi/mail/pec/model/Messaggio.java),
+      [++Messaggio++](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/app/tozzi/mail/pec/model/Messaggio.java),
       risultato dell'elaborazione, conterrà:
 
 
       - Busta di trasporto
-      ([Busta](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/app/tozzi/mail/pec/model/Busta.java))
+      ([++Busta++](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/app/tozzi/mail/pec/model/Busta.java))
 
       - Eventuale messaggio di Posta Elettronica Certificata
-      ([PEC](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/app/tozzi/mail/pec/model/PEC.java))
+      ([++PEC++](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/app/tozzi/mail/pec/model/PEC.java))
 
       - Eventuale ricevuta
-      ([RicevutaPEC](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/app/tozzi/mail/pec/model/RicevutaPEC.java))
+      ([++RicevutaPEC++](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/app/tozzi/mail/pec/model/RicevutaPEC.java))
 
 
       Attraverso i metodi di utility offerti dalla classe
-      [MessageUtils](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/app/tozzi/mail/pec/util/MessageUtils.java)
+      [++MessageUtils++](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/app/tozzi/mail/pec/util/MessageUtils.java)
       è possibile risalire al tipo di messaggio:
 
 
@@ -139,7 +93,7 @@ description:
       - Posta Ordinaria (`MessageUtils.isEmailNormale(Messaggio messaggio)`)
 
 
-      Il messaggio infatti viene elaborato anche se non PEC. In questo caso:
+      Il messaggio infatti viene elaborato anche se non PEC:
 
 
       - Se la mail viene ricevuta su una casella di Posta Elettronica
@@ -150,40 +104,32 @@ description:
       caso l'oggetto `Busta` rappresenta il messaggio normale
 
 
-      ​
-
-
-      **Altro**
-
-
-      - La libreria supporta l'elaborazione di messaggi di posta ordinaria con
-      codifica [UUEncode](https://en.wikipedia.org/wiki/Uuencoding) (vedi
-      Requisiti).
-
-
-      ​
-
-
-      **Requisiti**
+      ### Requisiti
 
 
       - Java 8 (o versioni successive)
 
 
-      ​
+      ### Altro
 
 
-      **Specifiche AGID**
+      - La libreria supporta l'elaborazione di messaggi di posta ordinaria con
+      codifica [++UUencode++](https://en.wikipedia.org/wiki/Uuencoding)
+
+      - La libreria è disponibile nel [++catalogo Open Source di terze parti di
+      Developers
+      Italia++](https://developers.italia.it/it/software/biagiot-java-pec-parser-09abab).
 
 
-      - [Regole tecniche del servizio di trasmissione di documenti informatici
-      mediante posta elettronica
-      certificata](https://www.agid.gov.it/sites/default/files/repository_files/leggi_decreti_direttive/pec_regole_tecniche_dm_2-nov-2005.pdf).
+      ### Specifiche
+
+
+      - Regole tecniche del servizio di trasmissione di documenti informatici
+      mediante posta elettronica certificata:
+      [++pec\_regole\_tecniche\_dm\_2-nov-2005.pdf++](https://www.agid.gov.it/sites/default/files/repository_files/leggi_decreti_direttive/pec_regole_tecniche_dm_2-nov-2005.pdf)
     shortDescription: |-
-      Libreria per l'elaborazione di messaggi di Posta Elettronica Certificata
-
-
-      (e messaggi di posta ordinaria)
+      Utility per l'elaborazione di messaggi di Posta Elettronica Certificata (e
+      messaggi di posta ordinaria)
 developmentStatus: stable
 intendedAudience:
   countries:
@@ -200,9 +146,9 @@ it:
     cie: false
     pagopa: false
     spid: false
+landingURL: 'https://github.com/biagioT/java-pec-parser'
 legal:
   license: Apache-2.0
-  mainCopyrightOwner: Biagio Placido Tozzi
   repoOwner: Biagio Placido Tozzi
 localisation:
   availableLanguages:
@@ -223,168 +169,7 @@ platforms:
   - linux
   - ios
   - android
-releaseDate: '2022-06-17'
+releaseDate: '2024-02-04'
 softwareType: library
-softwareVersion: 3.0.1
-url: 'https://github.com/biagioT/java-pec-parser'
-
-
-      ++Dipendenza Maven++:
-
-          <dependency><groupId>app.tozzi.mail</groupId> <artifactId>pec-parser</artifactId><version>3.0.1</version></dependency>
-
-      ++Dipendenza Gradle++:
-
-          implementation 'app.tozzi.mail:pec-parser:3.0.2'
-
-      ++Parsing++:
-
-
-      La libreria offre tre metodi della classe
-      [PECMessageParser](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/app/tozzi/mail/pec/parser/PECMessageParser.java)
-      per il parsing di mail/PEC:
-
-
-      1. `Messaggio parse(MimeMessage mimeMessage)` - elaborazione a partire da
-      un oggetto _javax.mail.internet.MimeMessage_
-
-      2. `Messaggio parse(File emlFile)` - elaborazione a partire da un oggetto
-      _java.io.File_ , ovvero il file EML
-
-      3. `Messaggio parse(InputStream emlInputStream)`- elaborazione a partire
-      dall'oggetto _java.io.InputStream_ rappresentante lo stream EML
-
-
-      ++Istanza PECParser++:
-
-
-      E' possibile creare una istanza di PECParser in due modi:
-
-
-      1. `PECMessageParser getInstance(Properties properties)` - con delle
-      proprietà personalizzate che concorreranno alla creazione e alla
-      elaborazione del _MimeMessage_
-
-      2. `PECMessageParser getInstance()` - modalità default, vengono utilizzate
-      le proprietà di sistema (`System.getProperties()`)
-
-
-      ++Messaggio++:
-
-
-      L'oggetto
-      [Messaggio](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/app/tozzi/mail/pec/model/Messaggio.java),
-      risultato dell'elaborazione, conterrà:
-
-
-      - Busta di trasporto
-      ([Busta](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/app/tozzi/mail/pec/model/Busta.java))
-
-      - Eventuale messaggio di Posta Elettronica Certificata
-      ([PEC](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/app/tozzi/mail/pec/model/PEC.java))
-
-      - Eventuale ricevuta
-      ([RicevutaPEC](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/app/tozzi/mail/pec/model/RicevutaPEC.java))
-
-
-      Attraverso i metodi di utility offerti dalla classe
-      [MessageUtils](https://github.com/biagioT/java-pec-parser/blob/master/src/main/java/app/tozzi/mail/pec/util/MessageUtils.java)
-      è possibile risalire al tipo di messaggio:
-
-
-      - PEC (`MessageUtils.isPec(Messaggio messaggio)`)
-
-      - Ricevuta PEC (`MessageUtils.isRicevutaPEC(Messaggio messaggio)`)
-
-      - Posta Ordinaria (`MessageUtils.isEmailNormale(Messaggio messaggio)`)
-
-
-      Il messaggio infatti viene elaborato anche se non PEC. In questo caso:
-
-
-      - Se la mail viene ricevuta su una casella di Posta Elettronica
-      Certificata: l'oggetto `PEC` conterrà le informazioni del messaggio
-      normale in quanto comunque incapsulato in una busta.
-
-      - Se la mail viene ricevuta su una casella di posta ordinaria: in questo
-      caso l'oggetto `Busta` rappresenta il messaggio normale
-
-
-      ​
-
-
-      **Altro**
-
-
-      - La libreria supporta l'elaborazione di messaggi di posta ordinaria con
-      codifica [UUEncode](https://en.wikipedia.org/wiki/Uuencoding) (vedi
-      Requisiti).
-
-
-      ​
-
-
-      **Requisiti**
-
-
-      - Java 8 (o versioni successive)
-
-
-      ​
-
-
-      **Specifiche AGID**
-
-
-      - [Regole tecniche del servizio di trasmissione di documenti informatici
-      mediante posta elettronica
-      certificata](https://www.agid.gov.it/sites/default/files/repository_files/leggi_decreti_direttive/pec_regole_tecniche_dm_2-nov-2005.pdf).
-    shortDescription: |-
-      Libreria per l'elaborazione di messaggi di Posta Elettronica Certificata
-
-
-
-      (e messaggi di posta ordinaria)
-developmentStatus: stable
-intendedAudience:
-  countries:
-    - it
-it:
-  conforme:
-    gdpr: false
-    lineeGuidaDesign: false
-    misureMinimeSicurezza: false
-    modelloInteroperabilita: false
-  countryExtensionVersion: '0.2'
-  piattaforme:
-    anpr: false
-    cie: false
-    pagopa: false
-    spid: false
-legal:
-  license: Apache-2.0
-  mainCopyrightOwner: Biagio Placido Tozzi
-  repoOwner: Biagio Placido Tozzi
-localisation:
-  availableLanguages:
-    - it
-  localisationReady: false
-logo: |-
-  https://raw.githubusercontent.com/biagioT/java-pec-parser/master/src/main/resources/logo.png
-maintenance:
-  contacts:
-    - email: biagio.tozzi@gmail.com
-      name: Biagio Placido Tozzi
-  type: internal
-name: PEC Parser
-platforms:
-  - web
-  - windows
-  - mac
-  - linux
-  - ios
-  - android
-releaseDate: '2022-06-17'
-softwareType: library
-softwareVersion: 3.0.1
+softwareVersion: 3.0.2
 url: 'https://github.com/biagioT/java-pec-parser'
