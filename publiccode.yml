@@ -18,19 +18,7 @@ description:
     longDescription: |
       ### Utilizzo
 
-
-      ##### Dipendenza Maven
-
-        <dependency>
-      	<groupId>app.tozzi.mail</groupId>
-
-      	<artifactId>pec-parser</artifactId>
-
-      	<version>3.0.2</version>
-
-      </dependency>
-
-
+      
       ##### Parsing
 
 
