@@ -4,7 +4,7 @@
 
 	<groupId>app.tozzi.mail</groupId>
 	<artifactId>pec-parser</artifactId>
-	<version>3.0.2</version>
+	<version>4.0.0</version>
 	<name>PEC Parser</name>
 	<description>Utility per la lettura di messaggi di Posta Elettronica Certificata (e posta elettronica ordinaria)</description>
 	<url>https://www.tozzi.app</url>
@@ -49,17 +49,19 @@
 		<sources.encoding>UTF-8</sources.encoding>
 		<java.version>1.8</java.version>
 
-		<maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
-		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-		<maven-javadoc-plugin.version>3.4.0</maven-javadoc-plugin.version>
-		<maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
+		<maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+		<maven-source-plugin.version>3.3.1</maven-source-plugin.version>
+		<maven-javadoc-plugin.version>3.6.3</maven-javadoc-plugin.version>
+		<maven-gpg-plugin.version>3.2.4</maven-gpg-plugin.version>
 		
-		<jakarta.mail.api.version>1.6.7</jakarta.mail.api.version>
-		<jakarta.mail.version>1.6.7</jakarta.mail.version>
-		<slf4j.version>1.7.36</slf4j.version>
-		<lombok.version>1.18.24</lombok.version>
-		<uudecoder.version>3.0.0</uudecoder.version>
-		<junit.version>5.8.2</junit.version>
+		<jakarta.mail.api.version>2.1.3</jakarta.mail.api.version>
+		<jakarta.mail.version>2.0.1</jakarta.mail.version>
+		<slf4j.version>2.0.13</slf4j.version>
+		<lombok.version>1.18.32</lombok.version>
+		<uudecoder.version>4.0.0</uudecoder.version>
+		<junit.version>5.10.2</junit.version>
+		<jakarta.xml.version>4.0.2</jakarta.xml.version>
+		<jaxb.version>4.0.5</jaxb.version>
 	</properties>
 
 	<dependencies>
@@ -73,6 +75,17 @@
 			<groupId>jakarta.mail</groupId>
 			<artifactId>jakarta.mail-api</artifactId>
 			<version>${jakarta.mail.api.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<version>${jakarta.xml.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<version>${jaxb.version}</version>
 		</dependency>
 
 		<dependency>

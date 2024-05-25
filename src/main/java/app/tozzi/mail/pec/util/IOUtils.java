@@ -1,151 +1,144 @@
 package app.tozzi.mail.pec.util;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import app.tozzi.mail.pec.exception.PECParserException;
+import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
+import jakarta.activation.FileTypeMap;
+import jakarta.mail.Part;
+import jakarta.mail.internet.MimePart;
+import jakarta.mail.util.ByteArrayDataSource;
+
+import java.io.*;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileTypeMap;
-import javax.mail.Part;
-import javax.mail.internet.MimePart;
-import javax.mail.util.ByteArrayDataSource;
-
-import app.tozzi.mail.pec.exception.PECParserException;
-
 /**
- * 
  * @author biagio.tozzi
- *
  */
 public class IOUtils {
-	
-	private static final String UNNAMED_FILE_NAME = "unnamed_file";
-	private static final String UNNAMED_EMBEDDED_FILE_NAME = "embedded_unnamed_file";
 
-	public static DataSource createDataSource(MimePart part) throws IOException, PECParserException {
-		DataHandler dataHandler = MimeMessageUtils.getDataHandler(part);		
-		DataSource dataSource = dataHandler.getDataSource();
-		String fileName = MimeMessageUtils.getFileName(part);
-		fileName = fileName != null && !fileName.trim().isEmpty() ? MimeMessageUtils.decodeText(fileName) : getName(part);
-		String contentType = getBaseMimeType(dataSource, fileName);
-		byte[] content = getContent(dataSource.getInputStream());
-		ByteArrayDataSource result = new ByteArrayDataSource(content, contentType);
-		result.setName(fileName);
-		return result;
-	}
+    private static final String UNNAMED_FILE_NAME = "unnamed_file";
+    private static final String UNNAMED_EMBEDDED_FILE_NAME = "embedded_unnamed_file";
 
-	private static String getBaseMimeType(DataSource dataSource, String fileName) {
-		String fullMimeType = dataSource.getContentType();
+    public static DataSource createDataSource(MimePart part) throws IOException, PECParserException {
+        DataHandler dataHandler = MimeMessageUtils.getDataHandler(part);
+        DataSource dataSource = dataHandler.getDataSource();
+        String fileName = MimeMessageUtils.getFileName(part);
+        fileName = fileName != null && !fileName.trim().isEmpty() ? MimeMessageUtils.decodeText(fileName) : getName(part);
+        String contentType = getBaseMimeType(dataSource, fileName);
+        byte[] content = getContent(dataSource.getInputStream());
+        ByteArrayDataSource result = new ByteArrayDataSource(content, contentType);
+        result.setName(fileName);
+        return result;
+    }
 
-		if (fullMimeType == null || fullMimeType.trim().isEmpty()) {
-			return getFileMimeType(fileName);
-		}
+    private static String getBaseMimeType(DataSource dataSource, String fileName) {
+        String fullMimeType = dataSource.getContentType();
 
-		final int pos = fullMimeType.indexOf(';');
-		if (pos >= 0) {
-			return fullMimeType.substring(0, pos);
-		}
-		return fullMimeType;
-	}
-	
-	private static String getFileMimeType(String fileName) {
-		
-		String result = null;
-		int dotPos = fileName.lastIndexOf(".");
-		
-		if (dotPos < 0) {
-			result = MimeTypesUtil.CONTENT_TYPE_OCETSTREAM;
-			
-		} else {
-			String fileExt = fileName.substring(dotPos + 1);
-			
-			if (fileExt.length() == 0) {
-				result = MimeTypesUtil.CONTENT_TYPE_OCETSTREAM;
-				
-			} else {
-				result = MimeTypesUtil.guessMimeType(fileExt);
-			}
-		}
-		
-		if (MimeTypesUtil.CONTENT_TYPE_OCETSTREAM.equals(result)) {
-			result = FileTypeMap.getDefaultFileTypeMap().getContentType(fileName);
-		}
-		
-		return result != null ? result : MimeTypesUtil.CONTENT_TYPE_OCETSTREAM;
-	}
+        if (fullMimeType == null || fullMimeType.trim().isEmpty()) {
+            return getFileMimeType(fileName);
+        }
 
-	private static String getName(Part part) throws UnsupportedEncodingException, PECParserException {
+        final int pos = fullMimeType.indexOf(';');
+        if (pos >= 0) {
+            return fullMimeType.substring(0, pos);
+        }
+        return fullMimeType;
+    }
 
-		String fileName = MimeMessageUtils.getFileName(part);
+    private static String getFileMimeType(String fileName) {
 
-		if (fileName != null && !fileName.trim().isEmpty())
-			return MimeMessageUtils.decodeText(fileName);
+        String result = null;
+        int dotPos = fileName.lastIndexOf(".");
 
-		String extension = getExtension(part);
-		extension = extension != null && !extension.trim().isEmpty() ? ("." + extension) : "";
-		
-		if (Part.INLINE.equals(MimeMessageUtils.getDisposition(part))) {
-			return UNNAMED_EMBEDDED_FILE_NAME + extension;
-		}
+        if (dotPos < 0) {
+            result = MimeTypesUtil.CONTENT_TYPE_OCETSTREAM;
 
-		return UNNAMED_FILE_NAME + extension;
-	}
+        } else {
+            String fileExt = fileName.substring(dotPos + 1);
 
-	private static byte[] getContent(final InputStream is) throws IOException {
-		byte[] result;
-		final ByteArrayOutputStream os = new ByteArrayOutputStream();
-		fastCopy(is, os);
-		result = os.toByteArray();
-		return result;
-	}
+            if (fileExt.length() == 0) {
+                result = MimeTypesUtil.CONTENT_TYPE_OCETSTREAM;
 
-	public static void fastCopy(final InputStream src, final OutputStream dest) throws IOException {
-		final ReadableByteChannel inputChannel = Channels.newChannel(src);
-		final WritableByteChannel outputChannel = Channels.newChannel(dest);
-		fastCopy(inputChannel, outputChannel);
-		inputChannel.close();
-		outputChannel.close();
-	}
+            } else {
+                result = MimeTypesUtil.guessMimeType(fileExt);
+            }
+        }
 
-	private static void fastCopy(final ReadableByteChannel src, final WritableByteChannel dest) throws IOException {
-		final ByteBuffer buffer = ByteBuffer.allocateDirect(16 * 1024);
+        if (MimeTypesUtil.CONTENT_TYPE_OCETSTREAM.equals(result)) {
+            result = FileTypeMap.getDefaultFileTypeMap().getContentType(fileName);
+        }
 
-		while (src.read(buffer) != -1) {
-			((Buffer) buffer).flip();
-			dest.write(buffer);
-			buffer.compact();
-		}
+        return result != null ? result : MimeTypesUtil.CONTENT_TYPE_OCETSTREAM;
+    }
 
-		((Buffer) buffer).flip();
+    private static String getName(Part part) throws UnsupportedEncodingException, PECParserException {
 
-		while (buffer.hasRemaining()) {
-			dest.write(buffer);
-		}
-	}
-	
-	private static String getExtension(Part part) {
+        String fileName = MimeMessageUtils.getFileName(part);
 
-		String fullMimeType;
+        if (fileName != null && !fileName.trim().isEmpty())
+            return MimeMessageUtils.decodeText(fileName);
 
-		try {
-			fullMimeType = MimeMessageUtils.getContentType(part);
+        String extension = getExtension(part);
+        extension = extension != null && !extension.trim().isEmpty() ? ("." + extension) : "";
 
-		} catch (PECParserException e) {
-			return null;
-		}
-		
-		if (fullMimeType != null && !fullMimeType.trim().isEmpty()) {
-			return MimeTypesUtil.guessExtension(fullMimeType);
-		}
+        if (Part.INLINE.equals(MimeMessageUtils.getDisposition(part))) {
+            return UNNAMED_EMBEDDED_FILE_NAME + extension;
+        }
 
-		return null;
-	}
+        return UNNAMED_FILE_NAME + extension;
+    }
+
+    private static byte[] getContent(final InputStream is) throws IOException {
+        byte[] result;
+        final ByteArrayOutputStream os = new ByteArrayOutputStream();
+        fastCopy(is, os);
+        result = os.toByteArray();
+        return result;
+    }
+
+    public static void fastCopy(final InputStream src, final OutputStream dest) throws IOException {
+        final ReadableByteChannel inputChannel = Channels.newChannel(src);
+        final WritableByteChannel outputChannel = Channels.newChannel(dest);
+        fastCopy(inputChannel, outputChannel);
+        inputChannel.close();
+        outputChannel.close();
+    }
+
+    private static void fastCopy(final ReadableByteChannel src, final WritableByteChannel dest) throws IOException {
+        final ByteBuffer buffer = ByteBuffer.allocateDirect(16 * 1024);
+
+        while (src.read(buffer) != -1) {
+            ((Buffer) buffer).flip();
+            dest.write(buffer);
+            buffer.compact();
+        }
+
+        ((Buffer) buffer).flip();
+
+        while (buffer.hasRemaining()) {
+            dest.write(buffer);
+        }
+    }
+
+    private static String getExtension(Part part) {
+
+        String fullMimeType;
+
+        try {
+            fullMimeType = MimeMessageUtils.getContentType(part);
+
+        } catch (PECParserException e) {
+            return null;
+        }
+
+        if (fullMimeType != null && !fullMimeType.trim().isEmpty()) {
+            return MimeTypesUtil.guessExtension(fullMimeType);
+        }
+
+        return null;
+    }
 }

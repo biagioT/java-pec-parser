@@ -1,6 +1,6 @@
 package app.tozzi.mail.pec.model;
 
-import javax.activation.DataSource;
+import jakarta.activation.DataSource;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
