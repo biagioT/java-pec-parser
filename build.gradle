@@ -1,0 +1,122 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+    id 'io.github.gradle-nexus.publish-plugin' version '2.0.0'
+}
+
+group = 'app.tozzi'
+version = '5.0.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+    withSourcesJar()
+    withJavadocJar()
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Java Mail
+    implementation 'jakarta.mail:jakarta.mail-api:2.1.3'
+    implementation 'org.eclipse.angus:angus-mail:2.0.3'
+
+    // Java Activation
+    implementation 'jakarta.activation:jakarta.activation-api:2.1.3'
+    runtimeOnly 'org.eclipse.angus:angus-activation:2.0.2'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.34'
+    annotationProcessor 'org.projectlombok:lombok:1.18.34'
+
+    // Log
+    implementation 'org.slf4j:slf4j-api:2.0.16'
+
+    // Utils
+    implementation 'org.apache.commons:commons-lang3:3.17.0'
+
+    // XML
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2'
+
+    // Test
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.3'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.mockito:mockito-core:5.14.2'
+    testImplementation 'org.projectlombok:lombok:1.18.34'
+    testCompileOnly 'org.projectlombok:lombok:1.18.34'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.34'
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            group = 'app.tozzi'
+            artifactId = 'pec-parser'
+            version = "5.0.0"
+            from components.java
+            pom {
+                name = 'pec-parser'
+                description = 'Utility per l\'elaborazione di messaggi di Posta Elettronica Certificata (e messaggi di posta ordinaria)'
+                url = 'https://www.tozzi.app'
+
+                licenses {
+                    license {
+                        name = 'Apache License 2.0'
+                        url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'biagio.tozzi'
+                        name = 'Biagio Placido Tozzi'
+                        email = 'biagio.tozzi@gmail.com'
+                        url = 'https://www.tozzi.app'
+                    }
+                }
+
+                scm {
+                    connection = 'scm:git:git://github.com:biagioT/java-pec-parser.git'
+                    developerConnection = 'scm:git:ssh://github.com:biagioT/java-pec-parser.git'
+                    url = 'https://github.com/biagioT/java-pec-parser/tree/main'
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name "ossrh"
+            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = project.findProperty("sonatypeUsername") ?: System.getenv("SONATYPE_USER")
+                password = project.findProperty("sonatypePassword") ?: System.getenv("SONATYPE_TOKEN")
+            }
+        }
+    }
+}
+
+signing {
+    useGpgCmd()
+    sign publishing.publications.maven
+}
+
+javadoc {
+    options.addBooleanOption('html5', true)
+    options.encoding = 'UTF-8'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    from sourceSets.main.allSource
+}

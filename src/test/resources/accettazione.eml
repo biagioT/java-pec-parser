@@ -1,0 +1,73 @@
+Return-Path: <posta-certificata@fakepec.it>
+Delivered-To: sender@fakepec.it
+Subject: ACCETTAZIONE: Test PEC
+X-Riferimento-Message-ID: <SN05IE$951DEC16C1CFD3E4FD8FF1B1D24A99AE@fakepec.it>
+Date: Fri, 15 Nov 2024 18:20:38 +0100
+To: sender@fakepec.it
+X-Ricevuta: accettazione
+From: posta-certificata@fakepec.it
+MIME-Version: 1.0
+Content-Type: multipart/signed; protocol="application/x-pkcs7-signature"; micalg="sha1"; boundary="----76F9CFD0D4B5B34499C167119D5A1AEC"
+Message-ID: <opec210312.20241115182038.288127.606.1.771.53@fakepec.it>
+
+This is an S/MIME signed message
+
+------76F9CFD0D4B5B34499C167119D5A1AEC
+Content-Type: multipart/mixed; boundary="----------=_1731691238-288127-3078"
+Content-Transfer-Encoding: binary
+MIME-Version: 1.0
+
+------------=_1731691238-288127-3078
+Content-Type: multipart/alternative;
+ boundary="----------=_1731691238-288127-3079"
+Content-Transfer-Encoding: binary
+
+------------=_1731691238-288127-3079
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+-- Ricevuta di accettazione del messaggio indirizzato a rec@fakepec.=
+it ("posta certificata") --
+
+Il giorno 15/11/2024 alle ore 18:20:38 (+0100) il messaggio con Oggetto
+"Test PEC" inviato da "sender@fakepec.it"
+ed indirizzato a:
+rec@fakepec.it ("posta certificata")
+=E8 stato accettato dal sistema ed inoltrato.
+Identificativo del messaggio: opec210312.20241115182038.288127.606.1.53@pec=
+.fakepec.it
+L'allegato daticert.xml contiene informazioni di servizio sulla trasmissione
+
+------------=_1731691238-288127-3079
+Content-Type: text/html; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head><title>Ricevuta di accettazione</title></head>
+<body>
+<h3>Ricevuta di accettazione</h3>
+<hr><br>
+Il giorno 15/11/2024 alle ore 18:20:38 (+0100) il messaggio<br>
+&quot;Test PEC&quot; proveniente da &quot;sender@fakepec.it&quot;<br>
+ed indirizzato a:<br>
+rec@fakepec.it (&quot;posta certificata&quot;)
+<br><br>
+Il messaggio &egrave; stato accettato dal sistema ed inoltrato.<br>
+Identificativo messaggio: opec210312.20241115182038.288127.606.1.53@fakepec=
+.it<br>
+</body>
+</html>
+
+------------=_1731691238-288127-3079--
+
+------------=_1731691238-288127-3078
+Content-Type: application/xml; name="daticert.xml"
+Content-Disposition: inline; filename="daticert.xml"
+Content-Transfer-Encoding: base64
+
+PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHBvc3RhY2VydCB0aXBvPSJhY2NldHRhemlvbmUiIGVycm9yZT0ibmVzc3VubyI+CiAgICA8aW50ZXN0YXppb25lPgogICAgICAgIDxtaXR0ZW50ZT5zZW5kZXJAZmFrZXBlYy5pdDwvbWl0dGVudGU+CiAgICAgICAgPGRlc3RpbmF0YXJpIHRpcG89ImNlcnRpZmljYXRvIj5yZWNAZmFrZXBlYy5pdDwvZGVzdGluYXRhcmk+CiAgICAgICAgPHJpc3Bvc3RlPnNlbmRlckBmYWtlcGVjLml0PC9yaXNwb3N0ZT4KICAgICAgICA8b2dnZXR0bz5UZXN0IFBFQzwvb2dnZXR0bz4KICAgIDwvaW50ZXN0YXppb25lPgogICAgPGRhdGk+CiAgICAgICAgPGdlc3RvcmUtZW1pdHRlbnRlPkZBS0VQRUMgUEVDIFMucC5BLjwvZ2VzdG9yZS1lbWl0dGVudGU+CiAgICAgICAgPGRhdGEgem9uYT0iKzAxMDAiPgogICAgICAgICAgICA8Z2lvcm5vPjE1LzExLzIwMjQ8L2dpb3Jubz4KICAgICAgICAgICAgPG9yYT4xODoyMDozODwvb3JhPgogICAgICAgIDwvZGF0YT4KICAgICAgICA8aWRlbnRpZmljYXRpdm8+b3BlYzIxMDMxMi4yMDI0MTExNTE4MjAzOC4yODgxMjcuNjA2LjEuNTNAZmFrZXBlYy5pdDwvaWRlbnRpZmljYXRpdm8+CiAgICAgICAgPG1zZ2lkPiZsdDtTTjA1SUUkOTUxREVDMTZDMUNGRDNFNEZEOEZGMUIxRDI0QTk5QUVAZmFrZXBlYy5pdCZndDs8L21zZ2lkPgogICAgPC9kYXRpPgo8L3Bvc3RhY2VydD4K
+
+------------=_1731691238-288127-3078--
+
