@@ -54,4 +54,4 @@ Può essere di tipo:
 
 ### Licenza
 
-- [ ] La licenza è disponibile [qui](https://github.com/biagioT/java-pec-parser/blob/master/LICENSE).
+- [ ] La licenza è disponibile [qui](https://github.com/biagioT/java-pec-parser/blob/main/LICENSE).

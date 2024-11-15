@@ -139,7 +139,7 @@ localisation:
     - en
   localisationReady: true
 logo: |-
-  https://raw.githubusercontent.com/biagioT/java-pec-parser/master/logo.png
+  https://raw.githubusercontent.com/biagioT/java-pec-parser/main/logo.png
 maintenance:
   contacts:
     - email: biagio.tozzi@gmail.com
