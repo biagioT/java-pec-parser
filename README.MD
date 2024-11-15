@@ -41,9 +41,9 @@ Attraverso uno dei seguenti metodi:
 
 #### 3. `ParsedEntity`
 Può essere di tipo:
-- [ ] `PEC`: nel caso in cui il messaggio rappresenta una PEC
-- [ ] `PECReceipt`: nel caso in cui il messaggio rappresenta una ricevuta PEC
-- [ ] `Mail`: nel caso in cui il messaggio rappresenta una semplice mail di posta ordinaria
+- [ ] `PEC`: se il messaggio rappresenta una PEC
+- [ ] `PECReceipt`: se il messaggio rappresenta una ricevuta PEC
+- [ ] `Mail`: se il messaggio rappresenta una semplice mail di posta ordinaria
 
 ### Altro
 - [ ] La libreria supporta l'elaborazione di messaggi di posta ordinaria con codifica  [UUencode](https://en.wikipedia.org/wiki/Uuencoding)

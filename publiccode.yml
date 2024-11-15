@@ -89,11 +89,11 @@ description:
 
       ++Può essere di tipo:
 
-      - `PEC`: nel caso in cui il messaggio rappresenta una PEC
+      - `PEC`: se il messaggio rappresenta una PEC
 
-      - `PECReceipt`: nel caso in cui il messaggio rappresenta una ricevuta PEC
+      - `PECReceipt`: se il messaggio rappresenta una ricevuta PEC
 
-      - `Mail`: nel caso in cui il messaggio rappresenta una semplice mail di
+      - `Mail`: se il messaggio rappresenta una semplice mail di
       posta ordinaria
 
 
