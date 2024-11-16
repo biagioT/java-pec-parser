@@ -8,8 +8,19 @@ import jakarta.mail.internet.MimePart;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+/**
+ * Delivery Status management
+ *
+ * @author Biagio Tozzi
+ */
 public class DeliveryStatusHandler {
 
+    /**
+     * Extracts a {@link DeliveryStatus} object from {@link MimePart} part
+     *
+     * @param part
+     * @return {@link DeliveryStatus} object with delivery status info
+     */
     public static DeliveryStatus loadDeliveryStatus(MimePart part) {
 
         var deliveryStatus = new DeliveryStatus();

@@ -2,6 +2,12 @@ package app.tozzi.model;
 
 import lombok.Data;
 
+/**
+ * @param <A>
+ * @param <B>
+ *
+ * @author Biagio Tozzi
+ */
 @Data
 public class DataSourcePair<A, B> {
 

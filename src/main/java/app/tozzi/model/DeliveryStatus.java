@@ -6,6 +6,11 @@ import lombok.Getter;
 
 import java.util.stream.Stream;
 
+/**
+ * Delivery Status info
+ *
+ * @author Biagio Tozzi
+ */
 @Data
 public class DeliveryStatus {
 

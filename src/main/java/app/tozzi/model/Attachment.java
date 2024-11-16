@@ -4,6 +4,11 @@ import jakarta.activation.DataSource;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * Mail/PEC Attachment
+ *
+ * @author Biagio Tozzi
+ */
 @Data
 @Builder
 public class Attachment {

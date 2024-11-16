@@ -3,6 +3,11 @@ package app.tozzi.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * PEC Receipt
+ *
+ * @author Biagio Tozzi
+ */
 @Data
 @NoArgsConstructor
 public class PECReceipt implements ParsedEntity {

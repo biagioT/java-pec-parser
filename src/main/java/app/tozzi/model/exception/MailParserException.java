@@ -1,5 +1,8 @@
 package app.tozzi.model.exception;
 
+/**
+ * @author Biagio Tozzi
+ */
 public class MailParserException extends RuntimeException {
 
     public MailParserException(String message, Throwable cause) {

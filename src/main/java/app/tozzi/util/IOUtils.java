@@ -16,12 +16,32 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 
+/**
+ * IO Utilities
+ *
+ * @author Biagio Tozzi
+ */
 public class IOUtils {
 
+    /**
+     * Creates a {@link DataSource} from {@link MimePart}
+     *
+     * @param part {@link MimePart}
+     * @return {@link DataSource}
+     * @throws IOException
+     */
     public static DataSource createDataSource(MimePart part) throws IOException {
         return createDataSource(part, null);
     }
 
+    /**
+     * Creates a {@link DataSource} from {@link InputStream} and file name
+     *
+     * @param inputStream {@link InputStream}
+     * @param name File name
+     * @return {@link DataSource}
+     * @throws IOException
+     */
     public static DataSource createDataSource(InputStream inputStream, String name) throws IOException {
         byte[] content = getContent(inputStream);
         name = name == null ? "unknown_name" : name;
@@ -30,6 +50,14 @@ public class IOUtils {
         return result;
     }
 
+    /**
+     * Creates a {@link DataSource} from {@link MimePart} and file name
+     *
+     * @param part {@link MimePart}
+     * @param name File name
+     * @return {@link DataSource}
+     * @throws IOException
+     */
     public static DataSource createDataSource(MimePart part, String name) throws IOException {
         var dataSource = MimeMessageUtils.getDataHandler(part).getDataSource();
         byte[] content = getContent(dataSource.getInputStream());
@@ -37,6 +65,21 @@ public class IOUtils {
         var result = new ByteArrayDataSource(content, getBaseMimeType(dataSource, fileName));
         result.setName(fileName);
         return result;
+    }
+
+    /**
+     * Copy {@link InputStream} into {@link OutputStream} with buffer of 16KB
+     *
+     * @param src {@link InputStream}
+     * @param dest {@link OutputStream}
+     * @throws IOException
+     */
+    public static void fastCopy(InputStream src, OutputStream dest) throws IOException {
+        var inputChannel = Channels.newChannel(src);
+        var outputChannel = Channels.newChannel(dest);
+        fastCopy(inputChannel, outputChannel);
+        inputChannel.close();
+        outputChannel.close();
     }
 
     private static String loadNameForDataSource(MimePart part) {
@@ -92,14 +135,6 @@ public class IOUtils {
         fastCopy(is, os);
         result = os.toByteArray();
         return result;
-    }
-
-    public static void fastCopy(InputStream src, OutputStream dest) throws IOException {
-        var inputChannel = Channels.newChannel(src);
-        var outputChannel = Channels.newChannel(dest);
-        fastCopy(inputChannel, outputChannel);
-        inputChannel.close();
-        outputChannel.close();
     }
 
     private static void fastCopy(ReadableByteChannel src, WritableByteChannel dest) throws IOException {

@@ -13,8 +13,20 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
+/**
+ * @author Biagio Tozzi
+ */
 public class XMLUtils {
 
+    /**
+     * Extracts attribute value from {@link Document}
+     *
+     * @param doc document
+     * @param path path
+     * @param attributeName attribute
+     * @return attribute value
+     * @throws XPathExpressionException
+     */
     public static Optional<String> getAttribute(Document doc, String path, String attributeName) throws XPathExpressionException {
 
         return getNodes(doc, path).stream()
@@ -31,6 +43,15 @@ public class XMLUtils {
                 .or(Optional::empty);
     }
 
+    /**
+     * Extracts text content and node value of attribute from {@link Document}
+     *
+     * @param document document
+     * @param path path
+     * @param attribute attribute
+     * @return text and attribute
+     * @throws XPathExpressionException
+     */
     public static Map<String, String> getTextAndAttribute(Document document, String path, String attribute) throws XPathExpressionException {
         var result = new HashMap<String, String>();
         var nodes = getNodes(document, path);
@@ -52,6 +73,14 @@ public class XMLUtils {
         return result;
     }
 
+    /**
+     * Extracts text content from {@link Document}
+     *
+     * @param document document
+     * @param path path
+     * @return text attribute
+     * @throws XPathExpressionException
+     */
     public static Optional<String> getTextContent(Document document, String path) throws XPathExpressionException {
         return getNodes(document, path).stream()
                 .findFirst()

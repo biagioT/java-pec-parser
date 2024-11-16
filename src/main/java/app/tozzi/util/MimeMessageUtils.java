@@ -22,12 +22,23 @@ import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Stream;
 
+/**
+ * MIME Utilities
+ *
+ * @author Biagio Tozzi
+ */
 @Slf4j
 public class MimeMessageUtils {
 
     private static final String DATE_FORMAT = "YYYYMMDDHHMMSS";
     private static final ZoneId ZI = ZoneId.of("Europe/Rome");
 
+    /**
+     * Extracts message ID from {@link MimeMessage}
+     *
+     * @param mimeMessage {@link MimeMessage}
+     * @return message ID
+     */
     public static String getMessageID(MimeMessage mimeMessage) {
 
         try {
@@ -45,6 +56,12 @@ public class MimeMessageUtils {
 
     }
 
+    /**
+     * Extracts subject from {@link MimeMessage}
+     *
+     * @param mimeMessage {@link MimeMessage}
+     * @return subject
+     */
     public static String getSubject(MimeMessage mimeMessage) {
 
         try {
@@ -56,6 +73,12 @@ public class MimeMessageUtils {
 
     }
 
+    /**
+     * Extracts received date from {@link MimeMessage}
+     *
+     * @param mimeMessage {@link MimeMessage}
+     * @return received date
+     */
     public static Date getReceivedDate(MimeMessage mimeMessage) {
 
         try {
@@ -67,6 +90,12 @@ public class MimeMessageUtils {
 
     }
 
+    /**
+     * Extracts sent date from {@link MimeMessage}
+     *
+     * @param mimeMessage {@link MimeMessage}
+     * @return sent date
+     */
     public static Date getSentDate(MimeMessage mimeMessage) {
 
         try {
@@ -78,6 +107,12 @@ public class MimeMessageUtils {
 
     }
 
+    /**
+     * Extracts BCC recipients from {@link MimeMessage}
+     *
+     * @param mimeMessage {@link MimeMessage}
+     * @return BCC Recipients
+     */
     public static List<Address> getBCC(MimeMessage mimeMessage) {
 
         try {
@@ -89,6 +124,12 @@ public class MimeMessageUtils {
 
     }
 
+    /**
+     * Extracts CC recipients from {@link MimeMessage}
+     *
+     * @param mimeMessage {@link MimeMessage}
+     * @return CC Recipients
+     */
     public static List<Address> getCC(MimeMessage mimeMessage) {
 
         try {
@@ -100,6 +141,12 @@ public class MimeMessageUtils {
 
     }
 
+    /**
+     * Extracts TO recipients from {@link MimeMessage}
+     *
+     * @param mimeMessage {@link MimeMessage}
+     * @return TO Recipients
+     */
     public static List<Address> getTo(MimeMessage mimeMessage) {
 
         try {
@@ -111,6 +158,12 @@ public class MimeMessageUtils {
 
     }
 
+    /**
+     * Extracts from address from {@link MimeMessage}
+     *
+     * @param mimeMessage {@link MimeMessage}
+     * @return from address
+     */
     public static List<Address> getFrom(MimeMessage mimeMessage) {
 
         try {
@@ -122,6 +175,13 @@ public class MimeMessageUtils {
 
     }
 
+    /**
+     * Extracts a {@link MimeMessage} single header value from key headerKey
+     *
+     * @param mimeMessage {@link MimeMessage}
+     * @param headerKey Header key
+     * @return Header value
+     */
     public static String getHeader(MimeMessage mimeMessage, String headerKey) {
 
         try {
@@ -132,6 +192,13 @@ public class MimeMessageUtils {
         }
     }
 
+    /**
+     * Extracts {@link MimeMessage} header values from key headerKey
+     *
+     * @param mimeMessage {@link MimeMessage}
+     * @param headerKey Header key
+     * @return Header values
+     */
     public static String[] getHeaders(MimeMessage mimeMessage, String headerKey) {
 
         try {
@@ -142,11 +209,25 @@ public class MimeMessageUtils {
         }
     }
 
+    /**
+     * Extracts a single {@link Part} header value of key headerKey
+     *
+     * @param part {@link Part}
+     * @param headerKey Header key
+     * @return Header value
+     */
     public static String getHeaderValue(String headerKey, Part part) {
         var values = MimeMessageUtils.getHeaderValues(headerKey, part);
         return values == null || values.isEmpty() ? null : values.get(0);
     }
 
+    /**
+     * Extracts {@link Part} header values of key headerKey
+     *
+     * @param part {@link Part}
+     * @param headerKey Header key
+     * @return Header values
+     */
     public static List<String> getHeaderValues(String headerKey, Part part) {
 
         try {
@@ -164,6 +245,12 @@ public class MimeMessageUtils {
 
     }
 
+    /**
+     * Retrieve content type of {@link Part}
+     *
+     * @param part {@link Part}
+     * @return Content Type
+     */
     public static String getContentType(Part part) {
 
         try {
@@ -175,6 +262,12 @@ public class MimeMessageUtils {
 
     }
 
+    /**
+     * Retrieve disposition of {@link Part}
+     *
+     * @param part {@link Part}
+     * @return disposition
+     */
     public static String getDisposition(Part part) {
 
         try {
@@ -185,6 +278,12 @@ public class MimeMessageUtils {
         }
     }
 
+    /**
+     * Retrieve count of {@link Multipart}
+     *
+     * @param multiPart {@link Multipart}
+     * @return count
+     */
     public static int getCount(Multipart multiPart) {
 
         try {
@@ -195,6 +294,12 @@ public class MimeMessageUtils {
         }
     }
 
+    /**
+     * Retrieve file name of {@link Part}
+     *
+     * @param part {@link Part}
+     * @return file name
+     */
     public static String getFileName(Part part) {
         try {
             return part.getFileName();
@@ -204,6 +309,13 @@ public class MimeMessageUtils {
         }
     }
 
+    /**
+     * Extracts index-th {@link BodyPart} of {@link Multipart} part
+     *
+     * @param multiPart {@link Multipart}
+     * @param index part index
+     * @return {@link BodyPart}
+     */
     public static BodyPart getBodyPart(Multipart multiPart, int index) {
 
         try {
@@ -226,6 +338,12 @@ public class MimeMessageUtils {
         }
     }
 
+    /**
+     * Extracts content of {@link Part}
+     *
+     * @param part {@link Part}
+     * @return content
+     */
     public static Object getContent(Part part) {
 
         try {
@@ -237,6 +355,13 @@ public class MimeMessageUtils {
 
     }
 
+    /**
+     * Check that the {@link Part} is of the mimeType
+     *
+     * @param part {@link Part}
+     * @param mimeType Mime type
+     * @return true/false
+     */
     public static boolean isMimeType(Part part, String mimeType) {
 
         try {
@@ -247,6 +372,12 @@ public class MimeMessageUtils {
         }
     }
 
+    /**
+     * Extracts {@link DataHandler} from {@link Part}
+     *
+     * @param part {@link Part}
+     * @return {@link DataHandler}
+     */
     public static DataHandler getDataHandler(Part part) {
 
         try {
@@ -257,6 +388,12 @@ public class MimeMessageUtils {
         }
     }
 
+    /**
+     * Decode text
+     *
+     * @param text
+     * @return decoded text
+     */
     public static String decodeText(String text) {
 
         try {
@@ -267,6 +404,13 @@ public class MimeMessageUtils {
         }
     }
 
+    /**
+     * Decode stream {@link InputStream} type encoded
+     *
+     * @param inputStream {@link InputStream}
+     * @param type encoding type
+     * @return Decoded stream
+     */
     public static InputStream decodeStream(InputStream inputStream, String type) {
 
         try {
@@ -277,6 +421,13 @@ public class MimeMessageUtils {
         }
     }
 
+    /**
+     * Creates {@link MimeMessage} from {@link InputStream}
+     *
+     * @param inputStream {@link InputStream}
+     * @param properties {@link Properties}
+     * @return MIME Message
+     */
     public static MimeMessage createMimeMessage(InputStream inputStream, Properties properties) {
 
         try {
@@ -287,6 +438,12 @@ public class MimeMessageUtils {
         }
     }
 
+    /**
+     * Extracts all headers from {@link MimeMessage}
+     *
+     * @param mimeMessage {@link MimeMessage}
+     * @return all headers (key, values)
+     */
     public static Enumeration<Header> getAllHeaders(MimeMessage mimeMessage) {
         try {
             return mimeMessage.getAllHeaders();
@@ -295,8 +452,8 @@ public class MimeMessageUtils {
             throw new MailParserException("Error reading all headers", e);
         }
     }
-
-    public static String getUniqueMessageID(MimeMessage mimeMessage) throws NoSuchAlgorithmException, MessagingException {
+    
+    private static String getUniqueMessageID(MimeMessage mimeMessage) throws NoSuchAlgorithmException, MessagingException {
 
         var res = new StringBuilder();
         DateFormat df = new SimpleDateFormat(DATE_FORMAT);

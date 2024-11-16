@@ -23,28 +23,72 @@ import java.util.Spliterators;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+/**
+ * Main core class that offers email/PEC extraction
+ *
+ * @author Biagio Tozzi
+ */
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class MailParser {
 
     private Properties properties;
     private boolean extractAllHeaders;
 
+    /**
+     * Default {@link MailParser} instance.
+     * <ul>
+     * <li>properties: System.getProperties(). System default properties</li>
+     * <li>extractAllHeaders: false. Not all additional headers will be extracted</li>
+     * </ul>
+     *
+     * @return {@link MailParser} instance
+     */
     public static MailParser getInstance() {
         return new MailParser(null, false);
     }
 
+    /**
+     * {@link MailParser} instance with custom properties
+     * <ul>
+     * <li>extractAllHeaders: false. Not all additional headers will be extracted</li>
+     * </ul>
+     *
+     * @return {@link MailParser} instance
+     */
     public static MailParser getInstance(Properties properties) {
         return new MailParser(properties, false);
     }
 
+    /**
+     * {@link MailParser} instance with the extraction of all the headers
+     *
+     * @return {@link MailParser} instance
+     */
     public static MailParser getInstance(boolean extractAllHeaders) {
         return new MailParser(null, extractAllHeaders);
     }
 
+    /**
+     * {@link MailParser} instance with the extraction of all the headers and custom properties
+     *
+     * @return {@link MailParser} instance
+     */
     public static MailParser getInstance(Properties properties, boolean extractAllHeaders) {
         return new MailParser(properties, extractAllHeaders);
     }
 
+    /**
+     * Extracts a {@link ParsedEntity} from a mail MIME message.<br>
+     * ParsedEntity can be:
+     * <ul>
+     * <li>{@link Mail}: simple mail</li>
+     * <li>{@link PEC}: Posta Elettronica Certificata - Italian certified electronic mail </li>
+     * <li>{@link PECReceipt}: Italian certified electronic mail receipt</li>
+     * </ul>
+     *
+     * @param mimeMessage {@link MimeMessage} mail MIME message
+     * @return {@link ParsedEntity}
+     */
     public ParsedEntity parse(MimeMessage mimeMessage) {
 
         var xTranspHeader = MimeMessageUtils.getHeader(mimeMessage, PECConstants.X_TRASPORTO);
@@ -58,6 +102,18 @@ public class MailParser {
         return parsedEntity;
     }
 
+    /**
+     * Extracts a {@link ParsedEntity} from a mail message.<br>
+     * ParsedEntity can be:
+     * <ul>
+     * <li>{@link Mail}: simple mail</li>
+     * <li>{@link PEC}: Posta Elettronica Certificata - Italian certified electronic mail </li>
+     * <li>{@link PECReceipt}: Italian certified electronic mail receipt</li>
+     * </ul>
+     *
+     * @param eml {@link File} mail eml MIME message
+     * @return {@link ParsedEntity}
+     */
     public ParsedEntity parse(File eml) {
 
         if (eml == null || !eml.exists()) {
@@ -72,6 +128,18 @@ public class MailParser {
         }
     }
 
+    /**
+     * Extracts a {@link ParsedEntity} from a mail message.<br>
+     * ParsedEntity can be:
+     * <ul>
+     * <li>{@link Mail}: simple mail</li>
+     * <li>{@link PEC}: Posta Elettronica Certificata - Italian certified electronic mail </li>
+     * <li>{@link PECReceipt}: Italian certified electronic mail receipt</li>
+     * </ul>
+     *
+     * @param eml {@link InputStream} eml mail mime message
+     * @return {@link ParsedEntity}
+     */
     public ParsedEntity parse(InputStream eml) {
         return parse(MimeMessageUtils.createMimeMessage(eml, properties));
     }
@@ -131,9 +199,9 @@ public class MailParser {
         return extractContent(mail, mimeMessage, isPEC, isPECReceipt, properties, extractAllHeaders);
     }
 
-    private static ParsedEntity extractContent(Mail mail, MimePart part, boolean isPEC, boolean isPECReceipt, Properties properties, boolean extractAllHeaders) {
+    private static ParsedEntity extractContent(Mail mail, MimeMessage mimeMessage, boolean isPEC, boolean isPECReceipt, Properties properties, boolean extractAllHeaders) {
         DataSourcePair<DataSource, DataSource> dsp = isPEC || isPECReceipt ? new DataSourcePair<>() : null;
-        extractContent(mail, part, isPEC, isPECReceipt, dsp);
+        extractContent(mail, mimeMessage, isPEC, isPECReceipt, dsp);
 
         if (isPEC || isPECReceipt) {
 
@@ -143,7 +211,7 @@ public class MailParser {
 
             try {
                 var postaCertMimeMessage = dsp.getElementA() != null ? MimeMessageUtils.createMimeMessage(dsp.getElementA().getInputStream(), properties) : null;
-                return PECHandler.loadPEC(postaCertMimeMessage != null ? (Mail) extract(postaCertMimeMessage, false, false, properties, extractAllHeaders) : null, mail, dsp.getElementA(), dsp.getElementB());
+                return PECHandler.loadPEC(postaCertMimeMessage != null ? (Mail) extract(postaCertMimeMessage, false, false, properties, extractAllHeaders) : null, mail, dsp.getElementA(), dsp.getElementB(), mimeMessage);
 
             } catch (IOException e) {
                 throw new MailParserException(e);

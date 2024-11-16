@@ -1,6 +1,10 @@
 package app.tozzi.util;
 
+/**
+ * @author Biagio Tozzi
+ */
 public class MailConstants {
+
     public static final String DELIVERY_ACTION = "action";
     public static final String DELIVERY_STATUS = "status";
     public static final String DELIVERY_DIAGNOSTIC_CODE = "Diagnostic-Code";

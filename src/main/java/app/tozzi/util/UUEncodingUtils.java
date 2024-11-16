@@ -8,9 +8,20 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * UUEncoding/UUDecoding management
+ *
+ * @author Biagio Tozzi
+ */
 @Slf4j
 public class UUEncodingUtils {
 
+    /**
+     * Checks if the content is encoded with uuencode encoding
+     *
+     * @param content content
+     * @return true/false
+     */
     public static boolean containsEncodedAttachments(String content) {
 
         if (content == null)
@@ -35,6 +46,12 @@ public class UUEncodingUtils {
         return true;
     }
 
+    /**
+     * Decode and extracts uuencoded attachments
+     *
+     * @param content content
+     * @return attachments
+     */
     public static List<Attachment> decodeAttachments(String content) {
         var result = new ArrayList<Attachment>();
 
@@ -48,6 +65,12 @@ public class UUEncodingUtils {
         return result;
     }
 
+    /**
+     * Calculates uuencoding begin index
+     *
+     * @param content content
+     * @return index
+     */
     public static int getNextBeginIndex(String content) {
 
         if (content == null)

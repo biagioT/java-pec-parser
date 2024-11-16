@@ -9,13 +9,13 @@ Attenzione: le versioni precedenti alla 5.0.0 sono state rilasciato con groupId 
 <dependency>
 	<groupId>app.tozzi</groupId>
 	<artifactId>pec-parser</artifactId>
-	<version>5.0.0</version>
+	<version>5.0.1</version>
 </dependency>
 ```
 
 ##### Gradle
 ```
-implementation 'app.tozzi:pec-parser:5.0.0 
+implementation 'app.tozzi:pec-parser:5.0.1 
 ```
 
 ### Requisiti

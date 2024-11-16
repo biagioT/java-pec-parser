@@ -5,9 +5,11 @@ import app.tozzi.model.Mail;
 import app.tozzi.model.PEC;
 import app.tozzi.model.PECReceipt;
 import app.tozzi.model.exception.MailParserException;
+import app.tozzi.util.MimeMessageUtils;
 import app.tozzi.util.PECConstants;
 import app.tozzi.util.XMLUtils;
 import jakarta.activation.DataSource;
+import jakarta.mail.internet.MimeMessage;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -16,6 +18,11 @@ import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * PEC Management
+ *
+ * @author Biagio Tozzi
+ */
 public class PECHandler {
 
     private static final DocumentBuilderFactory DOCUMENT_BUILDER_FACTORY;
@@ -24,6 +31,12 @@ public class PECHandler {
         DOCUMENT_BUILDER_FACTORY = DocumentBuilderFactory.newInstance();
     }
 
+    /**
+     * Extracts PEC receipt from {@link PEC}
+     *
+     * @param pec {@link PEC}
+     * @return {@link PECReceipt}
+     */
     public static PECReceipt loadReceipt(PEC pec) {
 
         try {
@@ -37,7 +50,16 @@ public class PECHandler {
         }
     }
 
-    public static PEC loadPEC(Mail originalMessage, Mail envelope, DataSource postaCert, DataSource datiCert) {
+    /**
+     * Extracts a {@link PEC}
+     *
+     * @param originalMessage original mail message
+     * @param envelope        PEC envelope
+     * @param postaCert       postaCert.eml stream
+     * @param datiCert        datiCert.xml stream
+     * @return {@link PEC}
+     */
+    public static PEC loadPEC(Mail originalMessage, Mail envelope, DataSource postaCert, DataSource datiCert, MimeMessage mimeMessage) {
 
         try {
             var pec = new PEC();
@@ -46,6 +68,12 @@ public class PECHandler {
             pec.setEnvelope(envelope);
             pec.setOriginalMessage(originalMessage);
             pec.setCertificateData(loadCertificateData(datiCert.getInputStream()));
+            pec.setTransportHeaderValue(MimeMessageUtils.getHeader(mimeMessage, PECConstants.X_TRASPORTO));
+            pec.setReceiptHeaderValue(MimeMessageUtils.getHeader(mimeMessage, PECConstants.X_RICEVUTA));
+            pec.setReceiptTypeHeaderValue(MimeMessageUtils.getHeader(mimeMessage, PECConstants.X_TIPO_RICEVUTA));
+            pec.setSecurityCheckHeaderValue(MimeMessageUtils.getHeader(mimeMessage, PECConstants.X_VERIFICA_SICUREZZA));
+            pec.setErrorHeaderValue(MimeMessageUtils.getHeader(mimeMessage, PECConstants.X_TRASPORTO_ERRORE));
+            pec.setReferenceHeaderValue(MimeMessageUtils.getHeader(mimeMessage, PECConstants.X_RIFERIMENTO));
             return pec;
 
         } catch (Exception e) {
@@ -53,6 +81,16 @@ public class PECHandler {
         }
     }
 
+    /**
+     * Extracts datiCert.xml
+     *
+     * @param inputStream datiCert.xml stream
+     * @return {@link CertificateData}
+     * @throws ParserConfigurationException
+     * @throws IOException
+     * @throws SAXException
+     * @throws XPathExpressionException
+     */
     static CertificateData loadCertificateData(InputStream inputStream) throws ParserConfigurationException, IOException, SAXException, XPathExpressionException {
         var document = DOCUMENT_BUILDER_FACTORY.newDocumentBuilder().parse(inputStream);
         var certificateData = new CertificateData();

@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * @author Biagio Tozzi
+ */
 public class MimeTypesUtil {
 
     public static final String CONTENT_TYPE_OCTETSTREAM = "application/octet-stream";
@@ -962,6 +965,12 @@ public class MimeTypesUtil {
         mimeTypesMap.put("application/andrew-inset", List.of("ez"));
     }
 
+    /**
+     * Guess Mime type from file extension
+     *
+     * @param extension file extension
+     * @return Mime type
+     */
     public static String guessMimeType(String extension) {
 
         if (extension == null) {
@@ -1004,6 +1013,12 @@ public class MimeTypesUtil {
         return mimeTypes.get(0);
     }
 
+    /**
+     * Guess file extension from mime type
+     *
+     * @param fullMimeType Mime type
+     * @return file extension
+     */
     public static String guessExtension(String fullMimeType) {
         if (fullMimeType == null) {
             return null;

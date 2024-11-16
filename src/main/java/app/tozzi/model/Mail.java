@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Mail
+ *
+ * @author Biagio Tozzi
+ */
 @Data
 @EqualsAndHashCode(of = "messageID")
 @NoArgsConstructor

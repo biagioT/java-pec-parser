@@ -16,41 +16,39 @@ description:
         PEC e posta ordinaria
     genericName: PEC/Mail Parser
     longDescription: |
-      **PEC/Mail Parser
+      **PEC/Mail Parser**
 
-      **Libreria utility per l'elaborazione di messaggi di [Posta Elettronica
+      Libreria utility per l'elaborazione di messaggi di [Posta Elettronica
       Certificata](https://www.agid.gov.it/it/piattaforme/posta-elettronica-certificata)
       (PEC) e messaggi di posta ordinaria.
 
-
-
-      **Dipendenza progetto
-
-      **Attenzione: le versioni precedenti alla 5.0.0 sono state rilasciato con
+      **Dipendenza progetto**
+      Attenzione: le versioni precedenti alla 5.0.0 sono state rilasciato con
       groupId \`app.tozzi.mail\`
-
 
       _Maven_
 
       `<dependency>
+      
           <groupId>app.tozzi</groupId>
+      
           <artifactId>pec-parser</artifactId>
+      
           <version>5.0.0</version>
+      
       </dependency>`
 
 
       _Gradle_
 
-      `implementation 'app.tozzi:pec-parser:5.0.0 
-
-      `
+      `implementation 'app.tozzi:pec-parser:5.0.0`
 
       **Requisiti**
 
 
-      - [v0.0.1 - v4.0.0]: Java 8
+      - v0.0.1 - v4.0.0: Java 8
 
-      - [v5.0.0 - latest]: Java 17
+      - v5.0.0 - latest: Java 17
 
 
       ​
@@ -59,9 +57,9 @@ description:
 
       **Utilizzo**
 
-      ++1. Istanza di MailParser
+      1. Istanza di MailParser
 
-      ++Attraverso uno dei seguenti metodi:
+      Attraverso uno dei seguenti metodi:
 
 
       - `MailParser.getInstance()`
@@ -72,9 +70,9 @@ description:
 
       
 
-      ++2. Parsing
+      2. Parsing
 
-      ++Attraverso uno dei seguenti metodi:
+      Attraverso uno dei seguenti metodi:
 
       - `ParsedEntity parse(MimeMessage mimeMessage)`
 
@@ -85,9 +83,9 @@ description:
       - `ParsedEntity parse(MimeMessage mimeMessage)`
 
 
-      ++3. ParsedEntity
+      3. ParsedEntity
 
-      ++Può essere di tipo:
+      Può essere di tipo:
 
       - `PEC`: se il messaggio rappresenta una PEC
 
@@ -153,7 +151,7 @@ platforms:
   - linux
   - ios
   - android
-releaseDate: '2024-11-15'
+releaseDate: '2024-11-16'
 softwareType: standalone/web
-softwareVersion: 5.0.0
+softwareVersion: 5.0.1
 url: 'https://github.com/biagioT/java-pec-parser'

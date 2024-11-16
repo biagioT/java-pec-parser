@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'app.tozzi'
-version = '5.0.0'
+version = '5.0.1'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -59,7 +59,7 @@ publishing {
         maven(MavenPublication) {
             group = 'app.tozzi'
             artifactId = 'pec-parser'
-            version = "5.0.0"
+            version = "5.0.1"
             from components.java
             pom {
                 name = 'pec-parser'

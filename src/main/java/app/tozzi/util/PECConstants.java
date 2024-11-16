@@ -1,5 +1,8 @@
 package app.tozzi.util;
 
+/**
+ * @author Biagio Tozzi
+ */
 public class PECConstants {
 
     public static final String X_TRASPORTO = "X-Trasporto";

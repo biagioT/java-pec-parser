@@ -13,22 +13,82 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
 
+/**
+ * datiCert.xml representation
+ *
+ * @author Biagio Tozzi
+ */
 @Data
 public class CertificateData {
 
+    /**
+     * PEC type from {@value app.tozzi.util.PECConstants#DATICERT_POSTACERT_PATH} and {@value app.tozzi.util.PECConstants#DATICERT_IDENTIFICATIVO_TIPO_ATTRIBUTE}
+     */
     private PostaCertType type;
+
+    /**
+     * Sender field from {@value app.tozzi.util.PECConstants#DATICERT_MITTENTE_PATH}
+     */
     private String sender;
+
+    /**
+     * Recipients field from {@value app.tozzi.util.PECConstants#DATICERT_DESTINATARI_PATH} and {@value app.tozzi.util.PECConstants#DATICERT_DESTINATARI_TIPO_ATTRIBUTE}
+     */
     private List<PECRecipients> recipients;
+
+    /**
+     * Message ID field from {@value app.tozzi.util.PECConstants#DATICERT_MESSAGE_ID_PATH}
+     */
     private String messageID;
+
+    /**
+     * ID field from {@value app.tozzi.util.PECConstants#DATICERT_IDENTIFICATIVO_PATH}
+     */
     private String id;
+
+    /**
+     * Error field from {@value app.tozzi.util.PECConstants#DATICERT_POSTACERT_PATH} and {@value app.tozzi.util.PECConstants#DATICERT_POSTACERT_ERRORE_ATTRIBUTE}
+     */
     private PECError error;
+
+    /**
+     * Answers field from {@value app.tozzi.util.PECConstants#DATICERT_RISPOSTE_PATH}
+     */
     private String answers;
+
+    /**
+     * Subject field from {@value app.tozzi.util.PECConstants#DATICERT_OGGETTO_PATH}
+     */
     private String subject;
+
+    /**
+     * Issuer field from {@value app.tozzi.util.PECConstants#DATICERT_GESTORE_EMITTENTE_PATH}
+     */
     private String issuer;
+
+    /**
+     * Delivery field from {@value app.tozzi.util.PECConstants#DATICERT_CONSEGNA_PATH}
+     */
     private String delivery;
+
+    /**
+     * Receiving field from {@value app.tozzi.util.PECConstants#DATICERT_RICEZIONE_PATH}
+     */
     private String receiving;
+
+    /**
+     * Extended error field from {@value app.tozzi.util.PECConstants#DATICERT_ERRORE_ESTESO_PATH}
+     */
     private String extendedError;
+
+    /**
+     * Date field from {@value app.tozzi.util.PECConstants#DATICERT_DATA_PATH}, {@value app.tozzi.util.PECConstants#DATICERT_DATA_ZONA_ATTRIBUTE}, {@value app.tozzi.util.PECConstants#DATICERT_DATA_GIORNO_PATH} and {@value app.tozzi.util.PECConstants#DATICERT_DATA_ORA_PATH}
+     */
     private PECDate date;
+
+    /**
+     * Receipt type field from {@value app.tozzi.util.PECConstants#DATICERT_RICEVUTA_PATH} and {@value app.tozzi.util.PECConstants#DATICERT_RICEVUTA_TIPO_ATTRIBUTE}
+     */
     private ReceiptType receiptType;
 
     @Data
