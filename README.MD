@@ -31,13 +31,13 @@ Attraverso uno dei seguenti metodi:
 - [ ] `MailParser.getInstance()`
 - [ ] `MailParser.getInstance(Properties properties)`
 - [ ] `MailParser.getInstance(Properties properties, boolean extractAllHeaders)`
+- [ ] `MailParser.getInstance(boolean extractAllHeaders)`
 
 #### 2. Parsing
 Attraverso uno dei seguenti metodi:
 - [ ] `ParsedEntity parse(MimeMessage mimeMessage)`
 - [ ] `ParsedEntity parse(File eml)`
 - [ ] `ParsedEntity parse(InputStream inputStream)`
-- [ ] `ParsedEntity parse(MimeMessage mimeMessage)`
 
 #### 3. `ParsedEntity`
 Può essere di tipo:
