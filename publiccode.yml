@@ -68,7 +68,8 @@ description:
 
       - `MailParser.getInstance(Properties properties, boolean extractAllHeaders)`
 
-      
+      - `MailParser.getInstance(boolean extractAllHeaders)`
+
 
       2. Parsing
 
@@ -79,8 +80,6 @@ description:
       - `ParsedEntity parse(File eml)`
 
       - `ParsedEntity parse(InputStream inputStream)`
-
-      - `ParsedEntity parse(MimeMessage mimeMessage)`
 
 
       3. ParsedEntity
