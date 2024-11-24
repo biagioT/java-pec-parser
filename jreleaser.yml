@@ -29,8 +29,6 @@ release:
   github:
     skipRelease: true
     skipTag: true
-    enabled: false
-    draft: false
 
 deploy:
   maven:
