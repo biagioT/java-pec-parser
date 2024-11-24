@@ -1,5 +1,5 @@
 project:
-  name: jpa-search-helper
+  name: pec-parser
   description: Utility per l'elaborazione di messaggi di Posta Elettronica Certificata (e messaggi di posta ordinaria)
   longDescription: |
     Utility per l'elaborazione di messaggi di Posta Elettronica Certificata (e messaggi di posta ordinaria)
