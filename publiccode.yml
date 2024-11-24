@@ -29,19 +29,15 @@ description:
       _Maven_
 
       `<dependency>
-      
           <groupId>app.tozzi</groupId>
-      
           <artifactId>pec-parser</artifactId>
-      
-          <version>5.0.0</version>
-      
+          <version>5.0.2</version>
       </dependency>`
 
 
       _Gradle_
 
-      `implementation 'app.tozzi:pec-parser:5.0.0`
+      `implementation 'app.tozzi:pec-parser:5.0.2`
 
       **Requisiti**
 

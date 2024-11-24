@@ -1,0 +1,52 @@
+project:
+  name: jpa-search-helper
+  description: Utility per l'elaborazione di messaggi di Posta Elettronica Certificata (e messaggi di posta ordinaria)
+  longDescription: |
+    Utility per l'elaborazione di messaggi di Posta Elettronica Certificata (e messaggi di posta ordinaria)
+  inceptionYear: '2024'
+  links:
+    homepage: https://tozzi.app
+    documentation: https://tozzi.app
+    license: https://github.com/biagioT/java-pec-parser/blob/main/LICENSE
+  authors:
+    - Biagio Placido Tozzi
+  license: APACHE-2.0
+  tags:
+    - java
+    - jpa
+  java:
+    groupId: app.tozzi
+    artifactId: pec-parser
+    version: '17'
+
+signing:
+  active: ALWAYS
+  armored: true
+  mode: MEMORY
+  checksums: false
+
+release:
+  github:
+    skipRelease: true
+    skipTag: true
+    enabled: false
+    draft: false
+
+deploy:
+  maven:
+    mavenCentral:
+      sonatype:
+        active: RELEASE
+        url: https://central.sonatype.com/api/v1/publisher
+        stagingRepositories:
+          - build/staging-deploy
+        sign: true
+        checksums: true
+        sourceJar: true
+        javadocJar: true
+        applyMavenCentralRules: true
+
+checksum:
+  individual: true
+
+
