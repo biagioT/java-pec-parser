@@ -53,8 +53,7 @@ description:
 
       **Utilizzo**
 
-      1. Istanza di MailParser
-
+      Istanza di MailParser
       Attraverso uno dei seguenti metodi:
 
 
@@ -67,8 +66,7 @@ description:
       - `MailParser.getInstance(boolean extractAllHeaders)`
 
 
-      2. Parsing
-
+      Parsing
       Attraverso uno dei seguenti metodi:
 
       - `ParsedEntity parse(MimeMessage mimeMessage)`
@@ -78,8 +76,7 @@ description:
       - `ParsedEntity parse(InputStream inputStream)`
 
 
-      3. ParsedEntity
-
+      ParsedEntity
       Può essere di tipo:
 
       - `PEC`: se il messaggio rappresenta una PEC
@@ -146,7 +143,7 @@ platforms:
   - linux
   - ios
   - android
-releaseDate: '2024-11-16'
+releaseDate: '2024-11-24'
 softwareType: standalone/web
-softwareVersion: 5.0.1
+softwareVersion: 5.0.2
 url: 'https://github.com/biagioT/java-pec-parser'
