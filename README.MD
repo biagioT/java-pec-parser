@@ -2,7 +2,7 @@
 Libreria utility per l'elaborazione di messaggi di [Posta Elettronica Certificata](https://www.agid.gov.it/it/piattaforme/posta-elettronica-certificata) (PEC) e messaggi di posta ordinaria.
 
 ### Dipendenza progetto
-Attenzione: le versioni precedenti alla 5.0.0 sono state rilasciato con groupId `app.tozzi.mail`
+Attenzione: le versioni precedenti alla 5.0.0 sono state rilasciate con groupId `app.tozzi.mail`
 
 ##### Maven
 ```
