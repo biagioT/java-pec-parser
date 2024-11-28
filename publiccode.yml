@@ -23,15 +23,19 @@ description:
       (PEC) e messaggi di posta ordinaria.
 
       **Dipendenza progetto**
-      Attenzione: le versioni precedenti alla 5.0.0 sono state rilasciato con
+      Attenzione: le versioni precedenti alla 5.0.0 sono state rilasciate con
       groupId \`app.tozzi.mail\`
 
       _Maven_
 
       `<dependency>
+      
           <groupId>app.tozzi</groupId>
+          
           <artifactId>pec-parser</artifactId>
+          
           <version>5.0.2</version>
+          
       </dependency>`
 
 
@@ -47,13 +51,10 @@ description:
       - v5.0.0 - latest: Java 17
 
 
-      ​
-
-
-
       **Utilizzo**
 
       Istanza di MailParser
+      
       Attraverso uno dei seguenti metodi:
 
 
@@ -66,7 +67,8 @@ description:
       - `MailParser.getInstance(boolean extractAllHeaders)`
 
 
-      Parsing
+      Parsing:
+      
       Attraverso uno dei seguenti metodi:
 
       - `ParsedEntity parse(MimeMessage mimeMessage)`
@@ -76,7 +78,8 @@ description:
       - `ParsedEntity parse(InputStream inputStream)`
 
 
-      ParsedEntity
+      ParsedEntity:
+      
       Può essere di tipo:
 
       - `PEC`: se il messaggio rappresenta una PEC
