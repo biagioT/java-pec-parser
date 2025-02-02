@@ -28,20 +28,18 @@ description:
 
       _Maven_
 
-      `<dependency>
-      
+      `
+      <dependency>
           <groupId>app.tozzi</groupId>
-          
           <artifactId>pec-parser</artifactId>
-          
-          <version>5.0.2</version>
-          
-      </dependency>`
+          <version>5.1.0</version>
+      </dependency>
+      `
 
 
       _Gradle_
 
-      `implementation 'app.tozzi:pec-parser:5.0.2`
+      `implementation("app.tozzi.mail:pec-parser:5.1.0")`
 
       **Requisiti**
 

@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'app.tozzi'
-version = '5.0.2'
+version = '5.1.0'
 
 compileJava {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -63,10 +63,10 @@ tasks.withType(JavaCompile) {
 
 publishing {
     publications {
-        maven(MavenPublication) {
+        mavenJava(MavenPublication) {
             group = 'app.tozzi'
             artifactId = 'pec-parser'
-            version = "5.0.2"
+            version = "5.1.0"
             from components.java
             pom {
                 name = 'pec-parser'
@@ -115,5 +115,6 @@ test {
 }
 
 jar {
-    from sourceSets.main.allSource
+    enabled = true
+    archiveClassifier.set('')
 }
