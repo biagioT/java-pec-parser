@@ -29,21 +29,23 @@ description:
       _Maven_
 
       `
+      
       <dependency>
       
           <groupId>app.tozzi</groupId>
           
           <artifactId>pec-parser</artifactId>
           
-          <version>5.1.0</version>
+          <version>5.1.1</version>
           
       </dependency>
+      
       `
 
 
       _Gradle_
 
-      `implementation("app.tozzi.mail:pec-parser:5.1.0")`
+      `implementation("app.tozzi.mail:pec-parser:5.1.1")`
 
       **Requisiti**
 
@@ -148,7 +150,7 @@ platforms:
   - linux
   - ios
   - android
-releaseDate: '2024-11-24'
+releaseDate: '2025-04-19'
 softwareType: standalone/web
-softwareVersion: 5.1.0
+softwareVersion: 5.1.1
 url: 'https://github.com/biagioT/java-pec-parser'
