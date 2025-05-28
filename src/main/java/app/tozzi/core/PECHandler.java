@@ -67,7 +67,8 @@ public class PECHandler {
             pec.setDatiCert(datiCert);
             pec.setEnvelope(envelope);
             pec.setOriginalMessage(originalMessage);
-            pec.setCertificateData(loadCertificateData(datiCert.getInputStream()));
+            if (datiCert != null)
+                pec.setCertificateData(loadCertificateData(datiCert.getInputStream()));
             pec.setTransportHeaderValue(MimeMessageUtils.getHeader(mimeMessage, PECConstants.X_TRASPORTO));
             pec.setReceiptHeaderValue(MimeMessageUtils.getHeader(mimeMessage, PECConstants.X_RICEVUTA));
             pec.setReceiptTypeHeaderValue(MimeMessageUtils.getHeader(mimeMessage, PECConstants.X_TIPO_RICEVUTA));
