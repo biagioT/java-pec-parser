@@ -9,13 +9,13 @@ Attenzione: le versioni precedenti alla 5.0.0 sono state rilasciate con groupId 
 <dependency>
 	<groupId>app.tozzi</groupId>
 	<artifactId>pec-parser</artifactId>
-	<version>5.2.1</version>
+	<version>5.2.2</version>
 </dependency>
 ```
 
 ##### Gradle
 ```
-implementation 'app.tozzi:pec-parser:5.2.1
+implementation 'app.tozzi:pec-parser:5.2.2
 ```
 
 ### Requisiti
@@ -23,7 +23,7 @@ implementation 'app.tozzi:pec-parser:5.2.1
 | PEC Parser        | Java      |  
 |-------------------|-----------|  
 | [v0.0.1 - v4.0.0] | [8 - 22]  |  
-| [v5.0.0 - latest] | [17 - 22] |  
+| [v5.0.0 - latest] | [17 - 25] |  
 
 ### Utilizzo
 #### 1. Istanza di `MailParser`
