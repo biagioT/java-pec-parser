@@ -33,11 +33,11 @@ dependencies {
 
     // Java Activation
     implementation 'jakarta.activation:jakarta.activation-api:2.1.4'
-    runtimeOnly 'org.eclipse.angus:angus-activation:2.0.2'
+    runtimeOnly 'org.eclipse.angus:angus-activation:2.0.3'
 
     // Lombok
-    compileOnly 'org.projectlombok:lombok:1.18.38'
-    annotationProcessor 'org.projectlombok:lombok:1.18.38'
+    compileOnly 'org.projectlombok:lombok:1.18.40'
+    annotationProcessor 'org.projectlombok:lombok:1.18.40'
 
     // Log
     implementation 'org.slf4j:slf4j-api:2.0.17'
@@ -52,9 +52,9 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.13.4'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testImplementation 'org.mockito:mockito-core:5.19.0'
-    testImplementation 'org.projectlombok:lombok:1.18.38'
-    testCompileOnly 'org.projectlombok:lombok:1.18.38'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.38'
+    testImplementation 'org.projectlombok:lombok:1.18.40'
+    testCompileOnly 'org.projectlombok:lombok:1.18.40'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.40'
 }
 
 tasks.withType(JavaCompile) {
