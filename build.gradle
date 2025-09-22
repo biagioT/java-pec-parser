@@ -28,7 +28,7 @@ repositories {
 
 dependencies {
     // Java Mail
-    implementation 'jakarta.mail:jakarta.mail-api:2.1.4'
+    implementation 'jakarta.mail:jakarta.mail-api:2.1.5'
     implementation 'org.eclipse.angus:angus-mail:2.0.4'
 
     // Java Activation
