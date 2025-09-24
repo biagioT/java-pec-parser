@@ -20,9 +20,15 @@ project:
     - rfc-6109
     - rfc-2821
     - legal-mail
-  java:
-    groupId: app.tozzi
-    version: '17'
+    - parser
+    - email-parser
+    - pec-parser
+    - italy
+  languages:
+    java:
+      groupId: app.tozzi
+      artifactId: pec-parser
+      version: '17'
 
 signing:
   active: ALWAYS
