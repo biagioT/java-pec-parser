@@ -43,7 +43,7 @@ dependencies {
     implementation 'org.slf4j:slf4j-api:2.0.17'
 
     // Utils
-    implementation 'org.apache.commons:commons-lang3:3.18.0'
+    implementation 'org.apache.commons:commons-lang3:3.19.0'
 
     // XML
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.4'
