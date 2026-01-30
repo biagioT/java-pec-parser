@@ -31,13 +31,13 @@ description:
       `<dependency>
           <groupId>app.tozzi</groupId>
           <artifactId>pec-parser</artifactId>
-          <version>5.2.5</version>
+          <version>5.2.6</version>
       </dependency>`
 
 
       _Gradle_
 
-      `implementation("app.tozzi.mail:pec-parser:5.2.5")`
+      `implementation("app.tozzi.mail:pec-parser:5.2.6")`
 
       **Requisiti**
 
@@ -142,7 +142,7 @@ platforms:
   - linux
   - ios
   - android
-releaseDate: '2025-09-24'
+releaseDate: '2026-01-30'
 softwareType: standalone/web
-softwareVersion: 5.2.5
+softwareVersion: 5.2.6
 url: 'https://github.com/biagioT/java-pec-parser'
