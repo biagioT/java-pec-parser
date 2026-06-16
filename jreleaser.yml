@@ -32,10 +32,9 @@ project:
 
 signing:
   active: ALWAYS
-  pgp:
-    armored: true
-    mode: MEMORY
-    checksums: false
+  armored: true
+  mode: MEMORY
+  checksums: false
 
 release:
   github:
