@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Properties;
 import java.util.Spliterators;
 import java.util.stream.Stream;
@@ -151,29 +152,16 @@ public class MailParser {
         mail.setMessageID(MimeMessageUtils.getMessageID(mimeMessage));
 
         var from = MimeMessageUtils.getFrom(mimeMessage);
-        mail.setFrom(from.stream().filter(r -> r instanceof InternetAddress).map(r -> {
-            var ia = (InternetAddress) r;
-            return app.tozzi.model.Address.builder().email(ia.getAddress()).name(ia.getPersonal()).build();
-        }).toList());
+        mail.setFrom(toAddressList(from));
 
         var to = MimeMessageUtils.getTo(mimeMessage);
-        mail.setTo(to.stream().filter(r -> r instanceof InternetAddress).map(r -> {
-            var ia = (InternetAddress) r;
-            return app.tozzi.model.Address.builder().email(ia.getAddress()).name(ia.getPersonal()).build();
-        }).toList());
+        mail.setTo(toAddressList(to));
 
         var cc = MimeMessageUtils.getCC(mimeMessage);
-        mail.setCc(cc.stream().filter(r -> r instanceof InternetAddress).map(r -> {
-            var ia = (InternetAddress) r;
-            return app.tozzi.model.Address.builder().email(ia.getAddress()).name(ia.getPersonal()).build();
-        }).toList());
+        mail.setCc(toAddressList(cc));
 
         var bcc = MimeMessageUtils.getBCC(mimeMessage);
-        mail.setBcc(bcc.stream().filter(r -> r instanceof InternetAddress).map(r -> {
-            var ia = (InternetAddress) r;
-            return app.tozzi.model.Address.builder().email(ia.getAddress()).name(ia.getPersonal()).build();
-
-        }).toList());
+        mail.setBcc(toAddressList(bcc));
 
         mail.setSentDate(MimeMessageUtils.getSentDate(mimeMessage));
         mail.setReceivedDate(MimeMessageUtils.getReceivedDate(mimeMessage));
@@ -182,12 +170,12 @@ public class MailParser {
 
         var inReplyTO = MimeMessageUtils.getHeader(mimeMessage, PECConstants.IN_REPLY_TO);
         if (inReplyTO != null) {
-            mail.setReplyToMessageID(inReplyTO.replaceAll("<", "").replaceAll(">", ""));
+            mail.setReplyToMessageID(inReplyTO.replace("<", "").replace(">", ""));
         }
 
         var referencesHeader = MimeMessageUtils.getHeaders(mimeMessage, PECConstants.REFERENCES);
         if (referencesHeader != null) {
-            mail.setReplyToHistoryMessagesID(Stream.of(Stream.of(referencesHeader).toList().get(0).split(" ")).map(r -> r.replaceAll("<", "").replaceAll(">", "")).toList());
+            mail.setReplyToHistoryMessagesID(Stream.of(Stream.of(referencesHeader).toList().get(0).split(" ")).map(r -> r.replace("<", "").replace(">", "")).toList());
         }
 
         if (extractAllHeaders) {
@@ -231,8 +219,9 @@ public class MailParser {
             var body = content.toString();
 
             if (UUEncodingUtils.containsEncodedAttachments(body)) {
+                var originalBody = body;
                 body = body.substring(0, UUEncodingUtils.getNextBeginIndex(body));
-                mail.getAttachments().addAll(UUEncodingUtils.decodeAttachments(body));
+                mail.getAttachments().addAll(UUEncodingUtils.decodeAttachments(originalBody));
             }
 
             mail.setBodyTXT(body);
@@ -301,5 +290,13 @@ public class MailParser {
                 );
             }
         }
+    }
+
+    private static List<app.tozzi.model.Address> toAddressList(List<jakarta.mail.Address> addresses) {
+        return addresses.stream()
+                .filter(InternetAddress.class::isInstance)
+                .map(InternetAddress.class::cast)
+                .map(ia -> app.tozzi.model.Address.builder().email(ia.getAddress()).name(ia.getPersonal()).build())
+                .toList();
     }
 }

@@ -23,6 +23,9 @@ import java.nio.channels.WritableByteChannel;
  */
 public class IOUtils {
 
+    private IOUtils() {
+    }
+
     /**
      * Creates a {@link DataSource} from {@link MimePart}
      *
@@ -142,7 +145,9 @@ public class IOUtils {
 
         while (src.read(buffer) != -1) {
             ((Buffer) buffer).flip();
-            dest.write(buffer);
+            while (buffer.hasRemaining()) {
+                dest.write(buffer);
+            }
             buffer.compact();
         }
 

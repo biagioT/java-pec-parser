@@ -322,4 +322,21 @@ public class MailParserTest {
             assertEquals("sender@fakepec.it", receipt.getPec().getEnvelope().getTo().get(0).getEmail());
         }
     }
+
+    @Test
+    public void uuEncodingTest() throws IOException {
+        try (var inputStream = getClass().getClassLoader().getResourceAsStream("uuencoding_test.eml")) {
+            var pe = MailParser.getInstance(false).parse(inputStream);
+            assertNotNull(pe);
+            assertInstanceOf(Mail.class, pe);
+            var mail = (Mail) pe;
+
+            assertNotNull(mail.getBodyTXT());
+            assertTrue(mail.getBodyTXT().contains("Questo e' un test con UUEncoding."));
+
+            assertNotNull(mail.getAttachments());
+            assertEquals(1, mail.getAttachments().size());
+            assertEquals("test_file.txt", mail.getAttachments().get(0).getName());
+        }
+    }
 }

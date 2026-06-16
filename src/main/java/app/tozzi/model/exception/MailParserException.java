@@ -5,6 +5,8 @@ package app.tozzi.model.exception;
  */
 public class MailParserException extends RuntimeException {
 
+    private static final long serialVersionUID = 1L;
+
     public MailParserException(String message, Throwable cause) {
         super(message, cause);
     }

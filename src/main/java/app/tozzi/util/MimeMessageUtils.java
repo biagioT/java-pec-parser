@@ -14,12 +14,12 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
+import java.util.HexFormat;
 import java.util.stream.Stream;
 
 /**
@@ -30,7 +30,10 @@ import java.util.stream.Stream;
 @Slf4j
 public class MimeMessageUtils {
 
-    private static final String DATE_FORMAT = "YYYYMMDDHHMMSS";
+    private MimeMessageUtils() {
+    }
+
+    private static final String DATE_FORMAT = "yyyyMMddHHmmss";
     private static final ZoneId ZI = ZoneId.of("Europe/Rome");
 
     /**
@@ -237,7 +240,7 @@ public class MimeMessageUtils {
                 return Stream.of(res).toList();
             }
 
-            return null;
+            return Collections.emptyList();
 
         } catch (MessagingException e) {
             throw new MailParserException("Error reading header " + headerKey + " of part: " + getDescription(part), e);
@@ -431,7 +434,7 @@ public class MimeMessageUtils {
     public static MimeMessage createMimeMessage(InputStream inputStream, Properties properties) {
 
         try {
-            return new MimeMessage(Session.getDefaultInstance(properties != null ? properties : System.getProperties()), inputStream);
+            return new MimeMessage(Session.getInstance(properties != null ? properties : System.getProperties()), inputStream);
 
         } catch (MessagingException e) {
             throw new MailParserException("Error creating mime message", e);
@@ -471,8 +474,8 @@ public class MimeMessageUtils {
             rd = true;
         }
 
-        if (res.isEmpty() || (!rd && !sd)) {
-            return Timestamp.from(ZonedDateTime.now(ZI).toInstant()).hashCode() + UUID.randomUUID().toString();
+        if (!rd && !sd) {
+            return ZonedDateTime.now(ZI).toInstant().toEpochMilli() + "_" + UUID.randomUUID();
         }
 
 
@@ -487,7 +490,7 @@ public class MimeMessageUtils {
             }
         }
 
-        return new String(MessageDigest.getInstance("SHA-256").digest(res.toString().getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
+        return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(res.toString().getBytes(StandardCharsets.UTF_8)));
 
     }
 

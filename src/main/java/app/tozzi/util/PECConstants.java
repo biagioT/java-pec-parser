@@ -5,6 +5,9 @@ package app.tozzi.util;
  */
 public class PECConstants {
 
+    private PECConstants() {
+    }
+
     public static final String X_TRASPORTO = "X-Trasporto";
     public static final String X_RICEVUTA = "X-Ricevuta";
     public static final String X_RIFERIMENTO = "X-Riferimento-Message-ID";

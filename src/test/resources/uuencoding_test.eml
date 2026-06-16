@@ -1,0 +1,13 @@
+To: test@example.com
+From: sender@example.com
+Subject: UUEncoding Test
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Message-ID: <12345@example.com>
+
+Questo e' un test con UUEncoding.
+begin 644 test_file.txt
++965E965E965E964`
+`
+end
+Fine del test.

@@ -16,6 +16,9 @@ import java.util.List;
 @Slf4j
 public class UUEncodingUtils {
 
+    private UUEncodingUtils() {
+    }
+
     /**
      * Checks if the content is encoded with uuencode encoding
      *
@@ -113,12 +116,10 @@ public class UUEncodingUtils {
             var subString = content.substring(beginIndex, endIndex + 3);
 
             if (internalContainsEncodedAttachments(subString)) {
-                InputStream isDecoded = null;
-                String fileName = null;
+                String fileName = getAttachmentName(subString, attachments);
 
-                try (var is = new ByteArrayInputStream(content.getBytes())) {
-                    fileName = getAttachmentName(subString, attachments);
-                    isDecoded = MimeMessageUtils.decodeStream(is, "uuencode");
+                try (var is = new ByteArrayInputStream(content.getBytes());
+                     var isDecoded = MimeMessageUtils.decodeStream(is, "uuencode")) {
                     attachments.add(Attachment.builder().name(fileName).dataSource(IOUtils.createDataSource(isDecoded, fileName)).build());
                 }
             }
@@ -183,27 +184,25 @@ public class UUEncodingUtils {
 
         if (files.contains(fileName)) {
             fileName = fileName + "(" + i + ")";
-            return getVersionedFileName(fileName, files, i++);
+            return getVersionedFileName(fileName, files, i + 1);
         }
 
         return fileName;
     }
 
     private static boolean isOctal(int number) {
-        var isOctal = false;
-
-        while (number > 0) {
-            if (number % 10 <= 7) {
-                isOctal = true;
-            } else {
-                isOctal = false;
-                break;
-            }
-            number /= 10;
-
+        if (number == 0) {
+            return true;
         }
 
-        return isOctal;
+        while (number > 0) {
+            if (number % 10 > 7) {
+                return false;
+            }
+            number /= 10;
+        }
+
+        return true;
     }
 
 

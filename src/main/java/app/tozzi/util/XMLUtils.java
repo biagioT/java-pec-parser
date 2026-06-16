@@ -18,6 +18,9 @@ import java.util.stream.IntStream;
  */
 public class XMLUtils {
 
+    private XMLUtils() {
+    }
+
     /**
      * Extracts attribute value from {@link Document}
      *
